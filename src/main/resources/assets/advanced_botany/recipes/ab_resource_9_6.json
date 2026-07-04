@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "advanced_botany:itemabresource",
+      "data": 5
+    }
+  ],
+  "result": {
+    "item": "advanced_botany:itemabresource",
+    "count": 9,
+    "data": 6
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "MGM",
+    "LPL",
+    "M3M"
+  ],
+  "key": {
+    "M": {
+      "item": "advanced_botany:itemabresource",
+      "data": 0
+    },
+    "L": {
+      "item": "botania:pool",
+      "data": 3
+    },
+    "P": {
+      "item": "botania:pylon",
+      "data": 0
+    },
+    "3": {
+      "item": "botania:rune",
+      "data": 3
+    },
+    "G": {
+      "item": "botania:rune",
+      "data": 15
+    }
+  },
+  "result": {
+    "item": "advanced_botany:blockmanacontainer",
+    "count": 1,
+    "data": 2
+  }
+}

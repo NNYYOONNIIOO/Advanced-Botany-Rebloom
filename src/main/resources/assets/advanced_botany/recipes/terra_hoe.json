@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "TTL",
+    "RW ",
+    " W "
+  ],
+  "key": {
+    "T": {
+      "item": "botania:manaresource",
+      "data": 4
+    },
+    "L": {
+      "item": "botania:manaresource",
+      "data": 18
+    },
+    "W": {
+      "item": "botania:manaresource",
+      "data": 3
+    },
+    "R": {
+      "item": "botania:rune",
+      "data": 2
+    }
+  },
+  "result": {
+    "item": "advanced_botany:itemterrahoe",
+    "count": 1
+  }
+}

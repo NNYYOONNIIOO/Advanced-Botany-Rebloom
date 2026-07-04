@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "advanced_botany:blocklebethron",
+      "data": 0
+    }
+  ],
+  "result": {
+    "item": "advanced_botany:blocklebethron",
+    "count": 4,
+    "data": 1
+  }
+}

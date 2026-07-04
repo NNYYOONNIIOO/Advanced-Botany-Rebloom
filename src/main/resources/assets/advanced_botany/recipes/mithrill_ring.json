@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "LML",
+    "MRM",
+    "LML"
+  ],
+  "key": {
+    "M": {
+      "item": "advanced_botany:itemabresource",
+      "data": 0
+    },
+    "L": {
+      "item": "advanced_botany:itemabresource",
+      "data": 1
+    },
+    "R": {
+      "item": "botania:manaringgreater",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "advanced_botany:itemmithrillring",
+    "count": 1
+  }
+}

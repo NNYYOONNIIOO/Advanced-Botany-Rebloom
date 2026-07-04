@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " F ",
+    " M ",
+    " R "
+  ],
+  "key": {
+    "F": {
+      "item": "advanced_botany:itemabresource",
+      "data": 4
+    },
+    "M": {
+      "item": "botania:manabottle",
+      "data": 0
+    },
+    "R": {
+      "item": "botania:rune",
+      "data": 8
+    }
+  },
+  "result": {
+    "item": "advanced_botany:itemmanaflower",
+    "count": 1
+  }
+}

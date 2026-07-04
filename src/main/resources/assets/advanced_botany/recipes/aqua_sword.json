@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "  N",
+    "RM ",
+    "WR "
+  ],
+  "key": {
+    "N": {
+      "item": "advanced_botany:itemabresource",
+      "data": 1
+    },
+    "M": {
+      "item": "advanced_botany:itemabresource",
+      "data": 0
+    },
+    "R": {
+      "item": "botania:rune",
+      "data": 0
+    },
+    "W": {
+      "item": "botania:manaresource",
+      "data": 13
+    }
+  },
+  "result": {
+    "item": "advanced_botany:itemaquasword",
+    "count": 1
+  }
+}

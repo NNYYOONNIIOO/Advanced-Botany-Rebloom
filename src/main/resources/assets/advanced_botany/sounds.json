@@ -1,0 +1,10 @@
+{
+    "boardcube": { "category": "block", "sounds": ["boardcube"] },
+    "nebulablaze": { "category": "player", "sounds": ["nebulablaze"] },
+    "bladespace": { "category": "player", "sounds": ["bladespace"] },
+    "nebularod": { "category": "player", "sounds": ["nebularod"] },
+    "hornplentyusing": { "category": "player", "sounds": ["hornplentyusing"] },
+    "freyrslingshot": { "category": "player", "sounds": ["freyrslingshot"] },
+    "lokicubearmor": { "category": "player", "sounds": ["lokicubearmor"] },
+    "aquasword": { "category": "player", "sounds": ["aquasword"] }
+}

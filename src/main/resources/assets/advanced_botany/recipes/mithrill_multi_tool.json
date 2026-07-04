@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " AB",
+    " CA",
+    "C  "
+  ],
+  "key": {
+    "A": {
+      "item": "advanced_botany:itemabresource",
+      "data": 0
+    },
+    "B": {
+      "item": "botania:livingwood",
+      "data": 0
+    },
+    "C": {
+      "item": "botania:manaresource",
+      "data": 3
+    }
+  },
+  "result": {
+    "item": "advanced_botany:itemmihrillmultitool",
+    "data": 0,
+    "count": 1
+  }
+}

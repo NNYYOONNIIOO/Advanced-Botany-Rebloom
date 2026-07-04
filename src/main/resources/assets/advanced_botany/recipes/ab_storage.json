@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "III",
+    "III",
+    "III"
+  ],
+  "key": {
+    "I": {
+      "item": "advanced_botany:itemabresource",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "advanced_botany:blockabstorage",
+    "data": 0,
+    "count": 1
+  }
+}

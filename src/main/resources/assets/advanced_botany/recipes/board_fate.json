@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "   ",
+    "QDQ",
+    "MPM"
+  ],
+  "key": {
+    "Q": {
+      "item": "botania:quartztypemana",
+      "data": 0
+    },
+    "D": {
+      "item": "botania:manaresource",
+      "data": 2
+    },
+    "M": {
+      "item": "botania:manaresource",
+      "data": 0
+    },
+    "P": {
+      "item": "botania:manaresource",
+      "data": 23
+    }
+  },
+  "result": {
+    "item": "advanced_botany:blockboardfate",
+    "count": 1,
+    "data": 0
+  }
+}

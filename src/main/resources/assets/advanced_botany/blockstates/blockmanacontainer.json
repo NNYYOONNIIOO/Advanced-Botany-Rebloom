@@ -1,0 +1,13 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "advanced_botany:blockmanacontainer_0"
+  },
+  "variants": {
+    "variant": {
+      "0": { "model": "advanced_botany:blockmanacontainer_0" },
+      "1": { "model": "advanced_botany:blockmanacontainer_1" },
+      "2": { "model": "advanced_botany:blockmanacontainer_2" }
+    }
+  }
+}

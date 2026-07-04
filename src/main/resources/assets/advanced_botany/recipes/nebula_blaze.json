@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " N ",
+    "MMN",
+    "AMN"
+  ],
+  "key": {
+    "N": {
+      "item": "advanced_botany:itemabresource",
+      "data": 6
+    },
+    "A": {
+      "item": "advanced_botany:itemabresource",
+      "data": 3
+    },
+    "M": {
+      "item": "botania:storage",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "advanced_botany:itemnebulablaze",
+    "count": 1
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "WMW",
+    "PSP",
+    "WMW"
+  ],
+  "key": {
+    "M": {
+      "item": "advanced_botany:itemabresource",
+      "data": 2
+    },
+    "P": {
+      "item": "botania:pylon",
+      "data": 0
+    },
+    "S": {
+      "item": "botania:spreader",
+      "data": 3
+    },
+    "W": {
+      "item": "advanced_botany:blocklebethron",
+      "data": 4
+    }
+  },
+  "result": {
+    "item": "advanced_botany:blockabspreader",
+    "data": 0,
+    "count": 1
+  }
+}

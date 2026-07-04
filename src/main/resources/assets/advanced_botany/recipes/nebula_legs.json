@@ -1,0 +1,34 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ENE",
+    "RHR",
+    "NAN"
+  ],
+  "key": {
+    "N": {
+      "item": "advanced_botany:itemabresource",
+      "data": 5
+    },
+    "R": {
+      "item": "botania:manaresource",
+      "data": 7
+    },
+    "H": {
+      "item": "botania:terrasteellegs",
+      "data": 0
+    },
+    "E": {
+      "item": "botania:manaresource",
+      "data": 8
+    },
+    "A": {
+      "item": "advanced_botany:itemabresource",
+      "data": 3
+    }
+  },
+  "result": {
+    "item": "advanced_botany:itemnebulalegs",
+    "count": 1
+  }
+}

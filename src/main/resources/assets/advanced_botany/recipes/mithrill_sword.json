@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "  M",
+    "SM ",
+    "WS "
+  ],
+  "key": {
+    "S": {
+      "item": "advanced_botany:itemabresource",
+      "data": 6
+    },
+    "M": {
+      "item": "advanced_botany:itemabresource",
+      "data": 0
+    },
+    "W": {
+      "item": "botania:manaresource",
+      "data": 3
+    }
+  },
+  "result": {
+    "item": "advanced_botany:itemmithrillsword",
+    "count": 1
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " E ",
+    "DHD",
+    " E "
+  ],
+  "key": {
+    "E": {
+      "item": "botania:manaresource",
+      "data": 7
+    },
+    "H": {
+      "item": "botania:autocraftinghalo",
+      "data": 0
+    },
+    "D": {
+      "item": "botania:blackholetalisman",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "advanced_botany:itemblackhalo",
+    "count": 1
+  }
+}

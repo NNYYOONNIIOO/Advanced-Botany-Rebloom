@@ -1,0 +1,30 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+		"textures": {
+			"base": "advanced_botany:model/block_mana_crystal_cube_base",
+			"cloth": "advanced_botany:model/block_mana_crystal_cube_cloth",
+			"glass": "advanced_botany:model/block_mana_crystal_cube_glass",
+			"particle": "advanced_botany:model/block_mana_crystal_cube_base"
+		}
+	},
+	"variants": {
+		"static": {
+			"true": {
+				"model": "advanced_botany:mana_crystal_cube_base"
+			},
+			"false": {
+				"model": "advanced_botany:mana_crystal_cube_glass"
+			}
+		},
+		"inventory": [{
+			"model": "advanced_botany:mana_crystal_cube_base",
+			"transform": "forge:default-block",
+			"submodel": {
+				"cube": {
+					"model": "advanced_botany:mana_crystal_cube_glass"
+				}
+			}
+		}]
+	}
+}

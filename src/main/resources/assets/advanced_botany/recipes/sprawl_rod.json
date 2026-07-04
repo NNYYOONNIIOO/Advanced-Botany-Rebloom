@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " SC",
+    " WS",
+    "W  "
+  ],
+  "key": {
+    "S": {
+      "item": "botania:grassseeds",
+      "data": 32767
+    },
+    "C": {
+      "item": "advanced_botany:blocklebethron",
+      "data": 4
+    },
+    "W": {
+      "item": "botania:manaresource",
+      "data": 3
+    }
+  },
+  "result": {
+    "item": "advanced_botany:itemsprawlrod",
+    "count": 1
+  }
+}

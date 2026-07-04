@@ -1,0 +1,338 @@
+//中文翻译
+
+//标签页
+
+itemGroup.tabAB=高级植物学
+
+//方块
+
+ab.flower.ancientAlphirine.name=古阿尔菲林
+ab.flower.dictarius.name=令使花
+ab.flower.ardentAzarcissus.name=炽缘水仙
+tile.advanced_botany.advancedSpreader.name=自然魔力发射器
+tile.advanced_botany.ABPlate.name=尼达维里尔铁砧
+tile.advanced_botany.lebethronWood.0.name=莱斯贝隆木
+tile.advanced_botany.lebethronWood.1.name=莱斯贝隆木板
+tile.advanced_botany.lebethronWood.2.name=苔藓莱斯贝隆木板
+tile.advanced_botany.lebethronWood.3.name=微光莱斯贝隆木
+tile.advanced_botany.lebethronWood.4.name=自然核心
+tile.advanced_botany.ABManaCrystalCube.name=魔力水晶立方
+tile.advanced_botany.ABManaContainer.0.name=魔缸
+tile.advanced_botany.ABManaContainer.1.name=稀释魔缸
+tile.advanced_botany.ABManaContainer.2.name=神话魔缸
+tile.advanced_botany.abStorage.0.name=秘银块
+tile.advanced_botany.ABManaCharger.name=魔力充能器
+tile.botania:flower.ancientAlphirine.name=古阿尔菲林
+tile.botania:flower.dictarius.name=令使花
+tile.botania:flower.ardentAzarcissus.name=炽缘水仙
+tile.advanced_botany.terraFarmland.name=沃土
+tile.advanced_botany.engineerHopper.name=工程师漏斗
+tile.advanced_botany.BlockFreyrLiana.name=丰饶藤蔓
+tile.advanced_botany.BlockLuminousFreyrLiana.name=发光丰饶藤蔓
+tile.advanced_botany.boardFate.0.name=棋盘
+tile.advanced_botany.boardFate.1.name=命运棋盘
+
+//物品
+
+item.advanced_botany.resourceAB_0.name=秘银锭
+item.advanced_botany.resourceAB_1.name=秘银粒
+item.advanced_botany.resourceAB_2.name=魔力下界之星
+item.advanced_botany.resourceAB_3.name=瓶装遗忘之地空气
+item.advanced_botany.resourceAB_4.name=大自然的馈赠
+item.advanced_botany.resourceAB_5.name=星云尘
+item.advanced_botany.resourceAB_6.name=星云精华
+item.advanced_botany.mithrillMultiTool.name=秘银粉碎者
+item.advanced_botany.spaceBlade.name=空间之刃
+item.advanced_botany.advancedSpark.name=超导体火花
+item.advanced_botany.mithrillManaRing.name=秘银魔力之戒
+item.advanced_botany.nebulaManaRing.name=星云魔力之戒
+item.advanced_botany.terraHoe.name=泰拉锄
+item.advanced_botany.manaFlower.name=魔源花
+item.advanced_botany.blackHalo.name=黑洞盒子
+item.advanced_botany.nebulaBlaze.name=星云烈焰
+item.advanced_botany.antigravityCharm.name=引力水晶球
+item.botania:nebulaHelm.name=星云头盔
+item.botania:nebulaChest.name=星云胸甲
+item.botania:nebulaLegs.name=星云护腿
+item.botania:nebulaBoots.name=星云靴子
+item.botania:wildHuntHelm.name=狂猎头盔（WIP）
+item.botania:wildHuntChest.name=狂猎胸甲（WIP）
+item.botania:wildHuntLegs.name=狂猎护腿（WIP）
+item.botania:wildHuntBoots.name=狂猎靴子（WIP）
+item.advanced_botany.freyrSlingshot.name=弗雷的弹弓
+item.advanced_botany.nebulaRod.name=星云法杖
+item.advanced_botany.sprawlRod.name=蔓延权杖
+item.advanced_botany.autoPocketWardrobe.name=敏捷立方
+item.advanced_botany.talismanHiddenRiches.name=隐藏财富的钥匙
+item.advanced_botany.hornPlenty.name=丰收号角
+item.advanced_botany.sphereNavigation.name=导航水晶球
+item.advanced_botany.itemAquaSword.name=海之刃
+
+//花朵传说
+
+ab.flower.ancientAlphirine.reference=它知道你何时第一次获得知识宝典
+ab.flower.dictarius.reference=它像没有舌头，却喋喋不休……
+ab.flower.ardentAzarcissus.reference=它曾一度失去过自己的荣耀
+
+//杂项
+
+ab.nebulaHelm.mask=附带自然外观
+botania.category.forgotten=与过去相连
+ab.nei.alphirine=古阿尔菲林
+ab.nei.advancedPlate=尼达维里尔铁砧
+ab.manaCrystalCube.hud=网络中存储的魔力总量
+ab.manaCharger.wandHud=魔力充能器
+ab.manaContainer.0.hud=魔缸
+ab.manaContainer.1.hud=稀释魔缸
+ab.manaContainer.2.hud=神话魔缸
+abmisc.swordInfo.1=星爆
+abmisc.swordInfo.2=空间跃迁
+abmisc.swordInfo.3=方形冲击 3×3
+abmisc.swordInfo.4=方形冲击 5×5
+abmisc.swordInfo.5=方形冲击 7×7
+abmisc.swordFull=满魔力，献给最酷的极客！
+ab.armorset.nebula.name=与宇宙的羁绊
+ab.armorset.nebula.desc0=魔力工具和法杖的魔力消耗减少30%%
+ab.armorset.nebula.desc1=免疫所有魔法伤害
+ab.armorset.nebula.desc2=用魔力抵挡伤害
+ab.armorset.nebula.desc3=罪业：魔力使你不再不再饥饿
+ab.nebula.effect.health.on=§a生命加成：已开启
+ab.nebula.effect.health.off=§c生命加成：已关闭
+ab.nebula.effect.flight.on=§a飞行：已开启
+ab.nebula.effect.flight.off=§c飞行：已关闭
+ab.nebula.effect.jump.on=§a跳跃加成：已开启
+ab.nebula.effect.jump.off=§c跳跃加成：已关闭
+ab.nebula.effect.speed.on=§a速度加成：已开启
+ab.nebula.effect.speed.off=§c速度加成：已关闭
+
+//JEI
+advanced_botany.jei.advanced_plate=尼达维里尔铁砧
+advanced_botany.jei.alphirine=古阿尔菲林
+advanced_botany.jei.mana_cost=§0%d
+ab.armorset.wildHunt.desc0=创造模式飞行
+ab.armorset.wildHunt.desc1=饥饿值未满时也能回复生命
+ab.armorset.wildHunt.desc2=魔力石板内被动产能
+ab.gameBoard.misc.0=%s 赢得了游戏
+ab.gameBoard.misc.1=游戏平局
+ab.gameBoard.misc.2=%s 输掉了游戏
+ab.gameBoard.misc.0.mult=%s 赢得了游戏
+ab.gameBoard.misc.1.mult=游戏平局
+ab.gameBoard.misc.2.mult=%s 赢得了游戏
+ab.gameBoard.misc.notPlayer=游戏结束，第二位玩家缺失
+ab.nebulaRod.notTeleporting=传送门未能找到合适的传送位置
+ab.nebulaRod.notTeleportingEvent=有某种力量阻止传送门将你传送至所选地点
+ab.sphereNavigation.founded=已找到
+abmisc.fateBoard.info0=每个精灵都梦想着能在这块棋盘上对弈，
+abmisc.fateBoard.info1=希望能赢得宝贵的奖品……
+
+//成就
+
+achievement.ab:fateBoard=与命运博弈
+achievement.ab:fateBoard.desc=获得命运棋盘！
+achievement.ab:relicSlingshot=大地变革
+achievement.ab:relicSlingshot.desc=因你的英勇事迹获得弗雷的弹弓作为奖赏
+achievement.ab:relicPocketArmor=伪装的表象
+achievement.ab:relicPocketArmor.desc=因你的英勇事迹获得敏捷立方作为奖赏
+achievement.ab:relicItemChest=个人财富的通道
+achievement.ab:relicItemChest.desc=因你的英勇事迹获得隐藏财富的钥匙作为奖赏
+achievement.ab:relicHornPlenty=好运狩猎号角
+achievement.ab:relicHornPlenty.desc=因你的英勇事迹获得丰收号角作为奖赏
+achievement.ab:relicSphereNavigation=X光？还是伟大的遗物？
+achievement.ab:relicSphereNavigation.desc=因你的英勇事迹获得导航水晶球作为奖赏
+
+//实体
+
+entity.advanced_botany.advancedSpark.name=超导体火花
+entity.advanced_botany.nebulaBlaze=星云烈焰弹射物
+entity.advanced_botany.manaVineBall=弗雷尔藤蔓之球
+entity.advanced_botany.alphirinePortal=来自过去的传送门
+entity.advanced_botany.entitySword=星爆
+entity.advanced_botany.entitySeed=蔓延弹射物
+
+//植物学辞典
+
+ab.lexicon.structure=结构
+
+botania.knowledge.ab_forgotten=&9被遗忘的&7知识
+
+ab.name.alpherine.craft=古阿尔菲林
+
+botania.entry.forgottenIntro=被遗忘的知识
+botania.tagline.forgottenIntro=来自过去的回响
+botania.page.forgottenIntro0=毁灭降临后，尼德威阿尔崩 塌，精灵们失去了与过去的 一切联系。曾经辉煌的科技 与材料，如今只存在于传说 之中。<br>然而，古阿尔菲林保存了这 些珍贵的记忆。将你的知识 宝典扔给它，它便会解锁被 遗忘的知识，让你重新获得 那些失落的秘密。
+botania.page.forgottenIntro1=被遗忘的知识涵盖了多种强 大的科技与材料：尼达维里 尔铁砧可以将不同材料融合 为一体；古阿尔菲林能够从 过去的碎片中重现资源；秘 银和星云尘则能锻造出超越 凡间的工具与装备。<br>每一项发现，都是通往过去 的钥匙。
+botania.page.forgottenIntro2=要解锁被遗忘的知识，你需 要先将知识宝典扔给古阿尔 菲林。此后，所有属于被遗 忘知识的条目都将在辞典中 显现。<br>注意：古阿尔菲林本身需要 精灵知识才能理解。
+
+botania.entry.ancientAlphirine=古阿尔菲林
+botania.tagline.ancientAlphirine=颠倒世界，抖出有趣的东西！
+botania.page.ancientAlphirine0=古阿尔菲林是一切科技与知 识的守护者！无论将它放置 在何处，它都会深入土壤， 了解其上发生的一切。<br>或许你一直好奇精灵们如何 管理大地的资源，以及它们 的价值几何。<br>将你的知识宝典扔给它，阿 尔菲林便会分享它的知识！
+botania.page.ancientAlphirine1=研究历史与科技并非阿尔菲 林的全部能力！它还能发现 其附近被遗弃的、来自过去 的资源类似物。<br>一旦发现类似物，它便会立 即尝试通过一个小型传送门 将其重现，但这需要一定次 数的尝试——次数取决于重 现该资源的难度。
+botania.page.ancientAlphirine2=古阿尔菲林开启传送门
+botania.page.ancientAlphirine.petalCraft=顺便说一句，这是最睿智的 花朵
+botania.page.ancientAlphirine.alphirineCraft=切勿吸入！
+
+botania.entry.advancedPlate=尼达维里尔铁砧
+botania.tagline.advancedPlate=依据尼德威阿尔矮人的图纸制造
+botania.page.advancedPlate0=尼达维里尔铁砧——矮人发 明的强大装置，用于将不同 材料融合为一体，关键在于 掌握比例！<br>这座锻炉曾被赠予精灵，也 就是说，它在"毁灭"时期来到 了我们的土地，但……好景 不长——它很快就被摧毁了。 
+botania.page.advancedPlate.craft=工程革命
+botania.page.advancedPlate.structure=尼达维里尔铁砧
+botania.page.advancedPlate.abCraft0=制作人见人爱的泰拉钢
+botania.page.advancedPlate.abCraft1=燃烧我的星……
+
+botania.entry.lebethronWood=莱斯贝隆木
+botania.tagline.lebethronWood=精灵的最佳杰作！
+botania.page.lebethronWood0=莱斯贝隆木——精灵们利用 我们土地上的资源创造的强 大魔力导体。不幸的是，当 精灵们被送回阿尔夫海姆时， 莱斯贝隆木便永远失传了。<br>利用古阿尔菲林和梦之木， 你可以复活这种强大的树木！ 
+botania.page.lebethronWood.alphirineCraft=翠绿奇迹
+botania.page.lebethronWood1=自然核心能够创造出一棵树， 拥有无尽的树叶，无论是火 焰还是咀嚼露水都无法阻止 它的生长！<br>核心本身不会立即造树，它 需要被赋予任意树叶，因为 它自身没有树叶，同时还需 要树干——详见下一页。
+botania.page.lebethronWood.craft0=合成配方
+botania.page.lebethronWood.structure=自然核心
+
+botania.entry.lebethronSpreader=自然魔力发射器
+botania.tagline.lebethronSpreader=输送成吨的魔力？没问题！
+botania.page.lebethronSpreader0=自然魔力发射器，专为真正 的魔力控制专家设计！借助 它，你可以在极短的时间内 输送海量魔力，从而充分发 挥花朵的效率。<br>而且……它还会发光！！！
+botania.page.lebethronSpreader.craft=魔力再多也不嫌多
+
+botania.entry.mithrill=秘银
+botania.tagline.mithrill=强大且坚不可摧的金属！
+botania.page.mithrill0=秘银——以其强度著称于其 他金属，更确切地说是其"无 法被破坏"的特性，因为它几 乎不会受到任何损伤。<br>这种独特的性质源于盖亚之 魂与泰拉钢的成功比例混合， 并加入魔力钢以平衡合金内 部的能量。
+botania.page.mithrill.abCraft=盖亚之魂锭（重制版）
+botania.page.mithrill1=秘银粉碎者——基于过去一 场全球性灾难的严酷工具。<br>它能够几乎瞬间破坏任何方 块。其速度之快，以至于必 须为其内置一个"保险"——即 开关机功能。
+botania.page.mithrill.craft=股骨头永不骨折 :(
+
+botania.entry.manaContainer=魔缸
+botania.tagline.manaContainer=为疯狂之人准备的魔力仓库
+botania.page.manaContainer0=魔缸——漂浮的魔力储存装 置，有些类似于普通的魔力 池，但容量绝对远超数倍！<br>魔缸唯一不如魔力池的地方， 就是无法为魔力工具充能和 制作魔力物品。
+botania.page.manaContainer.craft0=64个魔力池的容量！
+botania.page.manaContainer.craft1=8个魔力池的容量！
+botania.page.manaContainer.craft2=64个彩虹魔力池的容量！
+botania.page.manaContainer1=超导体火花——被誉为西部 荒野中最快的火花！不开玩 笑，精灵们曾经使用它，在 不同地点之间蒸馏魔力。<br>其合成配方早已失传，因此 唯一获取途径就是古阿尔菲 林。
+botania.page.manaContainer.alphirineCraft=音速就是你？
+
+botania.entry.manaCrystalCube=魔力水晶立方
+botania.tagline.manaCrystalCube=每个极客的私人魔力管理器
+botania.page.manaCrystalCube0=跑来跑去检查每个魔力池， 想知道里面到底有多少魔力， 总是不太方便。因此，魔力 水晶立方应运而生！<br>它会显示所有带有火花的魔 力池或其他蓄能器的魔力， 而立方体本身无需火花。
+botania.page.manaCrystalCube.craft=魔法算术
+
+botania.entry.terraHoe=泰拉锄
+botania.tagline.terraHoe=植物的自助训练
+botania.page.terraHoe0=传统的收割方式随着时间推 移会变得乏味。泰拉锄，更 确切地说是它独特的将土壤 转化为更肥沃且自动化的土 壤的能力，可以帮助解决这 个问题。<br>新土壤中的作物会在一定时 间后自动收获！
+botania.page.terraHoe.craft=自动收获
+
+botania.entry.manaRings=魔力之戒
+botania.tagline.manaRings=随身携带大量魔力！
+botania.page.manaRings0=魔力之戒是极客们非常追捧 的饰品。携带多个总是不太 方便，但一切都被制造指环 的材料特性所限制。<br>秘银和星云尘，是普通泰拉 钢或魔力钢的绝佳替代品。
+botania.page.manaRings.craft0=8个魔力池的容量！
+botania.page.manaRings.craft1=48个魔力池的容量！
+
+botania.entry.manaFlower=魔源花
+botania.tagline.manaFlower=散发着魔力的气味！
+botania.page.manaFlower0=大自然的馈赠——顾名思义。 它通常用于制造更高级的、 与魔力相关的花朵。<br>不过，几次失败的实验促成 了另一种物品的诞生——一 种能将魔力生成到任何指环 或魔力石板中的物品，即魔 源花。注意！没有任何精灵 在此过程中死亡。
+botania.page.manaFlower.craft=经济是最好的朋友
+botania.page.manaFlower.alphirineCraft=美丽的花朵
+
+botania.entry.mithrillSword=空间之刃
+botania.tagline.mithrillSword=战斗中的机动性永远不嫌多
+botania.page.mithrillSword0=空间之刃——一种近战武器， 利用魔力与宇宙力量沟通， 剑中魔力越多，连接越强。<br>与宇宙力量的连接强度分为 多个等级，类似于泰拉碎裂 者。每个等级都会为空间之 刃解锁新的魔法属性，详见 下一页。
+botania.page.mithrillSword1=魔法属性描述：<br>星爆——充满星力能量的弹 射物，在挥剑时释放。<br>空间跃迁——向玩家视线方 向进行冲刺，通过右键点击 执行。<br>注意：在剑的充能期间，玩 家无法使用方块。
+botania.page.mithrillSword.craft=握在你手中会很好看！
+
+botania.entry.dictarius=令使花
+botania.tagline.dictarius=一句话就能扭转一切，请小心
+botania.page.dictarius0=令使花——所有花朵中最开 放的一朵，它试图表达自己 的观点，但更多时候，它试 图迫使周围的人采取某种行 动。<br>总的来说，如果你不听它的， 它倒是一个不错的魔力提取 方式！它周围的听众越多， 产生的魔力就越多。
+botania.page.dictarius1=令使花有一个弱点——大量 同类花朵聚集在一起，与这 些健谈的对手讨论会逐渐毒 害它——最终令使花会死亡！ 
+botania.page.dictarius.petalCraft=夜间并非最佳交谈对象
+
+botania.entry.nebula=星云
+botania.tagline.nebula=与宇宙的连接
+botania.page.nebula0=星云尘是一种充满部分宇宙 力量的材料。它允许你制造 出凡间力量无法企及的工具 和武器。
+botania.page.nebula.abCraft=植物学家的熔火？
+
+botania.entry.nebulaBlaze=星云烈焰
+botania.tagline.nebulaBlaze=迷雾大混乱
+botania.page.nebulaBlaze0=星云烈焰——一种魔法武器， 当你真的被某人惹恼时使用。 只需瞄准目标并发射弹射物！ 如果你不擅长瞄准，弹射物 会稍微帮你一把！
+botania.page.nebulaBlaze.craft=宇宙打击？
+
+botania.entry.blackHalo=黑洞盒子
+botania.tagline.blackHalo=黑洞之主
+botania.page.blackHalo0=黑洞盒子——每个先进精灵 的便捷发明，可在1个物品栏 槽位中携带多达12个黑洞护符。 <br>要将黑洞护符放入黑洞盒子， 你需要将其放在快捷栏中， 并且护符中需要有对应类型 的方块。
+botania.page.blackHalo.craft=石匠的梦想
+
+botania.entry.antigravityCharm=引力水晶球
+botania.tagline.antigravityCharm=什么是物理？
+botania.page.antigravityCharm0=引力水晶球是一种神秘工具， 能够阻止任何下落方块的移 动。<br>现在你可以安全地行走，不 必担心被沙子或铁砧砸中。
+botania.page.antigravityCharm.craft=1 : 0，Minecrafters获胜
+
+botania.entry.manaCharger=魔力充能器
+botania.tagline.manaCharger=我们来充能？
+botania.page.manaCharger0=魔力充能器是一种设备，允 许你同时为最多4个便携式魔 力源充能，也可以对其中一 个进行放电。<br>要启动充能器，你必须将其 与一个魔力源绑定，例如魔 力池或魔缸。
+botania.page.manaCharger.craft=快速充能
+
+botania.entry.nebulaArmor=星云护甲
+botania.tagline.nebulaArmor=坚不可摧的极客套装
+botania.page.nebulaArmor0=星云护甲是一套强大的极客 装备，由星云尘和泰拉钢护 甲制作而成。<br>每件装备都有其独特的属性， 这些属性取决于魔力储量， 魔力越少，护甲的防护性能 越弱。
+botania.page.nebulaArmor1=每件护甲的特性：<br>星云头盔——提升生命值<br>星云胸甲——允许穿戴者飞 行，并具有击退抗性<br>星云护腿——提高跳跃高度<br>星云靴子——提升穿戴者速 度
+botania.page.nebulaArmor.craft0=宇宙之面
+botania.page.nebulaArmor.craft1=我们来飞？
+botania.page.nebulaArmor.craft2=我的裤子呢？
+botania.page.nebulaArmor.craft3=跑者的拖鞋！
+
+botania.entry.freyrSlingshot=弗雷的弹弓
+botania.tagline.freyrSlingshot=&m爱&0 与花朵
+botania.page.freyrSlingshot0=弗雷的弹弓——潘神的神话 物品之一。这把弹弓的能力 可以加速自然闪光范围内各 种种子或树苗的生长，还能 为家畜营造浪漫氛围！
+botania.page.freyrSlingshot1=此外，当树木被自然闪光击 中时，它会立即被一种前所 未见的藤蔓包裹！<br>1）丰饶藤蔓——加速其下方 种子的生长<br>2）发光丰饶藤蔓——是丰饶 藤蔓的对应物，还能生成金 粒！
+
+botania.entry.engineerHopper=工程师漏斗
+botania.tagline.engineerHopper=不要把丑陋的机制深埋地下！让它变得美观！
+botania.page.engineerHopper0=工程师漏斗是设计师兼工程 师的真正福音！借助它，你 可以安全地将机制隐藏起来， 不被窥探，或者仅仅是为了 审美愉悦。<br>根据阿尔菲林的初步信息， 这种漏斗曾在许多先进世界 中使用，例如阿斯加德和尼 德威阿尔。
+botania.page.engineerHopper1=请参阅以下页面的物品描述。 
+botania.page.engineerHopper2=要点1——用于指定存储设施 的位置，物品将从那里被取 出进行运输。<br>要点2——用于指定存放物品 的存储库位置。<br>要点3——森林权杖图标：显 示你可以绑定存储库的位置。 
+botania.page.engineerHopper3=将存储库绑定到工程师漏斗： <br>步骤1——按住SHIFT + 右键点击漏斗。 <br>步骤2——按住SHIFT + 右键点击存储 库。<br>右键点击漏斗——切换用于 指定存储库的位置。
+botania.page.engineerHopper4=注意1：将存储库绑定到工程 师漏斗时，会在后续操作中 考虑你绑定时所选存储库的 面。<br>注意2：由于设计上的技术差 异，工程师漏斗不能像普通 漏斗那样拾取其上方的东西。 
+
+botania.page.engineerHopper.alphirineCraft=来自&m未来&0 过去的漏斗
+
+botania.entry.nebulaRod=星云法杖
+botania.tagline.nebulaRod=你不怕传送门，对吧？有些人受不了，然后骑马……
+botania.page.nebulaRod0=星云法杖是一种个人使用的 魔法工具，揭示了星云尘的 核心本质——移动！<br>当你需要紧急离开某个不愉 快的地方，或者仅仅为了旅 行时，使用这根权杖。
+botania.page.nebulaRod.craft=谁在哪，而我……
+
+botania.entry.gameBoard=棋盘
+botania.tagline.gameBoard=许多极客无聊时最爱的消遣
+botania.page.gameBoard0=棋盘——让极客们放松身心、 从日常琐事中解脱出来的有 趣活动。<br>棋盘支持2种游戏模式——与 朋友对战和单人模式。可以 通过按住SHIFT + 右键点击来切换—— 等待下一局游戏时进行。
+botania.page.gameBoard.craft=我们来赌点魔力？怎么样？
+
+botania.entry.fateBoard=命运棋盘
+botania.tagline.fateBoard=1个骰子——6件遗物，有道理。2个骰子……
+botania.page.fateBoard0=命运棋盘——一种有趣的玩 法，和普通棋盘类似，但—— 游戏需要几个命运骰子。<br>众所周知——掷出命运骰子 可以获得与该数字相关的遗 物。<br>因此，2个骰子最多可获得12件 遗物。[目前最多11件，还有1件 正在开发中]
+botania.page.fateBoard.alphirineCraft=我们来赌遗物？
+
+botania.entry.richesKey=隐藏财富的钥匙
+botania.tagline.richesKey=插入，转动——打开。听起来不难……
+botania.page.richesKey0=隐藏财富的钥匙——潘神的 神话物品。一旦你拾起它， 个人物品箱便会立即出现。<br>你可以将贵重物品存入每个 箱子，或者只是在矿营中使 用——非常方便。
+
+botania.entry.cubeWardrobe=敏捷立方
+botania.tagline.cubeWardrobe=双重套装，外表美丽，内在坚固！
+botania.page.cubeWardrobe0=敏捷立方——潘神的神话物 品之一。允许你在战斗中作 弊，或者只是存放服装！<br>战斗中的诀窍在于立方体对 穿戴者所受伤害的敏感性。 一旦穿戴者受到攻击，立方 体会切换到红色区域设定的 套装，随后再恢复之前的装 备！
+
+botania.entry.sprawlRod=蔓延权杖
+botania.tagline.sprawlRod=戳种子不是办法？只戳一次——但要尽全力！
+botania.page.sprawlRod0=蔓延权杖——一种魔法棒， 能够将普通草甸种子以魔力 植入地面，其蔓延面积比普 通方式大数倍！<br>指南：如何将周围环境变得 面目全非——制作尽可能大 的球体，发射到空中，等待 它落下，然后逃离现场！
+botania.page.sprawlRod.craft=那又怎么全部恢复呢……
+
+botania.entry.azartFlower=炽缘水仙
+botania.tagline.azartFlower=别担心，你不会无家可归……
+botania.page.azartFlower0=炽缘水仙——一种爱赌博的 花朵，属于被动植物的一种， 长话短说。<br>实际上，它可以在棋盘上一 次性最多进行8步操作，试图 击败棋盘本身。如果它赢了， 就会产生魔力，其数量取决 于棋盘上数字之和的差值。
+botania.page.azartFlower.petalCraft=给它自由，它便会给你魔力。 
+
+botania.entry.sphereNavigation=导航水晶球
+botania.tagline.sphereNavigation=它会为你指明通往任何地方的道路！
+botania.page.sphereNavigation0=导航水晶球是一件遗物，具 有独特的能力——能够透过 方块找到指定的方块，并标 记其位置！<br>享受这种便利需要消耗魔力， 长期来看并非小数目。
+
+botania.entry.hornPlenty=丰收号角
+botania.tagline.hornPlenty=双倍战利品——还有比这更好的吗？
+botania.page.hornPlenty0=丰收号角是与狩猎相关的阿 萨神族遗物之一！<br>使用号角为其充能，充能需 要消耗一些魔力。在充满神 秘力量后，去狩猎吧，每次 猎物死于你手时，都有机会 从该生物身上获得额外掉落 物。
+
+botania.entry.aquaSword=海之刃
+botania.tagline.aquaSword=离我远点！我湿透了……
+botania.page.aquaSword0=海之刃——一把被海洋力量 灌注的神秘近战武器！<br>海之刃的攻击会被水花抵挡， 并将周围所有生物向玩家视 线方向推开。<br>而格挡则会形成水盾，阻止 敌人靠近玩家。
+botania.page.aquaSword.craft=在绝对寂静中冥想

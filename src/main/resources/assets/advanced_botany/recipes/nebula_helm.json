@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "RNR",
+    "NHN",
+    " E "
+  ],
+  "key": {
+    "N": {
+      "item": "advanced_botany:itemabresource",
+      "data": 5
+    },
+    "R": {
+      "item": "botania:manaresource",
+      "data": 7
+    },
+    "H": {
+      "item": "botania:terrasteelhelm",
+      "data": 0
+    },
+    "E": {
+      "item": "botania:manaresource",
+      "data": 8
+    }
+  },
+  "result": {
+    "item": "advanced_botany:itemnebulahelm",
+    "count": 1
+  }
+}

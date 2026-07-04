@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ABA",
+    " C ",
+    "DED"
+  ],
+  "key": {
+    "A": {
+      "item": "botania:storage",
+      "data": 0
+    },
+    "B": {
+      "item": "botania:terraplate"
+    },
+    "C": {
+      "item": "minecraft:anvil",
+      "data": 0
+    },
+    "D": {
+      "item": "advanced_botany:itemabresource",
+      "data": 3
+    },
+    "E": {
+      "item": "botania:rune",
+      "data": 3
+    }
+  },
+  "result": {
+    "item": "advanced_botany:blockabplate",
+    "count": 1
+  }
+}

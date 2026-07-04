@@ -1,0 +1,9 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "advanced_botany:blockabspreader"
+  },
+  "variants": {
+    "normal": [{}]
+  }
+}

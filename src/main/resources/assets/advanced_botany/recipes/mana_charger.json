@@ -1,0 +1,34 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "NLN",
+    "MPM",
+    " R "
+  ],
+  "key": {
+    "N": {
+      "item": "advanced_botany:itemabresource",
+      "data": 1
+    },
+    "L": {
+      "item": "botania:livingrock",
+      "data": 0
+    },
+    "M": {
+      "item": "botania:bellows",
+      "data": 0
+    },
+    "P": {
+      "item": "botania:pylon",
+      "data": 0
+    },
+    "R": {
+      "item": "botania:rune",
+      "data": 8
+    }
+  },
+  "result": {
+    "item": "advanced_botany:blockmanacharger",
+    "count": 1
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "parent": "block/farmland",
+  "textures": {
+    "particle": "advanced_botany:blocks/terrafarmland",
+    "top": "advanced_botany:blocks/terrafarmland",
+    "dirt": "minecraft:blocks/dirt"
+  }
+}

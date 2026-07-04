@@ -1,0 +1,39 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "4W5",
+    "WPW",
+    "6W7"
+  ],
+  "key": {
+    "W": {
+      "item": "advanced_botany:blocklebethron",
+      "data": 0
+    },
+    "P": {
+      "item": "botania:pylon",
+      "data": 1
+    },
+    "4": {
+      "item": "botania:rune",
+      "data": 4
+    },
+    "5": {
+      "item": "botania:rune",
+      "data": 5
+    },
+    "6": {
+      "item": "botania:rune",
+      "data": 6
+    },
+    "7": {
+      "item": "botania:rune",
+      "data": 7
+    }
+  },
+  "result": {
+    "item": "advanced_botany:blocklebethron",
+    "count": 1,
+    "data": 4
+  }
+}

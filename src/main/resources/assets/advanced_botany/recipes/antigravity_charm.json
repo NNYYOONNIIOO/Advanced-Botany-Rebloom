@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " B ",
+    "CAC",
+    "DED"
+  ],
+  "key": {
+    "B": {
+      "item": "botania:elfglass"
+    },
+    "C": {
+      "item": "botania:elfglass"
+    },
+    "A": {
+      "item": "botania:miniisland",
+      "data": 32767
+    },
+    "D": {
+      "item": "botania:manaresource",
+      "data": 7
+    },
+    "E": {
+      "item": "botania:rune",
+      "data": 3
+    }
+  },
+  "result": {
+    "item": "advanced_botany:itemantigravitycharm",
+    "count": 1
+  }
+}

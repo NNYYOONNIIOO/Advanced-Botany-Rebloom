@@ -1,0 +1,38 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "TST",
+    "GWG",
+    "DMD"
+  ],
+  "key": {
+    "D": {
+      "item": "botania:dreamwood",
+      "data": 0
+    },
+    "W": {
+      "item": "botania:twigwand",
+      "data": 32767
+    },
+    "G": {
+      "item": "botania:managlass",
+      "data": 0
+    },
+    "M": {
+      "item": "botania:manaresource",
+      "data": 0
+    },
+    "T": {
+      "item": "botania:manaresource",
+      "data": 18
+    },
+    "S": {
+      "item": "botania:spark",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "advanced_botany:blockmanacrystalcube",
+    "count": 1
+  }
+}

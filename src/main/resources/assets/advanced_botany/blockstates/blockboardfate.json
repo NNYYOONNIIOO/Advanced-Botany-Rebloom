@@ -1,0 +1,13 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "advanced_botany:blockboardfate_0"
+  },
+  "variants": {
+    "variant": {
+      "0": { "model": "advanced_botany:blockboardfate_0" },
+      "1": { "model": "advanced_botany:blockboardfate_1" }
+    },
+    "normal": [{}]
+  }
+}
