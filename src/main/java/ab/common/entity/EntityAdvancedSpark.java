@@ -65,79 +65,88 @@ public class EntityAdvancedSpark extends Entity implements ISparkEntity {
         SparkUpgradeType upgrade = this.getUpgrade();
         int upgradeOrdinal = upgrade.ordinal();
         List<ISparkEntity> allSparks = null;
-        if (first || upgradeOrdinal == 2 || upgradeOrdinal == 3) {
+        if (first || upgradeOrdinal == 0 || upgradeOrdinal == 2 || upgradeOrdinal == 3) {
             allSparks = SparkHelper.getSparksAround(this.world, this.posX, this.posY, this.posZ);
         }
         if (first) {
             this.firstTick = true;
         }
         Collection<ISparkEntity> transfers = this.getTransfers();
-        if (upgrade != SparkUpgradeType.NONE) {
-            switch (upgradeOrdinal) {
-                case 1: {
-                    List<EntityPlayer> players = SparkHelper.getEntitiesAround(EntityPlayer.class, this.world, this.posX, this.posY, this.posZ);
-                    HashMap<EntityPlayer, HashMap<ItemStack, Integer>> receivingPlayers = new HashMap<>();
-                    ItemStack input = new ItemStack(ModItems.spark);
-                    for (EntityPlayer player2 : players) {
-                        ArrayList<ItemStack> stacks = new ArrayList<>();
-                        stacks.addAll(player2.inventory.mainInventory);
-                        stacks.addAll(player2.inventory.armorInventory);
-                        stacks.addAll(player2.inventory.offHandInventory);
-                        for (ItemStack stack : stacks) {
-                            IManaItem manaItem;
-                            if (stack.isEmpty() || !(stack.getItem() instanceof IManaItem) || !(manaItem = (IManaItem) stack.getItem()).canReceiveManaFromItem(stack, input))
-                                continue;
-                            boolean add = false;
-                            HashMap<ItemStack, Integer> receivingStacks;
-                            if (!receivingPlayers.containsKey(player2)) {
-                                add = true;
-                                receivingStacks = new HashMap<>();
-                            } else {
-                                receivingStacks = receivingPlayers.get(player2);
-                            }
-                            int recv = Math.min(this.getAttachedTile().getCurrentMana(), Math.min(this.transferSpeed, manaItem.getMaxMana(stack) - manaItem.getMana(stack)));
-                            if (recv <= 0) continue;
-                            receivingStacks.put(stack, recv);
-                            if (!add) continue;
-                            receivingPlayers.put(player2, receivingStacks);
+        switch (upgradeOrdinal) {
+            case 0: {
+                // NONE: bidirectional - actively send to nearby sparks (like RECESSIVE) while also receiving from DOMINANT
+                for (ISparkEntity spark : allSparks) {
+                    SparkUpgradeType supgr = spark.getUpgrade();
+                    int supgrOrd = supgr.ordinal();
+                    if (spark == this || supgrOrd == 2 || supgrOrd == 3 || supgrOrd == 4)
+                        continue;
+                    transfers.add(spark);
+                }
+                break;
+            }
+            case 1: {
+                List<EntityPlayer> players = SparkHelper.getEntitiesAround(EntityPlayer.class, this.world, this.posX, this.posY, this.posZ);
+                HashMap<EntityPlayer, HashMap<ItemStack, Integer>> receivingPlayers = new HashMap<>();
+                ItemStack input = new ItemStack(ModItems.spark);
+                for (EntityPlayer player2 : players) {
+                    ArrayList<ItemStack> stacks = new ArrayList<>();
+                    stacks.addAll(player2.inventory.mainInventory);
+                    stacks.addAll(player2.inventory.armorInventory);
+                    stacks.addAll(player2.inventory.offHandInventory);
+                    for (ItemStack stack : stacks) {
+                        IManaItem manaItem;
+                        if (stack.isEmpty() || !(stack.getItem() instanceof IManaItem) || !(manaItem = (IManaItem) stack.getItem()).canReceiveManaFromItem(stack, input))
+                            continue;
+                        boolean add = false;
+                        HashMap<ItemStack, Integer> receivingStacks;
+                        if (!receivingPlayers.containsKey(player2)) {
+                            add = true;
+                            receivingStacks = new HashMap<>();
+                        } else {
+                            receivingStacks = receivingPlayers.get(player2);
                         }
+                        int recv = Math.min(this.getAttachedTile().getCurrentMana(), Math.min(this.transferSpeed, manaItem.getMaxMana(stack) - manaItem.getMana(stack)));
+                        if (recv <= 0) continue;
+                        receivingStacks.put(stack, recv);
+                        if (!add) continue;
+                        receivingPlayers.put(player2, receivingStacks);
                     }
-                    if (!receivingPlayers.isEmpty()) {
-                        ArrayList<EntityPlayer> keys = new ArrayList<>(receivingPlayers.keySet());
-                        Collections.shuffle(keys);
-                        EntityPlayer player2 = keys.iterator().next();
-                        Map<ItemStack, Integer> items = receivingPlayers.get(player2);
-                        ItemStack stack = items.keySet().iterator().next();
-                        int cost = items.get(stack);
-                        int manaToPut = Math.min(this.getAttachedTile().getCurrentMana(), cost);
-                        ((IManaItem) stack.getItem()).addMana(stack, manaToPut);
-                        this.getAttachedTile().recieveMana(-manaToPut);
-                        this.particlesTowards(player2);
-                    }
-                    break;
                 }
-                case 2: {
-                    ArrayList<ISparkEntity> validSparks = new ArrayList<>();
-                    for (ISparkEntity spark : allSparks) {
-                        if (spark == this || spark.getUpgrade() != SparkUpgradeType.NONE || !(spark.getAttachedTile() instanceof IManaPool))
-                            continue;
-                        validSparks.add(spark);
-                    }
-                    if (validSparks.size() > 0) {
-                        validSparks.get(this.world.rand.nextInt(validSparks.size())).registerTransfer(this);
-                    }
-                    break;
+                if (!receivingPlayers.isEmpty()) {
+                    ArrayList<EntityPlayer> keys = new ArrayList<>(receivingPlayers.keySet());
+                    Collections.shuffle(keys);
+                    EntityPlayer player2 = keys.iterator().next();
+                    Map<ItemStack, Integer> items = receivingPlayers.get(player2);
+                    ItemStack stack = items.keySet().iterator().next();
+                    int cost = items.get(stack);
+                    int manaToPut = Math.min(this.getAttachedTile().getCurrentMana(), cost);
+                    ((IManaItem) stack.getItem()).addMana(stack, manaToPut);
+                    this.getAttachedTile().recieveMana(-manaToPut);
+                    this.particlesTowards(player2);
                 }
-                case 3: {
-                    for (ISparkEntity spark : allSparks) {
-                        SparkUpgradeType supgr = spark.getUpgrade();
-                        int supgrOrd = supgr.ordinal();
-                        if (spark == this || supgrOrd == 2 || supgrOrd == 3 || supgrOrd == 4)
-                            continue;
-                        transfers.add(spark);
-                    }
-                    break;
+                break;
+            }
+            case 2: {
+                ArrayList<ISparkEntity> validSparks = new ArrayList<>();
+                for (ISparkEntity spark : allSparks) {
+                    if (spark == this || spark.getUpgrade() != SparkUpgradeType.NONE || !(spark.getAttachedTile() instanceof IManaPool))
+                        continue;
+                    validSparks.add(spark);
                 }
+                if (validSparks.size() > 0) {
+                    validSparks.get(this.world.rand.nextInt(validSparks.size())).registerTransfer(this);
+                }
+                break;
+            }
+            case 3: {
+                for (ISparkEntity spark : allSparks) {
+                    SparkUpgradeType supgr = spark.getUpgrade();
+                    int supgrOrd = supgr.ordinal();
+                    if (spark == this || supgrOrd == 2 || supgrOrd == 3 || supgrOrd == 4)
+                        continue;
+                    transfers.add(spark);
+                }
+                break;
             }
         }
         if (!transfers.isEmpty()) {
@@ -303,7 +312,7 @@ public class EntityAdvancedSpark extends Entity implements ISparkEntity {
             SparkUpgradeType upgr = this.getUpgrade();
             SparkUpgradeType supgr = spark.getUpgrade();
             ISparkAttachable atile = spark.getAttachedTile();
-            if (spark != this && !spark.areIncomingTransfersDone() && atile != null && !atile.isFull() && (upgr == SparkUpgradeType.NONE && supgr == SparkUpgradeType.DOMINANT || upgr == SparkUpgradeType.RECESSIVE && (supgr == SparkUpgradeType.NONE || supgr == SparkUpgradeType.DISPERSIVE) || !(atile instanceof IManaPool)))
+            if (spark != this && !spark.areIncomingTransfersDone() && atile != null && !atile.isFull() && (upgr == SparkUpgradeType.NONE && (supgr == SparkUpgradeType.DOMINANT || supgr == SparkUpgradeType.NONE || supgr == SparkUpgradeType.DISPERSIVE) || upgr == SparkUpgradeType.RECESSIVE && (supgr == SparkUpgradeType.NONE || supgr == SparkUpgradeType.DISPERSIVE) || !(atile instanceof IManaPool)))
                 continue;
             removals.add(spark);
         }

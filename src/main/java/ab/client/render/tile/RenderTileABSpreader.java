@@ -55,11 +55,13 @@ public class RenderTileABSpreader extends TileEntitySpecialRenderer<TileEntity> 
         ItemStack stack = spreader.getItemHandler().getStackInSlot(0);
         if (!stack.isEmpty()) {
             Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-            GL11.glPushMatrix();
-            GL11.glTranslatef(-0.4f, -1.4f, -0.4375f);
-            GL11.glScalef(0.8f, 0.8f, 0.8f);
-            Minecraft.getMinecraft().getRenderItem().renderItem(stack, ItemCameraTransforms.TransformType.GROUND);
-            GL11.glPopMatrix();
+            GlStateManager.pushMatrix();
+            GlStateManager.translate(0.0F, -1F, -0.4675F);
+            GlStateManager.rotate(180, 0, 0, 1);
+            GlStateManager.rotate(180, 1, 0, 0);
+            GlStateManager.scale(1.0F, 1.0F, 1.0F);
+            Minecraft.getMinecraft().getRenderItem().renderItem(stack, ItemCameraTransforms.TransformType.NONE);
+            GlStateManager.popMatrix();
         }
         if (spreader.paddingColor != -1) {
             Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);

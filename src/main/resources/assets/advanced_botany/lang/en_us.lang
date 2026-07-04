@@ -142,7 +142,7 @@ achievement.ab:relicSphereNavigation.desc=Be rewarded with Sphere of Navigation 
 
 //ENTITY
 
-entity.advanced_botany.advancedSpark.name=Superconductive spark
+entity.advanced_botany:advancedSpark.name=Superconductive spark
 entity.advanced_botany.nebulaBlaze=Projectile Nebula Blaze
 entity.advanced_botany.manaVineBall=The Orb of Vine Freyr
 entity.advanced_botany.alphirinePortal=Portal from the past

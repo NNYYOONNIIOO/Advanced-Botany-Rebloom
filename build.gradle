@@ -15,7 +15,7 @@ apply plugin: 'maven-publish'
 
 version = '1.0.0'
 group = 'ab' 
-archivesBaseName = 'advanced_botany'
+archivesBaseName = 'advanced_botany_rebloom'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 

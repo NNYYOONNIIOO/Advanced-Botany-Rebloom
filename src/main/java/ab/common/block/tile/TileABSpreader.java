@@ -76,20 +76,23 @@ public class TileABSpreader extends TileSpreader {
     @Override
     @SideOnly(Side.CLIENT)
     public void renderHUD(Minecraft mc, ScaledResolution res) {
-        String name = net.minecraft.client.resources.I18n.format("tile.advancedSpreader.name");
+        String name = net.minecraft.client.resources.I18n.format("tile.advanced_botany.advancedSpreader.name");
         int color = 13489177;
         HUDHandler.drawSimpleManaHUD(color, this.knownMana, this.getMaxMana(), name, res);
         ItemStack lens = this.itemHandler.getStackInSlot(0);
         if (!lens.isEmpty()) {
-            net.minecraft.client.renderer.RenderHelper.enableGUIStandardItemLighting();
+            net.minecraft.client.renderer.GlStateManager.enableBlend();
+            net.minecraft.client.renderer.GlStateManager.blendFunc(org.lwjgl.opengl.GL11.GL_SRC_ALPHA, org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA);
             String lensName = lens.getDisplayName();
             int width = 16 + mc.fontRenderer.getStringWidth(lensName) / 2;
             int x = res.getScaledWidth() / 2 - width;
             int y = res.getScaledHeight() / 2 + 50;
-            mc.fontRenderer.drawString(lensName, x + 20, y + 5, color);
+            mc.fontRenderer.drawStringWithShadow(lensName, x + 20, y + 5, color);
             net.minecraft.client.renderer.RenderHelper.enableGUIStandardItemLighting();
             mc.getRenderItem().renderItemAndEffectIntoGUI(lens, x, y);
             net.minecraft.client.renderer.RenderHelper.disableStandardItemLighting();
+            net.minecraft.client.renderer.GlStateManager.disableLighting();
+            net.minecraft.client.renderer.GlStateManager.disableBlend();
         }
         if (this.receiver != null) {
             TileEntity receiverTile = (TileEntity) this.receiver;
