@@ -65,7 +65,7 @@ public class EntityAdvancedSpark extends Entity implements ISparkEntity {
         SparkUpgradeType upgrade = this.getUpgrade();
         int upgradeOrdinal = upgrade.ordinal();
         List<ISparkEntity> allSparks = null;
-        if (first || upgradeOrdinal == 0 || upgradeOrdinal == 2 || upgradeOrdinal == 3) {
+        if (first || upgradeOrdinal == 2 || upgradeOrdinal == 3) {
             allSparks = SparkHelper.getSparksAround(this.world, this.posX, this.posY, this.posZ);
         }
         if (first) {
@@ -73,17 +73,6 @@ public class EntityAdvancedSpark extends Entity implements ISparkEntity {
         }
         Collection<ISparkEntity> transfers = this.getTransfers();
         switch (upgradeOrdinal) {
-            case 0: {
-                // NONE: bidirectional - actively send to nearby sparks (like RECESSIVE) while also receiving from DOMINANT
-                for (ISparkEntity spark : allSparks) {
-                    SparkUpgradeType supgr = spark.getUpgrade();
-                    int supgrOrd = supgr.ordinal();
-                    if (spark == this || supgrOrd == 2 || supgrOrd == 3 || supgrOrd == 4)
-                        continue;
-                    transfers.add(spark);
-                }
-                break;
-            }
             case 1: {
                 List<EntityPlayer> players = SparkHelper.getEntitiesAround(EntityPlayer.class, this.world, this.posX, this.posY, this.posZ);
                 HashMap<EntityPlayer, HashMap<ItemStack, Integer>> receivingPlayers = new HashMap<>();
@@ -226,7 +215,7 @@ public class EntityAdvancedSpark extends Entity implements ISparkEntity {
                 if (player.isSneaking()) {
                     if (upgrade != SparkUpgradeType.NONE) {
                         if (!this.world.isRemote) {
-                            this.entityDropItem(new ItemStack(ModItems.sparkUpgrade, 1, upgrade.ordinal()), 0.0f);
+                            this.entityDropItem(new ItemStack(ModItems.sparkUpgrade, 1, upgrade.ordinal() - 1), 0.0f);
                         }
                         this.setUpgrade(SparkUpgradeType.NONE);
                         this.transfers.clear();
@@ -246,7 +235,7 @@ public class EntityAdvancedSpark extends Entity implements ISparkEntity {
                 return true;
             }
             if (stack.getItem() == ModItems.sparkUpgrade && upgrade == SparkUpgradeType.NONE) {
-                int newUpgrade = stack.getMetadata();
+                int newUpgrade = stack.getMetadata() + 1;
                 SparkUpgradeType[] types = SparkUpgradeType.values();
                 if (newUpgrade >= 0 && newUpgrade < types.length) {
                     this.setUpgrade(types[newUpgrade]);
@@ -288,7 +277,7 @@ public class EntityAdvancedSpark extends Entity implements ISparkEntity {
             SparkUpgradeType upgrade = this.getUpgrade();
             this.entityDropItem(new ItemStack(ItemListAB.itemAdvancedSpark), 0.0f);
             if (upgrade != SparkUpgradeType.NONE) {
-                this.entityDropItem(new ItemStack(ModItems.sparkUpgrade, 1, upgrade.ordinal()), 0.0f);
+                this.entityDropItem(new ItemStack(ModItems.sparkUpgrade, 1, upgrade.ordinal() - 1), 0.0f);
             }
         }
     }
@@ -312,7 +301,7 @@ public class EntityAdvancedSpark extends Entity implements ISparkEntity {
             SparkUpgradeType upgr = this.getUpgrade();
             SparkUpgradeType supgr = spark.getUpgrade();
             ISparkAttachable atile = spark.getAttachedTile();
-            if (spark != this && !spark.areIncomingTransfersDone() && atile != null && !atile.isFull() && (upgr == SparkUpgradeType.NONE && (supgr == SparkUpgradeType.DOMINANT || supgr == SparkUpgradeType.NONE || supgr == SparkUpgradeType.DISPERSIVE) || upgr == SparkUpgradeType.RECESSIVE && (supgr == SparkUpgradeType.NONE || supgr == SparkUpgradeType.DISPERSIVE) || !(atile instanceof IManaPool)))
+            if (spark != this && !spark.areIncomingTransfersDone() && atile != null && !atile.isFull() && (upgr == SparkUpgradeType.NONE && supgr == SparkUpgradeType.DOMINANT || upgr == SparkUpgradeType.RECESSIVE && (supgr == SparkUpgradeType.NONE || supgr == SparkUpgradeType.DISPERSIVE) || !(atile instanceof IManaPool)))
                 continue;
             removals.add(spark);
         }
