@@ -241,4 +241,18 @@ public class ClientHelper {
         buffer.pos(0.0f - f5, f4 - f6, 0.0).tex(f, f2).endVertex();
         tessellator.draw();
     }
+
+    public static void renderIconUV(float minU, float minV, float maxU, float maxV) {
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder buffer = tessellator.getBuffer();
+        float f4 = 1.0f;
+        float f5 = 0.5f;
+        float f6 = 0.25f;
+        buffer.begin(GL11.GL_QUADS, net.minecraft.client.renderer.vertex.DefaultVertexFormats.POSITION_TEX);
+        buffer.pos(0.0f - f5, 0.0f - f6, 0.0).tex(minU, minV).endVertex();
+        buffer.pos(f4 - f5, 0.0f - f6, 0.0).tex(maxU, minV).endVertex();
+        buffer.pos(f4 - f5, f4 - f6, 0.0).tex(maxU, maxV).endVertex();
+        buffer.pos(0.0f - f5, f4 - f6, 0.0).tex(minU, maxV).endVertex();
+        tessellator.draw();
+    }
 }

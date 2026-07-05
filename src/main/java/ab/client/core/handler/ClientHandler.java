@@ -2,6 +2,7 @@ package ab.client.core.handler;
 
 import ab.AdvancedBotany;
 import ab.api.IRankItem;
+import ab.common.block.BlockLebethronWood;
 import ab.common.item.ItemAdvancedSpark;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainerCreative;
@@ -38,6 +39,8 @@ public class ClientHandler {
         if (event.getMap() instanceof TextureMap) {
             ItemAdvancedSpark.worldIcon = event.getMap().registerSprite(
                     new ResourceLocation("advanced_botany", "items/itemab.spark_0"));
+            BlockLebethronWood.portalIcon = event.getMap().registerSprite(
+                    new ResourceLocation("advanced_botany", "blocks/portalalphirine"));
         }
     }
 

@@ -38,7 +38,9 @@ public class RenderEntityAlphirinePortal extends Render<Entity> {
         GL11.glDisable(GL11.GL_CULL_FACE);
         mc.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         ClientHelper.setLightmapTextureCoords();
-        ClientHelper.renderIcon(BlockLebethronWood.portalIcon, 220);
+        if (BlockLebethronWood.portalIcon != null) {
+            ClientHelper.renderIcon(BlockLebethronWood.portalIcon, 220);
+        }
         GL11.glEnable(GL11.GL_CULL_FACE);
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glPopMatrix();
