@@ -6,6 +6,7 @@ import java.util.Random;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
@@ -39,7 +40,7 @@ public class RenderEntityAlphirinePortal extends Render<Entity> {
         mc.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         ClientHelper.setLightmapTextureCoords();
         if (BlockLebethronWood.portalIcon != null) {
-            ClientHelper.renderIcon(BlockLebethronWood.portalIcon, 220);
+            ClientHelper.renderIcon((TextureAtlasSprite) BlockLebethronWood.portalIcon, 220);
         }
         GL11.glEnable(GL11.GL_CULL_FACE);
         GL11.glDisable(GL11.GL_BLEND);

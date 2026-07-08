@@ -20,7 +20,7 @@ public class RenderEntityAdvancedSpark extends RenderSparkBase<EntityAdvancedSpa
 
     @Override
     public TextureAtlasSprite getBaseIcon(EntityAdvancedSpark entity) {
-        return ItemAdvancedSpark.worldIcon != null ? ItemAdvancedSpark.worldIcon : MiscellaneousIcons.INSTANCE.sparkWorldIcon;
+        return ItemAdvancedSpark.worldIcon != null ? (TextureAtlasSprite) ItemAdvancedSpark.worldIcon : MiscellaneousIcons.INSTANCE.sparkWorldIcon;
     }
 
     @Override

@@ -37,47 +37,79 @@ public class TileManaCharger extends TileInventory implements ISidedInventory, I
 
     @Override
     public void update() {
-        ISparkAttachable receiver;
+        ISparkAttachable receiver = this.getReceiver();
         boolean hasUpdate = false;
         if (!this.getWorld().isRemote && this.requestUpdate) {
             VanillaPacketDispatcher.dispatchTEToNearbyPlayers(this.getWorld(), this.getPos());
         }
-        if ((receiver = this.getReceiver()) == null) {
-            return;
+
+        // Direct transfer: top slot (slot 0) to side slots (1-4)
+        ItemStack topStack = this.getStackInSlot(0);
+        if (!topStack.isEmpty() && topStack.getItem() instanceof IManaItem) {
+            IManaItem topMana = (IManaItem) topStack.getItem();
+            if (topMana.getMana(topStack) > 0) {
+                for (int i = 1; i < this.getSizeInventory(); i++) {
+                    ItemStack sideStack = this.getStackInSlot(i);
+                    if (sideStack.isEmpty() || !(sideStack.getItem() instanceof IManaItem)) continue;
+                    IManaItem sideMana = (IManaItem) sideStack.getItem();
+                    if (sideMana.getMana(sideStack) >= sideMana.getMaxMana(sideStack)) continue;
+                    if (!topMana.canExportManaToItem(topStack, sideStack)) continue;
+                    if (!sideMana.canReceiveManaFromItem(sideStack, topStack)) continue;
+                    if (!this.getWorld().isRemote) {
+                        int manaVal = Math.min(Math.min(topMana.getMaxMana(topStack) / 256, MANA_SPEED),
+                                Math.min(topMana.getMana(topStack), sideMana.getMaxMana(sideStack) - sideMana.getMana(sideStack)));
+                        if (manaVal > 0) {
+                            topMana.addMana(topStack, -manaVal);
+                            sideMana.addMana(sideStack, manaVal);
+                            if (this.getWorld().getTotalWorldTime() % 15L == 0L) {
+                                hasUpdate = true;
+                            }
+                        }
+                    } else {
+                        this.clientTick[0]++;
+                        this.clientTick[i]++;
+                    }
+                }
+            }
         }
-        for (int i = 0; i < this.getSizeInventory(); i++) {
-            ItemStack stack = this.getStackInSlot(i);
-            if (stack.isEmpty() || !(stack.getItem() instanceof IManaItem)) continue;
-            IManaItem mana = (IManaItem) stack.getItem();
-            if (i == 0) {
-                if (mana.getMana(stack) <= 0 || receiver.isFull() || !mana.canExportManaToPool(stack, (TileEntity) receiver))
+
+        // Receiver-based transfer
+        if (receiver != null) {
+            for (int i = 0; i < this.getSizeInventory(); i++) {
+                ItemStack stack = this.getStackInSlot(i);
+                if (stack.isEmpty() || !(stack.getItem() instanceof IManaItem)) continue;
+                IManaItem mana = (IManaItem) stack.getItem();
+                if (i == 0) {
+                    if (mana.getMana(stack) <= 0 || receiver.isFull() || !mana.canExportManaToPool(stack, (TileEntity) receiver))
+                        continue;
+                    if (!this.getWorld().isRemote) {
+                        int availableMana = receiver.getAvailableSpaceForMana();
+                        int manaVal = Math.min(Math.min(mana.getMaxMana(stack) / 256, 11240) * 3, Math.min(availableMana, mana.getMana(stack)));
+                        mana.addMana(stack, -manaVal);
+                        receiver.recieveMana(manaVal);
+                        if (this.getWorld().getTotalWorldTime() % 15L == 0L) {
+                            hasUpdate = true;
+                        }
+                    } else {
+                        this.clientTick[i]++;
+                    }
+                    continue;
+                }
+                if (receiver.getCurrentMana() <= 0 || mana.getMana(stack) >= mana.getMaxMana(stack) || !mana.canReceiveManaFromPool(stack, (TileEntity) receiver))
                     continue;
                 if (!this.getWorld().isRemote) {
-                    int availableMana = receiver.getAvailableSpaceForMana();
-                    int manaVal = Math.min(Math.min(mana.getMaxMana(stack) / 256, 11240) * 3, Math.min(availableMana, mana.getMana(stack)));
-                    mana.addMana(stack, -manaVal);
-                    receiver.recieveMana(manaVal);
+                    int manaVal = Math.min(Math.min(mana.getMaxMana(stack) / 256, 11240), Math.min(receiver.getCurrentMana(), mana.getMaxMana(stack) - mana.getMana(stack)));
+                    mana.addMana(stack, manaVal);
+                    receiver.recieveMana(-manaVal);
                     if (this.getWorld().getTotalWorldTime() % 15L == 0L) {
                         hasUpdate = true;
                     }
-                } else {
+                } else if (ConfigABHandler.useManaChargerAnimation) {
                     this.clientTick[i]++;
                 }
-                continue;
-            }
-            if (receiver.getCurrentMana() <= 0 || mana.getMana(stack) >= mana.getMaxMana(stack) || !mana.canReceiveManaFromPool(stack, (TileEntity) receiver))
-                continue;
-            if (!this.getWorld().isRemote) {
-                int manaVal = Math.min(Math.min(mana.getMaxMana(stack) / 256, 11240), Math.min(receiver.getCurrentMana(), mana.getMaxMana(stack) - mana.getMana(stack)));
-                mana.addMana(stack, manaVal);
-                receiver.recieveMana(-manaVal);
-                if (this.getWorld().getTotalWorldTime() % 15L == 0L) {
-                    hasUpdate = true;
-                }
-            } else if (ConfigABHandler.useManaChargerAnimation) {
-                this.clientTick[i]++;
             }
         }
+
         this.requestUpdate = hasUpdate;
     }
 

@@ -2,7 +2,6 @@ package ab.common.item;
 
 import ab.common.entity.EntityAdvancedSpark;
 import com.google.common.base.Predicates;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -21,7 +20,7 @@ import vazkii.botania.api.mana.spark.ISparkEntity;
 import java.util.List;
 
 public class ItemAdvancedSpark extends ItemMod implements IManaGivingItem {
-    public static TextureAtlasSprite worldIcon;
+    public static Object worldIcon;
 
     public ItemAdvancedSpark() {
         super("advancedSpark");

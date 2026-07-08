@@ -174,6 +174,7 @@ public class EntitySeed extends EntityThrowable {
     }
 
     private void spawnGrowParticle(int posX, int posY, int posZ) {
+        if (!this.world.isRemote) return;
         for (int i = 0; i < 50; ++i) {
             double x = (Math.random() - 0.5) * 3.0;
             double y = Math.random() - 0.5 + 1.0;

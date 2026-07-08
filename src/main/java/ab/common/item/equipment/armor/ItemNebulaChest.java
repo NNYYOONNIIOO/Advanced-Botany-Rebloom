@@ -14,6 +14,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraftforge.common.MinecraftForge;
 import vazkii.botania.common.Botania;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.ArrayList;
@@ -102,6 +103,14 @@ public class ItemNebulaChest extends ItemNebulaArmor {
                 }
                 playersWithFlight.remove(key);
             }
+        }
+    }
+
+    @SubscribeEvent
+    public void onBreakSpeed(PlayerEvent.BreakSpeed event) {
+        EntityPlayer player = event.getEntityPlayer();
+        if (player.capabilities.isFlying && shouldPlayerHaveFlight(player)) {
+            event.setNewSpeed(event.getNewSpeed() * 5.0f);
         }
     }
 

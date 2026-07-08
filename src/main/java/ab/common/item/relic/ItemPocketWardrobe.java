@@ -1,7 +1,6 @@
 package ab.common.item.relic;
 
 import ab.AdvancedBotany;
-import ab.common.entity.EntityAnonymousSteve;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;

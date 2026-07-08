@@ -72,7 +72,7 @@ public class PlayerRendererHandler {
         Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         GlStateManager.translate(-0.2f, -0.35f, -0.25f);
         GlStateManager.scale(0.4f, 0.4f, 0.4f);
-        TextureAtlasSprite eyes = ItemNebulaArmor.nebulaEyes;
+        TextureAtlasSprite eyes = (TextureAtlasSprite) ItemNebulaArmor.nebulaEyes;
         if (eyes != null) {
             float f = eyes.getMinU();
             float f1 = eyes.getMaxU();

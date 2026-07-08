@@ -43,7 +43,7 @@ public class ItemMithrillMultiTool extends ItemTool {
     @Override
     public float getDestroySpeed(ItemStack stack, net.minecraft.block.state.IBlockState state) {
         if (isEnabled(stack)) {
-            return super.getDestroySpeed(stack, state) + 135.0f;
+            return 9999.0f;
         }
         return 0.0f;
     }

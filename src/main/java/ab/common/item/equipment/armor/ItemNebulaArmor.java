@@ -35,8 +35,6 @@ import vazkii.botania.api.mana.ManaItemHandler;
 import vazkii.botania.common.core.helper.ItemNBTHelper;
 import vazkii.botania.common.item.equipment.armor.manasteel.ItemManasteelArmor;
 
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -47,7 +45,7 @@ import java.util.Set;
 
 public class ItemNebulaArmor extends ItemManasteelArmor implements IManaItem, IManaTooltipDisplay {
 
-    public static TextureAtlasSprite nebulaEyes;
+    public static Object nebulaEyes;
     public static final String TAG_MANA = "mana";
     public static final String TAG_ENABLE_EFFECT = "enableEffect";
     private static final int MAX_MANA = 250000;
@@ -370,9 +368,6 @@ public class ItemNebulaArmor extends ItemManasteelArmor implements IManaItem, IM
 
             float damage = event.getAmount();
             DamageSource source = event.getSource();
-
-            // Don't absorb normal void damage (< max health) - let vanilla handle it
-            if (source == DamageSource.OUT_OF_WORLD && damage < player.getMaxHealth()) return;
 
             // Cancel on BOTH sides to prevent vanilla pipeline (visual effects, sounds, hurt animation)
             event.setCanceled(true);

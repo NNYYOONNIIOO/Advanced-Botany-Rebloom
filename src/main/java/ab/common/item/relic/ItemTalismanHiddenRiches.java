@@ -4,6 +4,7 @@ import ab.AdvancedBotany;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -13,9 +14,12 @@ import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vazkii.botania.common.core.helper.ItemNBTHelper;
 
 import java.util.ArrayList;
@@ -55,14 +59,14 @@ public class ItemTalismanHiddenRiches extends ItemModRelic {
                     float lidAngel = chest.lidAngle;
                     if (i == getOpenChest(stack) && chest.lidAngle < 1.0f) {
                         if (lidAngel == 0.0f) {
-                            net.minecraft.client.Minecraft.getMinecraft().world.playSound(player.posX, player.posY - 0.5, player.posZ, net.minecraft.init.SoundEvents.BLOCK_CHEST_OPEN, net.minecraft.util.SoundCategory.BLOCKS, 0.5f, world.rand.nextFloat() * 0.1f + 0.9f, false);
+                            playChestSoundClient(world, player.posX, player.posY - 0.5, player.posZ, SoundEvents.BLOCK_CHEST_OPEN, world.rand.nextFloat() * 0.1f + 0.9f);
                         }
                         chest.lidAngle = Math.min(1.0f, lidAngel + 0.1f);
                         continue;
                     }
                     if (i == getOpenChest(stack) || !(lidAngel > 0.0f)) continue;
                     if ((int) (lidAngel * 10.0f) == 5) {
-                        net.minecraft.client.Minecraft.getMinecraft().world.playSound(player.posX, player.posY - 0.5, player.posZ, net.minecraft.init.SoundEvents.BLOCK_CHEST_CLOSE, net.minecraft.util.SoundCategory.BLOCKS, 0.5f, world.rand.nextFloat() * 0.1f + 0.9f, false);
+                        playChestSoundClient(world, player.posX, player.posY - 0.5, player.posZ, SoundEvents.BLOCK_CHEST_CLOSE, world.rand.nextFloat() * 0.1f + 0.9f);
                     }
                     chest.lidAngle = Math.max(0.0f, lidAngel - 0.1f);
                 }
@@ -175,5 +179,10 @@ public class ItemTalismanHiddenRiches extends ItemModRelic {
             loot[slotCount] = new ItemStack(cmp);
         }
         return loot;
+    }
+
+    @SideOnly(Side.CLIENT)
+    private static void playChestSoundClient(World world, double x, double y, double z, net.minecraft.util.SoundEvent sound, float pitch) {
+        net.minecraft.client.Minecraft.getMinecraft().world.playSound(x, y, z, sound, SoundCategory.BLOCKS, 0.5f, pitch, false);
     }
 }

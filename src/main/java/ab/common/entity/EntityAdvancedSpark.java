@@ -1,7 +1,6 @@
 package ab.common.entity;
 
 import ab.common.lib.register.ItemListAB;
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -27,8 +26,6 @@ import vazkii.botania.api.mana.spark.ISparkAttachable;
 import vazkii.botania.api.mana.spark.ISparkEntity;
 import vazkii.botania.api.mana.spark.SparkHelper;
 import vazkii.botania.api.mana.spark.SparkUpgradeType;
-import vazkii.botania.common.Botania;
-import vazkii.botania.common.core.helper.Vector3;
 import vazkii.botania.common.item.ModItems;
 
 public class EntityAdvancedSpark extends Entity implements ISparkEntity {
@@ -38,7 +35,6 @@ public class EntityAdvancedSpark extends Entity implements ISparkEntity {
     Set<ISparkEntity> transfers = Collections.newSetFromMap(new WeakHashMap<>());
     public int transferSpeed = 48000;
     public int removeTransferants = 2;
-    public boolean firstTick = false;
 
     public EntityAdvancedSpark(World world) {
         super(world);
@@ -54,25 +50,33 @@ public class EntityAdvancedSpark extends Entity implements ISparkEntity {
 
     public void onUpdate() {
         super.onUpdate();
-        ISparkAttachable tile = this.getAttachedTile();
-        if (tile == null) {
-            if (!this.world.isRemote) {
-                this.setDead();
-            }
+        if (this.world.isRemote) {
             return;
         }
-        boolean first = this.world.isRemote && !this.firstTick;
+        ISparkAttachable tile = this.getAttachedTile();
+        if (tile == null) {
+            this.setDead();
+            return;
+        }
         SparkUpgradeType upgrade = this.getUpgrade();
         int upgradeOrdinal = upgrade.ordinal();
         List<ISparkEntity> allSparks = null;
-        if (first || upgradeOrdinal == 2 || upgradeOrdinal == 3) {
+        if (upgradeOrdinal == 0 || upgradeOrdinal == 2 || upgradeOrdinal == 3) {
             allSparks = SparkHelper.getSparksAround(this.world, this.posX, this.posY, this.posZ);
-        }
-        if (first) {
-            this.firstTick = true;
         }
         Collection<ISparkEntity> transfers = this.getTransfers();
         switch (upgradeOrdinal) {
+            case 0: {
+                // NONE: on non-pool tiles, actively register on nearby pool sparks to receive mana
+                if (!(tile instanceof IManaPool)) {
+                    for (ISparkEntity spark : allSparks) {
+                        if (spark == this || spark.getUpgrade() == SparkUpgradeType.ISOLATED || !(spark.getAttachedTile() instanceof IManaPool))
+                            continue;
+                        spark.registerTransfer(this);
+                    }
+                }
+                break;
+            }
             case 1: {
                 List<EntityPlayer> players = SparkHelper.getEntitiesAround(EntityPlayer.class, this.world, this.posX, this.posY, this.posZ);
                 HashMap<EntityPlayer, HashMap<ItemStack, Integer>> receivingPlayers = new HashMap<>();
@@ -164,43 +168,21 @@ public class EntityAdvancedSpark extends Entity implements ISparkEntity {
     }
 
     public void particlesTowards(Entity e) {
-        Vector3 thisVec = Vector3.fromEntityCenter(this).add(0.0, 0.0, 0.0);
-        Vector3 receiverVec = Vector3.fromEntityCenter(e).add(0.0, 0.0, 0.0);
-        double rc = 0.45;
-        thisVec = thisVec.add(new Vector3((Math.random() - 0.5) * rc, (Math.random() - 0.5) * rc, (Math.random() - 0.5) * rc));
-        receiverVec = receiverVec.add(new Vector3((Math.random() - 0.5) * rc, (Math.random() - 0.5) * rc, (Math.random() - 0.5) * rc));
-        Vector3 motion = receiverVec.subtract(thisVec);
-        motion = motion.multiply(0.04);
-        float r = 0.4f + 0.3f * (float) Math.random();
-        float g = 0.4f + 0.3f * (float) Math.random();
-        float b = 0.4f + 0.3f * (float) Math.random();
-        float size = 0.125f + 0.125f * (float) Math.random();
-        Botania.proxy.wispFX(thisVec.x, thisVec.y, thisVec.z, r, g, b, size, (float) motion.x, (float) motion.y, (float) motion.z);
+        vazkii.botania.common.network.PacketHandler.sendToNearby(this.world, this,
+                new vazkii.botania.common.network.PacketBotaniaEffect(
+                        vazkii.botania.common.network.PacketBotaniaEffect.EffectType.SPARK_MANA_FLOW,
+                        this.posX, this.posY, this.posZ, this.getEntityId(), e.getEntityId()));
     }
 
-    public static void particleBeam(Entity e1, Entity e2) {
-        if (e1 == null || e2 == null) {
+    public static void particleBeam(EntityPlayer player, Entity e1, Entity e2) {
+        if (e1 == null || e2 == null || e1.world.isRemote) {
             return;
         }
-        Vector3 orig = new Vector3(e1.posX, e1.posY + 0.25, e1.posZ);
-        Vector3 end = new Vector3(e2.posX, e2.posY + 0.25, e2.posZ);
-        Vector3 diff = end.subtract(orig);
-        Vector3 movement = diff.normalize().multiply(0.1);
-        int iters = (int) (diff.mag() / movement.mag());
-        float huePer = 1.0f / (float) iters;
-        float hueSum = (float) Math.random();
-        Vector3 currentPos = orig;
-        for (int i = 0; i < iters; ++i) {
-            float hue = (float) i * huePer + hueSum;
-            Color color = Color.getHSBColor(hue, 1.0f, 1.0f);
-            float r = Math.min(1.0f, (float) color.getRed() / 255.0f + 0.4f);
-            float g = Math.min(1.0f, (float) color.getGreen() / 255.0f + 0.4f);
-            float b = Math.min(1.0f, (float) color.getBlue() / 255.0f + 0.4f);
-            Botania.proxy.setSparkleFXNoClip(true);
-            Botania.proxy.sparkleFX(currentPos.x, currentPos.y, currentPos.z, r, g, b, 1.0f, 12);
-            Botania.proxy.setSparkleFXNoClip(false);
-            currentPos = currentPos.add(movement);
-        }
+        vazkii.botania.common.network.PacketHandler.sendTo(
+                (net.minecraft.entity.player.EntityPlayerMP) player,
+                new vazkii.botania.common.network.PacketBotaniaEffect(
+                        vazkii.botania.common.network.PacketBotaniaEffect.EffectType.SPARK_NET_INDICATOR,
+                        e1.posX, e1.posY, e1.posZ, e1.getEntityId(), e2.getEntityId()));
     }
 
     public boolean canBeCollidedWith() {
@@ -230,7 +212,7 @@ public class EntityAdvancedSpark extends Entity implements ISparkEntity {
                 }
                 List<ISparkEntity> allSparks = SparkHelper.getSparksAround(this.world, this.posX, this.posY, this.posZ);
                 for (ISparkEntity spark : allSparks) {
-                    EntityAdvancedSpark.particleBeam(this, (Entity) spark);
+                    EntityAdvancedSpark.particleBeam(player, this, (Entity) spark);
                 }
                 return true;
             }

@@ -1,6 +1,5 @@
 package ab.common.entity;
 
-import ab.client.core.ClientHelper;
 import ab.common.core.CommonHelper;
 import ab.common.lib.register.BlockListAB;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
@@ -71,7 +70,7 @@ public class EntityManaVine extends EntityThrowable {
                 float mx = (float) (Math.random() - 0.5) * m;
                 float my = (float) (Math.random() - 0.5) * m;
                 float mz = (float) (Math.random() - 0.5) * m;
-                Color color = ClientHelper.getCorporeaRuneColor((int) posX, (int) posY, (int) posZ, 3);
+                Color color = getParticleColor((int) posX, (int) posY, (int) posZ);
                 Botania.proxy.wispFX(posX, posY, posZ, (float) color.getRed() / 255.0f, (float) color.getGreen() / 255.0f, (float) color.getBlue() / 255.0f, (float) ((double) 0.15f + Math.random() * (double) 0.12f), mx, my, mz, 0.7f);
             }
         }
@@ -148,7 +147,7 @@ public class EntityManaVine extends EntityThrowable {
                 float mx = (float) (Math.random() - 0.5) * m;
                 float my = (float) (Math.random() - 0.5) * m;
                 float mz = (float) (Math.random() - 0.5) * m;
-                Color color = ClientHelper.getCorporeaRuneColor((int) this.posX, (int) this.posY, (int) this.posZ, 3);
+                Color color = getParticleColor((int) this.posX, (int) this.posY, (int) this.posZ);
                 Botania.proxy.wispFX(this.posX, this.posY, this.posZ, (float) color.getRed() / 255.0f, (float) color.getGreen() / 255.0f, (float) color.getBlue() / 255.0f, (float) ((double) 0.2f + Math.random() * (double) 0.12f), mx, my, mz, 2.0f);
             }
         }
@@ -166,5 +165,10 @@ public class EntityManaVine extends EntityThrowable {
         nbtt.setInteger("ticks", this.ticksExisted);
         nbtt.setString("attacker", this.getAttacker());
         return nbtt;
+    }
+
+    @SideOnly(Side.CLIENT)
+    private static Color getParticleColor(int x, int y, int z) {
+        return ab.client.core.ClientHelper.getCorporeaRuneColor(x, y, z, 3);
     }
 }
