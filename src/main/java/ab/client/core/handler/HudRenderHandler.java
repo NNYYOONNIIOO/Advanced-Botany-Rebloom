@@ -28,7 +28,7 @@ public class HudRenderHandler {
                 TileEntity tile = mc.world.getTileEntity(pos.getBlockPos());
                 boolean bl = canRender = !equippedStack.isEmpty() && (equippedStack.getItem() instanceof ItemTwigWand || equippedStack.getItem() instanceof ItemLexicon);
                 if (tile != null && tile instanceof IRenderHud && !canRender) {
-                    ((IRenderHud) tile).renderHud(mc, event.getResolution());
+                    ((IRenderHud) tile).renderHud();
                 }
             }
             if (!equippedStack.isEmpty() && equippedStack.getItem() instanceof ItemBlackHalo) {

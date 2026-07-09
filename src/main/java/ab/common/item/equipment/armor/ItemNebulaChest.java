@@ -92,8 +92,11 @@ public class ItemNebulaChest extends ItemNebulaArmor {
                 if (player instanceof EntityPlayerMP) {
                     ((EntityPlayerMP) player).sendPlayerAbilities();
                 }
-            } else {
-                player.capabilities.setFlySpeed(0.05f); // Always reset fly speed
+            } else if (playersWithFlight.contains(key)) {
+                // Only remove flight if this mod previously granted it
+                // Don't touch flight capabilities if the player never had flight from us
+                playersWithFlight.remove(key);
+                player.capabilities.setFlySpeed(0.05f);
                 if (!player.capabilities.isCreativeMode) {
                     player.capabilities.allowFlying = false;
                     player.capabilities.isFlying = false;
@@ -101,7 +104,6 @@ public class ItemNebulaChest extends ItemNebulaArmor {
                 if (player instanceof EntityPlayerMP) {
                     ((EntityPlayerMP) player).sendPlayerAbilities();
                 }
-                playersWithFlight.remove(key);
             }
         }
     }

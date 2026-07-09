@@ -194,10 +194,12 @@ public class TileLebethronCore extends TileMod implements IRenderHud, net.minecr
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void renderHud(Minecraft mc, ScaledResolution res) {
+    public void renderHud() {
         if (!this.validTree) {
             return;
         }
+        Minecraft mc = Minecraft.getMinecraft();
+        ScaledResolution res = new ScaledResolution(mc);
         GL11.glEnable(3042);
         GL11.glBlendFunc(770, 771);
         ItemStack stack = this.getBlock() != null ? new ItemStack(this.block, 1, this.meta) : new ItemStack(Blocks.LEAVES);

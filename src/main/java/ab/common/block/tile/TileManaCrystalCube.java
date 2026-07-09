@@ -33,7 +33,9 @@ public class TileManaCrystalCube extends TileMod implements IRenderHud, net.mine
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void renderHud(Minecraft mc, ScaledResolution res) {
+    public void renderHud() {
+        Minecraft mc = Minecraft.getMinecraft();
+        ScaledResolution res = new ScaledResolution(mc);
         String name = net.minecraft.client.resources.I18n.format("ab.manaCrystalCube.hud");
         int color = 3205841;
         ClientHelper.drawPoolManaHUD(res, name, this.knownMana, this.knownMaxMana, color);

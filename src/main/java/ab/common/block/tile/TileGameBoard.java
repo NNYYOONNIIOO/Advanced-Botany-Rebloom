@@ -232,7 +232,9 @@ public class TileGameBoard extends TileMod implements IRenderHud, net.minecraft.
 
     @Override
     @net.minecraftforge.fml.relauncher.SideOnly(net.minecraftforge.fml.relauncher.Side.CLIENT)
-    public void renderHud(Minecraft mc, ScaledResolution res) {
+    public void renderHud() {
+        Minecraft mc = Minecraft.getMinecraft();
+        ScaledResolution res = new ScaledResolution(mc);
         int x = res.getScaledWidth() / 2 - 7;
         int y = res.getScaledHeight() / 2 + 12;
         RenderHelper.enableGUIStandardItemLighting();

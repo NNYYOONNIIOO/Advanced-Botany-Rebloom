@@ -13,11 +13,13 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.1.0'
+version = '1.1.1'
 group = 'ab' 
 archivesBaseName = 'advanced_botany_rebloom'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
+
+compileJava.options.encoding = 'UTF-8'
 
 minecraft {
     mappings channel: 'stable', version: '39-1.12'
@@ -46,6 +48,7 @@ dependencies {
     implementation fg.deobf("curse.maven:botania-225643:3330934")
     compileOnly fg.deobf("curse.maven:baubles-227083:2518667")
     compileOnly fg.deobf("mezz.jei:jei_1.12.2:4.13.1.220")
+    compileOnly fg.deobf(files("libs/CraftTweaker2-1.12-4.1.20.699.jar"))
 }
 
 jar {

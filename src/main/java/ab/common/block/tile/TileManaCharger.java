@@ -173,7 +173,9 @@ public class TileManaCharger extends TileInventory implements ISidedInventory, I
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void renderHud(Minecraft mc, ScaledResolution res) {
+    public void renderHud() {
+        Minecraft mc = Minecraft.getMinecraft();
+        ScaledResolution res = new ScaledResolution(mc);
         int xc = res.getScaledWidth() / 2;
         int yc = res.getScaledHeight() / 2;
         int radius = 42;
