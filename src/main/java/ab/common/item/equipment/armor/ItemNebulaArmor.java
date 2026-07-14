@@ -7,6 +7,8 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.resources.I18n;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -102,6 +104,7 @@ public class ItemNebulaArmor extends ItemManasteelArmor implements IManaItem, IM
         }
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public ModelBiped provideArmorModelForSlot(ItemStack stack, EntityEquipmentSlot slot) {
         this.models.put(slot, new ab.client.model.armor.ModelArmorNebula(slot));
@@ -123,7 +126,15 @@ public class ItemNebulaArmor extends ItemManasteelArmor implements IManaItem, IM
 
     @Override
     public boolean hasArmorSetItem(EntityPlayer player, int i) {
-        ItemStack stack = player.inventory.armorItemInSlot(3 - i);
+        EntityEquipmentSlot slot;
+        switch (i) {
+            case 0: slot = EntityEquipmentSlot.HEAD; break;
+            case 1: slot = EntityEquipmentSlot.CHEST; break;
+            case 2: slot = EntityEquipmentSlot.LEGS; break;
+            case 3: slot = EntityEquipmentSlot.FEET; break;
+            default: return false;
+        }
+        ItemStack stack = player.getItemStackFromSlot(slot);
         if (stack.isEmpty()) return false;
         switch (i) {
             case 0: return stack.getItem() == ItemListAB.itemNebulaHelm;
@@ -148,6 +159,7 @@ public class ItemNebulaArmor extends ItemManasteelArmor implements IManaItem, IM
         }
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public void addArmorSetDescription(ItemStack stack, List<String> list) {
         addStringToTooltip(I18n.format("ab.armorset.nebula.desc0"), list);
@@ -168,6 +180,7 @@ public class ItemNebulaArmor extends ItemManasteelArmor implements IManaItem, IM
         return player.getGameProfile().getName() + ":" + player.world.isRemote;
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public String getArmorSetName() {
         return I18n.format("ab.armorset.nebula.name");
@@ -239,10 +252,10 @@ public class ItemNebulaArmor extends ItemManasteelArmor implements IManaItem, IM
     }
 
     public static boolean isWearingFullSet(EntityPlayer player) {
-        return !player.inventory.armorItemInSlot(3).isEmpty() && player.inventory.armorItemInSlot(3).getItem() == ItemListAB.itemNebulaHelm
-                && !player.inventory.armorItemInSlot(2).isEmpty() && player.inventory.armorItemInSlot(2).getItem() == ItemListAB.itemNebulaChest
-                && !player.inventory.armorItemInSlot(1).isEmpty() && player.inventory.armorItemInSlot(1).getItem() == ItemListAB.itemNebulaLegs
-                && !player.inventory.armorItemInSlot(0).isEmpty() && player.inventory.armorItemInSlot(0).getItem() == ItemListAB.itemNebulaBoots;
+        return !player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).isEmpty() && player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ItemListAB.itemNebulaHelm
+                && !player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).isEmpty() && player.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() == ItemListAB.itemNebulaChest
+                && !player.getItemStackFromSlot(EntityEquipmentSlot.LEGS).isEmpty() && player.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() == ItemListAB.itemNebulaLegs
+                && !player.getItemStackFromSlot(EntityEquipmentSlot.FEET).isEmpty() && player.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() == ItemListAB.itemNebulaBoots;
     }
 
     public static int getTotalArmorMana(EntityPlayer player) {

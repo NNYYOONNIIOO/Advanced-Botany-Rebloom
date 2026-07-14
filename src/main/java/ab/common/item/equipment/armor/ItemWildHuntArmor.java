@@ -6,6 +6,8 @@ import ab.client.model.armor.ModelArmorWildHunt;
 import ab.common.lib.register.ItemListAB;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.resources.I18n;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumRarity;
@@ -38,7 +40,15 @@ public class ItemWildHuntArmor extends ItemManasteelArmor {
 
     @Override
     public boolean hasArmorSetItem(EntityPlayer player, int i) {
-        ItemStack stack = player.inventory.armorItemInSlot(3 - i);
+        EntityEquipmentSlot slot;
+        switch (i) {
+            case 0: slot = EntityEquipmentSlot.HEAD; break;
+            case 1: slot = EntityEquipmentSlot.CHEST; break;
+            case 2: slot = EntityEquipmentSlot.LEGS; break;
+            case 3: slot = EntityEquipmentSlot.FEET; break;
+            default: return false;
+        }
+        ItemStack stack = player.getItemStackFromSlot(slot);
         if (stack.isEmpty()) {
             return false;
         }
@@ -55,6 +65,7 @@ public class ItemWildHuntArmor extends ItemManasteelArmor {
         return false;
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public ModelBiped provideArmorModelForSlot(ItemStack stack, EntityEquipmentSlot slot) {
         this.models.put(slot, new ModelArmorWildHunt(slot));
@@ -66,6 +77,7 @@ public class ItemWildHuntArmor extends ItemManasteelArmor {
         return "advanced_botany:textures/model/wildhuntarmor.png";
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public void addArmorSetDescription(ItemStack stack, List<String> list) {
         addStringToTooltip(I18n.format("ab.armorset.wildHunt.desc0"), list);

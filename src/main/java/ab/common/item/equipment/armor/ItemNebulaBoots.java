@@ -17,6 +17,8 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +30,7 @@ public class ItemNebulaBoots extends ItemNebulaArmor {
 
     public ItemNebulaBoots() {
         super(EntityEquipmentSlot.FEET, "nebulaBoots");
-        MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.EVENT_BUS.register(new BootsEventHandler());
     }
 
     @Override
@@ -36,6 +38,7 @@ public class ItemNebulaBoots extends ItemNebulaArmor {
         return toggleEffect(world, player, hand);
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public void addInformation(ItemStack stack, net.minecraft.world.World world, List<String> list, ITooltipFlag flag) {
         super.addInformation(stack, world, list, flag);
@@ -65,38 +68,40 @@ public class ItemNebulaBoots extends ItemNebulaArmor {
         }
     }
 
-    @SubscribeEvent
-    public void onLivingHurt(LivingHurtEvent event) {
-        if (!(event.getEntityLiving() instanceof EntityPlayer)) return;
-        EntityPlayer player = (EntityPlayer) event.getEntityLiving();
-        if (player.world.isRemote) return;
-        ItemStack boots = player.getItemStackFromSlot(EntityEquipmentSlot.FEET);
-        if (boots.isEmpty() || !(boots.getItem() instanceof ItemNebulaBoots)) return;
-        // Immune to fall damage
-        if (event.getSource() == DamageSource.FALL) {
-            event.setCanceled(true);
-        }
-    }
-
-    @SubscribeEvent
-    public void updatePlayerStepStatus(LivingEvent.LivingUpdateEvent event) {
-        if (!(event.getEntityLiving() instanceof EntityPlayer)) return;
-        EntityPlayer player = (EntityPlayer) event.getEntityLiving();
-        String s = playerStr(player);
-        if (playersWithStepup.contains(s)) {
-            if (shouldPlayerHaveStepup(player)) {
-                player.stepHeight = player.isSneaking() ? 0.50001f : 1.0f;
-            } else {
-                player.stepHeight = 0.5f;
-                playersWithStepup.remove(s);
+    public static class BootsEventHandler {
+        @SubscribeEvent
+        public void onLivingHurt(LivingHurtEvent event) {
+            if (!(event.getEntityLiving() instanceof EntityPlayer)) return;
+            EntityPlayer player = (EntityPlayer) event.getEntityLiving();
+            if (player.world.isRemote) return;
+            ItemStack boots = player.getItemStackFromSlot(EntityEquipmentSlot.FEET);
+            if (boots.isEmpty() || !(boots.getItem() instanceof ItemNebulaBoots)) return;
+            // Immune to fall damage
+            if (event.getSource() == DamageSource.FALL) {
+                event.setCanceled(true);
             }
-        } else if (shouldPlayerHaveStepup(player)) {
-            playersWithStepup.add(s);
-            player.stepHeight = 1.0f;
+        }
+
+        @SubscribeEvent
+        public void updatePlayerStepStatus(LivingEvent.LivingUpdateEvent event) {
+            if (!(event.getEntityLiving() instanceof EntityPlayer)) return;
+            EntityPlayer player = (EntityPlayer) event.getEntityLiving();
+            String s = playerStr(player);
+            if (playersWithStepup.contains(s)) {
+                if (shouldPlayerHaveStepup(player)) {
+                    player.stepHeight = player.isSneaking() ? 0.50001f : 1.0f;
+                } else {
+                    player.stepHeight = 0.5f;
+                    playersWithStepup.remove(s);
+                }
+            } else if (shouldPlayerHaveStepup(player)) {
+                playersWithStepup.add(s);
+                player.stepHeight = 1.0f;
+            }
         }
     }
 
-    private boolean shouldPlayerHaveStepup(EntityPlayer player) {
+    private static boolean shouldPlayerHaveStepup(EntityPlayer player) {
         ItemStack armor = player.getItemStackFromSlot(EntityEquipmentSlot.FEET);
         return !armor.isEmpty() && armor.getItem() instanceof ItemNebulaBoots && enableEffect(armor);
     }

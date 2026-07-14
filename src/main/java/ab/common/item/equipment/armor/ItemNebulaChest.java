@@ -12,10 +12,12 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraftforge.common.MinecraftForge;
-import vazkii.botania.common.Botania;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import vazkii.botania.common.Botania;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +29,7 @@ public class ItemNebulaChest extends ItemNebulaArmor {
 
     public ItemNebulaChest() {
         super(EntityEquipmentSlot.CHEST, "nebulaChest");
-        MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.EVENT_BUS.register(new ChestEventHandler());
     }
 
     @Override
@@ -51,6 +53,7 @@ public class ItemNebulaChest extends ItemNebulaArmor {
         }
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public void addInformation(ItemStack stack, net.minecraft.world.World world, List<String> list, ITooltipFlag flag) {
         super.addInformation(stack, world, list, flag);
@@ -73,46 +76,80 @@ public class ItemNebulaChest extends ItemNebulaArmor {
         return hashMultimap;
     }
 
-    @SubscribeEvent
-    public void updatePlayerFlyStatus(LivingEvent.LivingUpdateEvent event) {
-        if (event.getEntityLiving() instanceof EntityPlayer) {
-            EntityPlayer player = (EntityPlayer) event.getEntityLiving();
-            // Only handle on server side; client syncs via S39PacketPlayerAbilities
-            if (player.world.isRemote) return;
-            String key = player.getName();
-            if (shouldPlayerHaveFlight(player)) {
-                if (!playersWithFlight.contains(key)) {
-                    playersWithFlight.add(key);
-                }
-                player.capabilities.allowFlying = true;
-                ItemStack chestStack = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-                float manaRatio = chestStack.getItem() instanceof ItemNebulaArmor ?
-                    1.0f - (float) getDamage(chestStack) / 1000.0f : 1.0f;
-                player.capabilities.setFlySpeed(0.05f + 0.1f * manaRatio);
-                if (player instanceof EntityPlayerMP) {
-                    ((EntityPlayerMP) player).sendPlayerAbilities();
-                }
-            } else if (playersWithFlight.contains(key)) {
-                // Only remove flight if this mod previously granted it
-                // Don't touch flight capabilities if the player never had flight from us
-                playersWithFlight.remove(key);
-                player.capabilities.setFlySpeed(0.05f);
-                if (!player.capabilities.isCreativeMode) {
-                    player.capabilities.allowFlying = false;
-                    player.capabilities.isFlying = false;
-                }
-                if (player instanceof EntityPlayerMP) {
-                    ((EntityPlayerMP) player).sendPlayerAbilities();
+    public static class ChestEventHandler {
+        @SubscribeEvent
+        public void updatePlayerFlyStatus(LivingEvent.LivingUpdateEvent event) {
+            if (event.getEntityLiving() instanceof EntityPlayer) {
+                EntityPlayer player = (EntityPlayer) event.getEntityLiving();
+                // Only handle on server side; client syncs via S39PacketPlayerAbilities
+                if (player.world.isRemote) return;
+                String key = player.getName();
+                if (shouldPlayerHaveFlight(player)) {
+                    if (!playersWithFlight.contains(key)) {
+                        playersWithFlight.add(key);
+                    }
+                    player.capabilities.allowFlying = true;
+                    ItemStack chestStack = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
+                    float manaRatio = chestStack.getItem() instanceof ItemNebulaArmor ?
+                        1.0f - (float) ((ItemNebulaArmor) chestStack.getItem()).getDamage(chestStack) / 1000.0f : 1.0f;
+                    setFlySpeed(player, 0.05f + 0.1f * manaRatio);
+                    if (player instanceof EntityPlayerMP) {
+                        ((EntityPlayerMP) player).sendPlayerAbilities();
+                    }
+                } else if (playersWithFlight.contains(key)) {
+                    // Only remove flight if this mod previously granted it
+                    // Don't touch flight capabilities if the player never had flight from us
+                    playersWithFlight.remove(key);
+                    setFlySpeed(player, 0.05f);
+                    if (!player.capabilities.isCreativeMode) {
+                        player.capabilities.allowFlying = false;
+                        player.capabilities.isFlying = false;
+                    }
+                    if (player instanceof EntityPlayerMP) {
+                        ((EntityPlayerMP) player).sendPlayerAbilities();
+                    }
                 }
             }
         }
-    }
 
-    @SubscribeEvent
-    public void onBreakSpeed(PlayerEvent.BreakSpeed event) {
-        EntityPlayer player = event.getEntityPlayer();
-        if (player.capabilities.isFlying && shouldPlayerHaveFlight(player)) {
-            event.setNewSpeed(event.getNewSpeed() * 5.0f);
+        @SubscribeEvent
+        public void onBreakSpeed(PlayerEvent.BreakSpeed event) {
+            EntityPlayer player = event.getEntityPlayer();
+            if (player.capabilities.isFlying && shouldPlayerHaveFlight(player)) {
+                event.setNewSpeed(event.getNewSpeed() * 5.0f);
+            }
+        }
+
+        private static void setFlySpeed(EntityPlayer player, float speed) {
+            try {
+                java.lang.reflect.Field f = net.minecraft.entity.player.PlayerCapabilities.class.getDeclaredField("flySpeed");
+                f.setAccessible(true);
+                f.setFloat(player.capabilities, speed);
+            } catch (NoSuchFieldException e1) {
+                // SRG name fallback
+                try {
+                    java.lang.reflect.Field f = net.minecraft.entity.player.PlayerCapabilities.class.getDeclaredField("field_75096_f");
+                    f.setAccessible(true);
+                    f.setFloat(player.capabilities, speed);
+                } catch (Exception e2) {
+                    // Last resort: scan all float fields
+                    for (java.lang.reflect.Field f : net.minecraft.entity.player.PlayerCapabilities.class.getDeclaredFields()) {
+                        if (f.getType() == float.class) {
+                            try {
+                                f.setAccessible(true);
+                                float current = f.getFloat(player.capabilities);
+                                // flySpeed default is 0.05f, walkSpeed default is 0.1f
+                                if (Math.abs(current - 0.05f) < 0.001f) {
+                                    f.setFloat(player.capabilities, speed);
+                                    break;
+                                }
+                            } catch (Exception ignored) {}
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

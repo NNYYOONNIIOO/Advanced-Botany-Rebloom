@@ -9,14 +9,14 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import vazkii.botania.api.mana.IManaDiscountArmor;
 import vazkii.botania.api.mana.IManaGivingItem;
 
@@ -31,7 +31,7 @@ public class ItemNebulaHelm extends ItemNebulaArmor implements IManaDiscountArmo
 
     public ItemNebulaHelm(String str) {
         super(EntityEquipmentSlot.HEAD, str);
-        MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.EVENT_BUS.register(new HelmetEventHandler());
     }
 
     @Override
@@ -39,6 +39,7 @@ public class ItemNebulaHelm extends ItemNebulaArmor implements IManaDiscountArmo
         return toggleEffect(world, player, hand);
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flag) {
         super.addInformation(stack, world, list, flag);
@@ -87,16 +88,18 @@ public class ItemNebulaHelm extends ItemNebulaArmor implements IManaDiscountArmo
         return false;
     }
 
-    @SubscribeEvent
-    public void onLivingHurt(LivingHurtEvent event) {
-        if (!(event.getEntityLiving() instanceof EntityPlayer)) return;
-        EntityPlayer player = (EntityPlayer) event.getEntityLiving();
-        if (player.world.isRemote) return;
-        ItemStack helm = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
-        if (helm.isEmpty() || !(helm.getItem() instanceof ItemNebulaHelm)) return;
-        // Immune to anvil and falling block damage
-        if (event.getSource() == DamageSource.ANVIL || event.getSource() == DamageSource.FALLING_BLOCK) {
-            event.setCanceled(true);
+    public static class HelmetEventHandler {
+        @SubscribeEvent
+        public void onLivingHurt(LivingHurtEvent event) {
+            if (!(event.getEntityLiving() instanceof EntityPlayer)) return;
+            EntityPlayer player = (EntityPlayer) event.getEntityLiving();
+            if (player.world.isRemote) return;
+            ItemStack helm = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
+            if (helm.isEmpty() || !(helm.getItem() instanceof ItemNebulaHelm)) return;
+            // Immune to anvil and falling block damage
+            if (event.getSource() == DamageSource.ANVIL || event.getSource() == DamageSource.FALLING_BLOCK) {
+                event.setCanceled(true);
+            }
         }
     }
 
