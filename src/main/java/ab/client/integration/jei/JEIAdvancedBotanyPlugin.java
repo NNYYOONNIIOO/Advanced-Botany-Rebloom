@@ -26,6 +26,7 @@ import java.util.List;
 public class JEIAdvancedBotanyPlugin implements IModPlugin {
 
     private static IJeiRuntime jeiRuntime;
+    private static boolean plateRefreshPending;
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registry) {
@@ -45,6 +46,10 @@ public class JEIAdvancedBotanyPlugin implements IModPlugin {
     @Override
     public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
         JEIAdvancedBotanyPlugin.jeiRuntime = jeiRuntime;
+        if (plateRefreshPending) {
+            plateRefreshPending = false;
+            refreshPlateRecipes();
+        }
     }
 
     /**
@@ -52,7 +57,10 @@ public class JEIAdvancedBotanyPlugin implements IModPlugin {
      * 先隐藏所有旧配方，再添加当前配方列表中的配方。
      */
     public static void refreshPlateRecipes() {
-        if (jeiRuntime == null) return;
+        if (jeiRuntime == null) {
+            plateRefreshPending = true;
+            return;
+        }
         IRecipeRegistry registry = jeiRuntime.getRecipeRegistry();
         // 隐藏所有旧的 Advanced Plate 配方
         IRecipeCategory<?> category = registry.getRecipeCategory(AdvancedPlateRecipeCategory.UID);
@@ -64,7 +72,7 @@ public class JEIAdvancedBotanyPlugin implements IModPlugin {
                 }
             }
         }
-        // 添加当前配方列表中的配方
+        // 添加当前配方列表中的配方。JEI 1.12 的运行时注册表只提供逐条添加接口。
         for (AdvancedPlateRecipeWrapper wrapper : wrapPlateRecipes()) {
             registry.addRecipe(wrapper, AdvancedPlateRecipeCategory.UID);
         }

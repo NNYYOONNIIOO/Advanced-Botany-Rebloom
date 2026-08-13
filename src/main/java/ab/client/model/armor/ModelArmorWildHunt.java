@@ -301,8 +301,8 @@ public class ModelArmorWildHunt extends ModelBiped {
         this.bipedLeftArm = this.lArm;
         this.bipedRightArm = this.rArm;
         if (this.slot == EntityEquipmentSlot.LEGS) {
-            this.bipedLeftLeg = this.lLeg;
-            this.bipedRightLeg = this.rLeg;
+            this.bipedRightLeg = this.lLeg;
+            this.bipedLeftLeg = this.rLeg;
         } else {
             this.bipedRightLeg = this.rBoot;
             this.bipedLeftLeg = this.lBoot;

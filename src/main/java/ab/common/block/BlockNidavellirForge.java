@@ -53,6 +53,25 @@ public class BlockNidavellirForge extends BlockContainer implements ILexiconable
     @Nonnull
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
         int meta = this.getMetaFromState(state);
+        if (source != null) {
+            TileEntity tile = source.getTileEntity(pos);
+            if (tile instanceof TileNidavellirForge) {
+                switch (((TileNidavellirForge) tile).getFacing()) {
+                    case EAST:
+                        meta = 1;
+                        break;
+                    case SOUTH:
+                        meta = 2;
+                        break;
+                    case WEST:
+                        meta = 3;
+                        break;
+                    default:
+                        meta = 0;
+                        break;
+                }
+            }
+        }
         if (meta >= 0 && meta < FORGE_AABBS.length) {
             return FORGE_AABBS[meta];
         }
@@ -61,8 +80,13 @@ public class BlockNidavellirForge extends BlockContainer implements ILexiconable
 
     @Override
     public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase liv, ItemStack stack) {
-        int meta = MathHelper.floor((double)(liv.rotationYaw * 4.0f / 360.0f) + 0.5) & 3;
-        world.setBlockState(pos, this.getStateFromMeta(meta), 3);
+        if (liv == null) {
+            return;
+        }
+        TileEntity tile = world.getTileEntity(pos);
+        if (tile instanceof TileNidavellirForge) {
+            ((TileNidavellirForge) tile).setFacing(liv.getHorizontalFacing().getOpposite());
+        }
     }
 
     @Override

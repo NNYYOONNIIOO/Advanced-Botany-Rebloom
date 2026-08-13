@@ -26,11 +26,25 @@ public class RenderTileNidavellirForge extends TileEntitySpecialRenderer<TileEnt
     public void render(TileEntity tileentity, double x, double y, double z, float f, int destroyStage, float alpha) {
         TileNidavellirForge tile = (TileNidavellirForge)tileentity;
         double worldTime = 0.0;
-        int meta = 2;
         float invRender = 0.0f;
+        float facingRotation = 0.0f;
+        if (tile != null) {
+            switch (tile.getFacing()) {
+                case EAST:
+                    facingRotation = 90.0f;
+                    break;
+                case SOUTH:
+                    facingRotation = 180.0f;
+                    break;
+                case WEST:
+                    facingRotation = 270.0f;
+                    break;
+                default:
+                    break;
+            }
+        }
         if (tileentity != null && tileentity.getWorld() != null) {
             worldTime = (float)ClientTickHandler.ticksInGame + f + (float)new Random(tileentity.getPos().getX() ^ tileentity.getPos().getY() ^ tileentity.getPos().getZ()).nextInt(360);
-            meta = tileentity.getWorld().getBlockState(tileentity.getPos()).getBlock().getMetaFromState(tileentity.getWorld().getBlockState(tileentity.getPos()));
         } else {
             invRender = 0.0875f;
         }
@@ -41,7 +55,7 @@ public class RenderTileNidavellirForge extends TileEntitySpecialRenderer<TileEnt
         GL11.glTranslated(x - invRender, y, z);
         GL11.glTranslatef(0.5f, 1.5f, 0.5f);
         GL11.glRotatef(180.0f, 1.0f, 0.0f, 1.0f);
-        GL11.glRotatef(90.0f * meta, 0.0f, 1.0f, 0.0f);
+        GL11.glRotatef(facingRotation, 0.0f, 1.0f, 0.0f);
         Minecraft.getMinecraft().renderEngine.bindTexture(texture);
         model.renderBottom();
         GL11.glTranslatef(0.0f, indetY, 0.0f);
@@ -61,6 +75,7 @@ public class RenderTileNidavellirForge extends TileEntitySpecialRenderer<TileEnt
         }
         GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5, y + 0.675 - indetY, z + 0.5);
+        GL11.glRotatef(facingRotation, 0.0f, 1.0f, 0.0f);
         GL11.glScalef(0.2f, 0.225f, 0.225f);
         for (int i = 1; i < this.entityList.size(); ++i) {
             GL11.glPushMatrix();

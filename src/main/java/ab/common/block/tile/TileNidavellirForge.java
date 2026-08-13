@@ -32,6 +32,7 @@ public class TileNidavellirForge extends TileInventory implements ISparkAttachab
     private RecipeAdvancedPlate currentRecipe;
     private int recipeID;
     public boolean requestUpdate;
+    private EnumFacing facing = EnumFacing.NORTH;
 
     @Override
     public void update() {
@@ -174,6 +175,8 @@ public class TileNidavellirForge extends TileInventory implements ISparkAttachab
                 continue;
             int count = Math.min(stack.getCount(), stack.getMaxStackSize() - this.getStackInSlot(i).getCount());
             this.getStackInSlot(i).grow(count);
+            this.markDirty();
+            this.requestUpdate = true;
             return count;
         }
         return 0;
@@ -186,6 +189,7 @@ public class TileNidavellirForge extends TileInventory implements ISparkAttachab
         cmp.setInteger("manaToGet", this.manaToGet);
         cmp.setBoolean("requestUpdate", this.requestUpdate);
         cmp.setInteger("recipeID", this.currentRecipe == null ? -1 : this.recipeID);
+        cmp.setString("facing", this.facing.getName());
     }
 
     @Override
@@ -196,6 +200,49 @@ public class TileNidavellirForge extends TileInventory implements ISparkAttachab
         this.requestUpdate = cmp.getBoolean("requestUpdate");
         int recipeID = cmp.getInteger("recipeID");
         this.currentRecipe = recipeID == -1 ? null : AdvancedBotanyAPI.advancedPlateRecipes.get(recipeID);
+        this.readFacing(cmp);
+    }
+
+    private void readFacing(NBTTagCompound cmp) {
+        EnumFacing storedFacing = EnumFacing.byName(cmp.getString("facing"));
+        this.facing = storedFacing != null && storedFacing.getAxis().isHorizontal() ? storedFacing : EnumFacing.NORTH;
+    }
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound cmp) {
+        super.writeToNBT(cmp);
+        cmp.setString("facing", this.facing.getName());
+        return cmp;
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound cmp) {
+        super.readFromNBT(cmp);
+        this.readFacing(cmp);
+    }
+
+    @Override
+    public net.minecraft.network.play.server.SPacketUpdateTileEntity getUpdatePacket() {
+        return new net.minecraft.network.play.server.SPacketUpdateTileEntity(this.pos, 1, this.getUpdateTag());
+    }
+
+    @Override
+    public NBTTagCompound getUpdateTag() {
+        return this.writeToNBT(new NBTTagCompound());
+    }
+
+    @Override
+    public void onDataPacket(net.minecraft.network.NetworkManager net, net.minecraft.network.play.server.SPacketUpdateTileEntity packet) {
+        this.readFromNBT(packet.getNbtCompound());
+    }
+
+    @Override
+    public void setInventorySlotContents(int index, ItemStack stack) {
+        super.setInventorySlotContents(index, stack);
+        this.markDirty();
+        if (this.world != null && !this.world.isRemote) {
+            this.requestUpdate = true;
+        }
     }
 
     @Override
@@ -275,5 +322,17 @@ public class TileNidavellirForge extends TileInventory implements ISparkAttachab
     @Override
     public boolean canExtractItem(int slot, ItemStack stack, EnumFacing side) {
         return side == EnumFacing.DOWN && slot == 0 || side != EnumFacing.DOWN && side != EnumFacing.UP && slot != 0;
+    }
+
+    public EnumFacing getFacing() {
+        return this.facing;
+    }
+
+    public void setFacing(EnumFacing facing) {
+        this.facing = facing != null && facing.getAxis().isHorizontal() ? facing : EnumFacing.NORTH;
+        this.markDirty();
+        if (this.world != null && !this.world.isRemote) {
+            this.world.notifyBlockUpdate(this.pos, this.world.getBlockState(this.pos), this.world.getBlockState(this.pos), 3);
+        }
     }
 }
