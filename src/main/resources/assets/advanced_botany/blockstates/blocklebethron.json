@@ -4,6 +4,10 @@
     "model": "advanced_botany:blocklebethron_0"
   },
   "variants": {
-    "normal": [{}]
+    "variant=0": [{}],
+    "variant=1": [{"model": "advanced_botany:blocklebethron_1"}],
+    "variant=2": [{"model": "advanced_botany:blocklebethron_2"}],
+    "variant=3": [{"model": "advanced_botany:blocklebethron_3"}],
+    "variant=4": [{"model": "advanced_botany:blocklebethron_4"}]
   }
 }

@@ -7,6 +7,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -20,6 +22,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -30,6 +33,7 @@ import vazkii.botania.api.lexicon.LexiconEntry;
 import javax.annotation.Nonnull;
 
 public class BlockLebethronWood extends Block implements ILexiconable, ITileEntityProvider {
+    private static final PropertyInteger VARIANT = PropertyInteger.create("variant", 0, 4);
     public static Object portalIcon;
 
     public BlockLebethronWood() {
@@ -38,6 +42,7 @@ public class BlockLebethronWood extends Block implements ILexiconable, ITileEnti
         this.setHardness(6.0f);
         this.setSoundType(SoundType.WOOD);
         this.setTranslationKey(AdvancedBotany.modid + "." + "lebethronWood");
+        this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, 0));
     }
 
     @Override
@@ -134,5 +139,20 @@ public class BlockLebethronWood extends Block implements ILexiconable, ITileEnti
     @Override
     public TileEntity createNewTileEntity(World world, int meta) {
         return meta == 4 ? new TileLebethronCore() : null;
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+        return this.getDefaultState().withProperty(VARIANT, MathHelper.clamp(meta, 0, 4));
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return state.getValue(VARIANT);
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, VARIANT);
     }
 }
