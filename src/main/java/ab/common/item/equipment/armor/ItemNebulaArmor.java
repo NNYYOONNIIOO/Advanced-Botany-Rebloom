@@ -464,10 +464,34 @@ public class ItemNebulaArmor extends ItemManasteelArmor implements IManaItem, IM
             if (!pending && !creative) {
                 drainAllArmorMana(player);
                 lethalCooldown.add(player.getName());
-                markPendingLethalRescue(player);
             }
             rescuePlayer(player);
+            clearPendingLethalRescue(player);
             setInvulnerability(player, player.getMaxHealth());
+        }
+
+        /**
+         * Handles direct setHealth(0) damage sources before the entity reaches
+         * the vanilla death update. A pending marker is only valid for the
+         * attack that created it; it must never grant a second rescue after
+         * the armor has already been drained.
+         */
+        @SubscribeEvent(priority = EventPriority.HIGHEST)
+        public void onLivingUpdate(net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent event) {
+            if (!(event.getEntityLiving() instanceof EntityPlayer)) return;
+            EntityPlayer player = (EntityPlayer) event.getEntityLiving();
+            if (player.world.isRemote || !isWearingFullSet(player)) return;
+            if (player.getHealth() > 0.0F && !player.isDead && player.deathTime <= 0) return;
+
+            boolean pending = hasPendingLethalRescue(player);
+            boolean creative = hasCreativeManaSource(player);
+            if (!pending && !creative && getTotalArmorMana(player) < KILL_MANA_COST) return;
+            if (!pending && !creative) {
+                drainAllArmorMana(player);
+                lethalCooldown.add(player.getName());
+            }
+            rescuePlayer(player);
+            clearPendingLethalRescue(player);
         }
 
         @SubscribeEvent
@@ -578,7 +602,9 @@ public class ItemNebulaArmor extends ItemManasteelArmor implements IManaItem, IM
         }
 
         private static void markPendingLethalRescue(EntityPlayer player) {
-            pendingLethalRescues.put(rescueKey(player), player.world.getTotalWorldTime() + 40L);
+            // Valid only during the current damage/death call chain. Keeping
+            // this for many ticks can revive later lethal hits with zero mana.
+            pendingLethalRescues.put(rescueKey(player), player.world.getTotalWorldTime());
         }
 
         private static boolean hasPendingLethalRescue(EntityPlayer player) {
@@ -601,6 +627,7 @@ public class ItemNebulaArmor extends ItemManasteelArmor implements IManaItem, IM
             player.deathTime = 0;
             player.hurtTime = 0;
             player.maxHurtTime = 0;
+            player.fallDistance = 0.0F;
             player.setHealth(player.getMaxHealth());
         }
 
