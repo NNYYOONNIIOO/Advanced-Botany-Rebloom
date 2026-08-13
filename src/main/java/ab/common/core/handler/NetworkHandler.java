@@ -1,6 +1,7 @@
 package ab.common.core.handler;
 
 import ab.common.core.proxy.packet.C00PacketToggleNebulaArmor;
+import ab.common.core.proxy.packet.C03PacketSpaceBladeBurst;
 import ab.common.core.proxy.packet.S00PacketHornChargeHud;
 import ab.common.core.proxy.packet.S01PacketFindNearBlocks;
 import ab.common.core.proxy.packet.S02PacketSpaceBladeDash;
@@ -20,6 +21,7 @@ public class NetworkHandler {
         NETWORK.registerMessage(S01PacketFindNearBlocks.class, S01PacketFindNearBlocks.class, id++, Side.CLIENT);
         NETWORK.registerMessage(S02PacketSpaceBladeDash.class, S02PacketSpaceBladeDash.class, id++, Side.CLIENT);
         NETWORK.registerMessage(C00PacketToggleNebulaArmor.class, C00PacketToggleNebulaArmor.class, id++, Side.SERVER);
+        NETWORK.registerMessage(C03PacketSpaceBladeBurst.class, C03PacketSpaceBladeBurst.class, id++, Side.SERVER);
     }
 
     public static void sendPacketToSpaceDash(EntityPlayerMP playerMP) {

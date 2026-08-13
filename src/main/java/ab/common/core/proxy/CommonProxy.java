@@ -8,6 +8,7 @@ import ab.common.lib.register.AchievementRegister;
 import ab.common.lib.register.BlockListAB;
 import ab.common.lib.register.EntityListAB;
 import ab.common.lib.register.FlowerRegister;
+import ab.common.item.equipment.ItemSpaceBlade;
 import ab.common.item.equipment.armor.ItemNebulaArmor;
 import ab.common.lib.register.ItemListAB;
 import ab.common.lib.register.RecipeListAB;
@@ -28,6 +29,7 @@ public class CommonProxy {
         ConfigABHandler.loadConfig(event.getSuggestedConfigurationFile());
         MinecraftForge.EVENT_BUS.register(ItemListAB.itemAntigravityCharm);
         MinecraftForge.EVENT_BUS.register(new ItemNebulaArmor.DamageHandler());
+        MinecraftForge.EVENT_BUS.register(new ItemSpaceBlade.LeftClickHandler());
     }
 
     public void init(FMLInitializationEvent event) {

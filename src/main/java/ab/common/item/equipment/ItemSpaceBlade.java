@@ -5,6 +5,7 @@ import ab.api.AdvancedBotanyAPI;
 import ab.api.IRankItem;
 import ab.common.core.handler.ConfigABHandler;
 import ab.common.core.handler.NetworkHandler;
+import ab.common.core.proxy.packet.C03PacketSpaceBladeBurst;
 import ab.common.entity.EntitySword;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
@@ -34,6 +35,8 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import vazkii.botania.api.mana.IManaGivingItem;
@@ -92,6 +95,42 @@ public class ItemSpaceBlade extends ItemSword implements IRankItem, IManaUsingIt
         return super.onLeftClickEntity(stack, player, entity);
     }
 
+    /** Fires the same starburst projectile used by the blade's automatic attack. */
+    public static boolean fireStarburst(ItemStack stack, EntityPlayer player) {
+        if (stack.isEmpty() || !(stack.getItem() instanceof ItemSpaceBlade) || player == null || player.world.isRemote) {
+            return false;
+        }
+        if (ItemNBTHelper.getInt(stack, "postAttackTick", 0) != 0) {
+            return false;
+        }
+        ItemSpaceBlade blade = (ItemSpaceBlade) stack.getItem();
+        if (blade.getLevel(stack) < 1 || !ManaItemHandler.requestManaExactForTool(stack, player, 120, true)) {
+            return false;
+        }
+        EntitySword sword = new EntitySword(player.world, player);
+        sword.setDamage(blade.getSwordDamage(stack));
+        sword.setAttacker(player.getName());
+        sword.motionX *= 0.2;
+        sword.motionY *= 0.2;
+        sword.motionZ *= 0.2;
+        player.world.spawnEntity(sword);
+        ItemNBTHelper.setInt(stack, "postAttackTick", 3);
+        player.world.playSound(null, player.posX, player.posY, player.posZ,
+                net.minecraft.util.SoundEvent.REGISTRY.getObject(new net.minecraft.util.ResourceLocation("advanced_botany", "bladeSpace")),
+                SoundCategory.PLAYERS, 0.5f, 3.6f);
+        return true;
+    }
+
+    public static class LeftClickHandler {
+        @SubscribeEvent
+        public void onLeftClickEmpty(PlayerInteractEvent.LeftClickEmpty event) {
+            EntityPlayer player = event.getEntityPlayer();
+            if (player.world.isRemote && player.getHeldItemMainhand().getItem() instanceof ItemSpaceBlade) {
+                NetworkHandler.NETWORK.sendToServer(new C03PacketSpaceBladeBurst());
+            }
+        }
+    }
+
     @Override
     public void onUpdate(ItemStack stack, World world, Entity entity, int par4, boolean par5) {
         if (!(entity instanceof EntityPlayer)) {
@@ -109,17 +148,8 @@ public class ItemSpaceBlade extends ItemSword implements IRankItem, IManaUsingIt
             }
             PotionEffect haste = player.getActivePotionEffect(MobEffects.HASTE);
             float f = haste == null ? 0.16666667f : (haste.getAmplifier() == 1 ? 0.5f : 0.4f);
-            if (player.getHeldItemMainhand() == stack && player.getCooledAttackStrength(1.0f) == f && getLevel(stack) >= 1 && postAttackTick == 0 && ManaItemHandler.requestManaExactForTool(stack, player, 120, true)) {
-                EntitySword sword = new EntitySword(world, player);
-                sword.setDamage(getSwordDamage(stack));
-                sword.setAttacker(player.getName());
-                sword.motionX *= 0.2;
-                sword.motionY *= 0.2;
-                sword.motionZ *= 0.2;
-                world.spawnEntity(sword);
-                player.world.playSound(null, player.posX, player.posY, player.posZ,
-                        net.minecraft.util.SoundEvent.REGISTRY.getObject(new net.minecraft.util.ResourceLocation("advanced_botany", "bladeSpace")),
-                        SoundCategory.PLAYERS, 0.5f, 3.6f);
+            if (player.getHeldItemMainhand() == stack && player.getCooledAttackStrength(1.0f) == f && postAttackTick == 0) {
+                fireStarburst(stack, player);
             }
         } else if (tick > 26 && par5) {
             for (int i = 0; i < 14; ++i) {

@@ -49,11 +49,20 @@ public class EntitySword extends EntityThrowable {
             this.setDead();
         }
         if (this.world.isRemote) {
-            for (int i = 0; i < 12; ++i) {
-                float r = this.world.rand.nextBoolean() ? 0.88235295f : 0.39607844f;
-                float g = this.world.rand.nextBoolean() ? 0.2627451f : 0.81960785f;
-                float b = this.world.rand.nextBoolean() ? 0.9411765f : 0.88235295f;
-                Botania.proxy.sparkleFX(this.posX + (Math.random() - 0.5) * 0.25, this.posY + (Math.random() - 0.5) * 0.25, this.posZ + (Math.random() - 0.5) * 0.25, r + (float) (Math.random() / 4.0 - 0.125), g + (float) (Math.random() / 4.0 - 0.125), b + (float) (Math.random() / 4.0 - 0.125), 1.6f * (float) (Math.random() - 0.5), 2);
+            for (int i = 0; i < 10; ++i) {
+                double trail = this.world.rand.nextDouble() * 0.9;
+                Botania.proxy.wispFX(
+                        this.posX - this.motionX * trail + (this.world.rand.nextDouble() - 0.5) * 0.18,
+                        this.posY - this.motionY * trail + (this.world.rand.nextDouble() - 0.5) * 0.18,
+                        this.posZ - this.motionZ * trail + (this.world.rand.nextDouble() - 0.5) * 0.18,
+                        0.72f + this.world.rand.nextFloat() * 0.28f,
+                        0.84f + this.world.rand.nextFloat() * 0.16f,
+                        1.0f,
+                        0.12f + this.world.rand.nextFloat() * 0.10f,
+                        (float) this.motionX * 0.04f,
+                        (float) this.motionY * 0.04f,
+                        (float) this.motionZ * 0.04f,
+                        0.7f);
             }
         }
     }

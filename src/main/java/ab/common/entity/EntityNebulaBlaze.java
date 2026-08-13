@@ -45,7 +45,7 @@ public class EntityNebulaBlaze extends EntityThrowable {
         double posZ = this.posZ;
         this.update();
         super.onUpdate();
-        AxisAlignedBB axis = new AxisAlignedBB(this.posX, this.posY, this.posZ, this.posX + 1.0, this.posY + 1.0, this.posZ + 1.0).grow(3.75, 3.75, 3.75);
+        AxisAlignedBB axis = this.getEntityBoundingBox().grow(8.0, 8.0, 8.0);
         List<EntityLivingBase> livs = this.world.getEntitiesWithinAABB(EntityLivingBase.class, axis);
         for (EntityLivingBase liv : livs) {
             double d3;
