@@ -373,6 +373,7 @@ public class ItemNebulaArmor extends ItemManasteelArmor implements IManaItem, IM
         public static final Set<String> lethalCooldown = new HashSet<>();
         private static final Map<String, Long> invulnerableUntil = new HashMap<>();
         private static final Map<String, Float> lastBlockedDamage = new HashMap<>();
+        private static final Map<String, Long> pendingLethalRescues = new HashMap<>();
 
         @SubscribeEvent(priority = EventPriority.HIGHEST)
         public void onLivingAttack(LivingAttackEvent event) {
@@ -419,14 +420,12 @@ public class ItemNebulaArmor extends ItemManasteelArmor implements IManaItem, IM
             boolean lethal = remainingDamage >= player.getHealth();
 
             if (lethal && armorMana >= KILL_MANA_COST) {
-                if (armorMana >= remainingCost) {
-                    // Can fully absorb with armor mana (cheaper than lethal save)
-                    drainArmorMana(player, remainingCost);
-                } else {
-                    // Lethal save: sacrifice all armor mana, keep current health
-                    drainAllArmorMana(player);
-                    lethalCooldown.add(player.getName());
-                }
+                // Any lethal interception consumes the entire set, even when
+                // the remaining damage itself costs less than the reserve.
+                drainAllArmorMana(player);
+                lethalCooldown.add(player.getName());
+                markPendingLethalRescue(player);
+                rescuePlayer(player);
                 setInvulnerability(player, damage);
                 return;
             }
@@ -454,17 +453,21 @@ public class ItemNebulaArmor extends ItemManasteelArmor implements IManaItem, IM
             EntityPlayer player = getPlayerIfFullSet(event);
             if (player == null) return;
 
-            // Safety net: if damage bypassed onLivingAttack somehow
-            if (getTotalArmorMana(player) >= KILL_MANA_COST) {
+            // Safety net for sources that bypass onLivingAttack, or continue
+            // processing after it was canceled. The pending marker is needed
+            // because the attack path has already drained the armor mana.
+            boolean pending = hasPendingLethalRescue(player);
+            boolean creative = hasCreativeManaSource(player);
+            if (!pending && !creative && getTotalArmorMana(player) < KILL_MANA_COST) return;
+
+            event.setCanceled(true);
+            if (!pending && !creative) {
                 drainAllArmorMana(player);
                 lethalCooldown.add(player.getName());
-                // Health is already <= 0, set to 1 HP to survive
-                player.setHealth(1.0f);
-                player.isDead = false;
-                player.deathTime = 0;
-                event.setCanceled(true);
-                setInvulnerability(player, player.getMaxHealth());
+                markPendingLethalRescue(player);
             }
+            rescuePlayer(player);
+            setInvulnerability(player, player.getMaxHealth());
         }
 
         @SubscribeEvent
@@ -491,6 +494,22 @@ public class ItemNebulaArmor extends ItemManasteelArmor implements IManaItem, IM
 
             // Server-only logic below
             if (player.world.isRemote) return;
+
+            boolean pending = hasPendingLethalRescue(player);
+            boolean deadState = player.getHealth() <= 0.0F || player.isDead || player.deathTime > 0;
+            if (deadState) {
+                boolean creative = hasCreativeManaSource(player);
+                if (pending || creative || getTotalArmorMana(player) >= KILL_MANA_COST) {
+                    if (!pending && !creative) {
+                        drainAllArmorMana(player);
+                        lethalCooldown.add(player.getName());
+                        markPendingLethalRescue(player);
+                    }
+                    rescuePlayer(player);
+                }
+            } else if (pending) {
+                clearPendingLethalRescue(player);
+            }
 
             // Clear harmful potion effects (armor mana only)
             for (PotionEffect effect : player.getActivePotionEffects()) {
@@ -552,6 +571,37 @@ public class ItemNebulaArmor extends ItemManasteelArmor implements IManaItem, IM
                 return last != null && damage <= last;
             }
             return false;
+        }
+
+        private static String rescueKey(EntityPlayer player) {
+            return player.getUniqueID().toString();
+        }
+
+        private static void markPendingLethalRescue(EntityPlayer player) {
+            pendingLethalRescues.put(rescueKey(player), player.world.getTotalWorldTime() + 40L);
+        }
+
+        private static boolean hasPendingLethalRescue(EntityPlayer player) {
+            String key = rescueKey(player);
+            Long expires = pendingLethalRescues.get(key);
+            if (expires == null) return false;
+            if (player.world.getTotalWorldTime() > expires) {
+                pendingLethalRescues.remove(key);
+                return false;
+            }
+            return true;
+        }
+
+        private static void clearPendingLethalRescue(EntityPlayer player) {
+            pendingLethalRescues.remove(rescueKey(player));
+        }
+
+        private static void rescuePlayer(EntityPlayer player) {
+            player.isDead = false;
+            player.deathTime = 0;
+            player.hurtTime = 0;
+            player.maxHurtTime = 0;
+            player.setHealth(player.getMaxHealth());
         }
 
         public static boolean hasCreativeManaSource(EntityPlayer player) {

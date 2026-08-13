@@ -36,7 +36,6 @@ public class ItemNebulaHelm extends ItemNebulaArmor implements IManaDiscountArmo
 
     public ItemNebulaHelm(String str) {
         super(EntityEquipmentSlot.HEAD, str);
-        MinecraftForge.EVENT_BUS.register(new HelmetEventHandler());
     }
 
     @Override
