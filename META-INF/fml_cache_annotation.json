@@ -1,0 +1,157 @@
+{
+  "crafttweaker/mods/jei/JEI": {
+    "name": "crafttweaker/mods/jei/JEI",
+    "annotations": [
+      {
+        "type": "CLASS",
+        "name": "Lstanhebben/zenscript/annotations/ZenClass;",
+        "target": "crafttweaker/mods/jei/JEI",
+        "value": {
+          "value": "mods.jei.JEI"
+        }
+      },
+      {
+        "type": "CLASS",
+        "name": "Lcrafttweaker/annotations/ZenRegister;",
+        "target": "crafttweaker/mods/jei/JEI"
+      },
+      {
+        "type": "CLASS",
+        "name": "Lcrafttweaker/annotations/ModOnly;",
+        "target": "crafttweaker/mods/jei/JEI",
+        "value": {
+          "value": "jei"
+        }
+      },
+      {
+        "type": "METHOD",
+        "name": "Lstanhebben/zenscript/annotations/ZenMethod;",
+        "target": "hideCategory(Ljava/lang/String;)V"
+      },
+      {
+        "type": "METHOD",
+        "name": "Lstanhebben/zenscript/annotations/ZenMethod;",
+        "target": "hide(Lcrafttweaker/api/item/IItemStack;)V"
+      },
+      {
+        "type": "METHOD",
+        "name": "Lstanhebben/zenscript/annotations/ZenMethod;",
+        "target": "hide(Lcrafttweaker/api/liquid/ILiquidStack;)V"
+      },
+      {
+        "type": "METHOD",
+        "name": "Lstanhebben/zenscript/annotations/ZenMethod;",
+        "target": "removeAndHide(Lcrafttweaker/api/item/IIngredient;Z)V"
+      },
+      {
+        "type": "METHOD",
+        "name": "Lstanhebben/zenscript/annotations/ZenMethod;",
+        "target": "addDescription(Lcrafttweaker/api/item/IIngredient;[Ljava/lang/String;)V"
+      },
+      {
+        "type": "METHOD",
+        "name": "Lstanhebben/zenscript/annotations/ZenMethod;",
+        "target": "addDescription([Lcrafttweaker/api/item/IIngredient;[Ljava/lang/String;)V"
+      },
+      {
+        "type": "METHOD",
+        "name": "Lstanhebben/zenscript/annotations/ZenMethod;",
+        "target": "addItem(Lcrafttweaker/api/item/IItemStack;)V"
+      }
+    ]
+  },
+  "crafttweaker/mods/jei/JEIAddonPlugin": {
+    "name": "crafttweaker/mods/jei/JEIAddonPlugin",
+    "interfaces": [
+      "mezz/jei/api/IModPlugin"
+    ],
+    "annotations": [
+      {
+        "type": "CLASS",
+        "name": "Lmezz/jei/api/JEIPlugin;",
+        "target": "crafttweaker/mods/jei/JEIAddonPlugin"
+      }
+    ]
+  },
+  "crafttweaker/mods/jei/JEIMod": {
+    "name": "crafttweaker/mods/jei/JEIMod",
+    "annotations": [
+      {
+        "type": "CLASS",
+        "name": "Lnet/minecraftforge/fml/common/Mod;",
+        "target": "crafttweaker/mods/jei/JEIMod",
+        "values": {
+          "acceptedMinecraftVersions": {
+            "value": "[1.12, 1.13)"
+          },
+          "dependencies": {
+            "value": "after:jei@[4.12.0,);"
+          },
+          "modid": {
+            "value": "crafttweakerjei"
+          },
+          "name": {
+            "value": "CraftTweaker JEI Support"
+          },
+          "version": {
+            "value": "2.0.3"
+          }
+        }
+      },
+      {
+        "type": "METHOD",
+        "name": "Lnet/minecraftforge/fml/common/Mod$EventHandler;",
+        "target": "init(Lnet/minecraftforge/fml/common/event/FMLInitializationEvent;)V"
+      }
+    ]
+  },
+  "crafttweaker/mods/jei/actions/AddItemAction": {
+    "name": "crafttweaker/mods/jei/actions/AddItemAction",
+    "interfaces": [
+      "crafttweaker/IAction"
+    ]
+  },
+  "crafttweaker/mods/jei/actions/DescribeAction": {
+    "name": "crafttweaker/mods/jei/actions/DescribeAction",
+    "interfaces": [
+      "crafttweaker/IAction"
+    ]
+  },
+  "crafttweaker/mods/jei/actions/HideAction": {
+    "name": "crafttweaker/mods/jei/actions/HideAction",
+    "interfaces": [
+      "crafttweaker/IAction"
+    ]
+  },
+  "crafttweaker/mods/jei/actions/HideCategoryAction": {
+    "name": "crafttweaker/mods/jei/actions/HideCategoryAction",
+    "interfaces": [
+      "crafttweaker/IAction"
+    ]
+  },
+  "crafttweaker/mods/jei/actions/HideFluidAction": {
+    "name": "crafttweaker/mods/jei/actions/HideFluidAction",
+    "interfaces": [
+      "crafttweaker/IAction"
+    ]
+  },
+  "crafttweaker/mods/jei/commands/ConflictCommand$CraftRecipeEntryComparator": {
+    "name": "crafttweaker/mods/jei/commands/ConflictCommand$CraftRecipeEntryComparator",
+    "interfaces": [
+      "java/util/Comparator",
+      "java/io/Serializable"
+    ]
+  },
+  "crafttweaker/mods/jei/recipeWrappers/CraftingRecipeWrapperShaped": {
+    "name": "crafttweaker/mods/jei/recipeWrappers/CraftingRecipeWrapperShaped",
+    "interfaces": [
+      "mezz/jei/api/recipe/wrapper/IShapedCraftingRecipeWrapper"
+    ]
+  },
+  "crafttweaker/mods/jei/recipeWrappers/CraftingRecipeWrapperShapeless": {
+    "name": "crafttweaker/mods/jei/recipeWrappers/CraftingRecipeWrapperShapeless",
+    "interfaces": [
+      "mezz/jei/api/recipe/wrapper/ICraftingRecipeWrapper"
+    ]
+  }
+}

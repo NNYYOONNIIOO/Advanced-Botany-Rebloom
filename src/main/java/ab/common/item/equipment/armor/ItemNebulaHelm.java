@@ -13,7 +13,11 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -96,10 +100,97 @@ public class ItemNebulaHelm extends ItemNebulaArmor implements IManaDiscountArmo
             if (player.world.isRemote) return;
             ItemStack helm = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
             if (helm.isEmpty() || !(helm.getItem() instanceof ItemNebulaHelm)) return;
+            if (isCompleteNebulaSet(player) && isFatalDamage(player, event.getAmount())) {
+                rescue(player);
+                event.setCanceled(true);
+                return;
+            }
             // Immune to anvil and falling block damage
             if (event.getSource() == DamageSource.ANVIL || event.getSource() == DamageSource.FALLING_BLOCK) {
                 event.setCanceled(true);
             }
+        }
+
+        /**
+         * LivingAttackEvent is the earliest cancellable damage hook.  This is
+         * important for damage sources such as NuclearCraft radiation that can
+         * otherwise leave the player at zero health before the usual hurt
+         * handling runs.
+         */
+        @SubscribeEvent(priority = EventPriority.HIGHEST)
+        public void onLivingAttack(LivingAttackEvent event) {
+            if (!(event.getEntityLiving() instanceof EntityPlayer)) return;
+            EntityPlayer player = (EntityPlayer) event.getEntityLiving();
+            if (player.world.isRemote || !isCompleteNebulaSet(player)) return;
+            if (isFatalDamage(player, event.getAmount())) {
+                rescue(player);
+                event.setCanceled(true);
+            }
+        }
+
+        /**
+         * Some mods apply the final, post-armor amount through LivingHurtEvent
+         * even when the attack event was not available to us.
+         */
+        @SubscribeEvent(priority = EventPriority.HIGHEST)
+        public void onNebulaLivingHurt(LivingHurtEvent event) {
+            if (!(event.getEntityLiving() instanceof EntityPlayer)) return;
+            EntityPlayer player = (EntityPlayer) event.getEntityLiving();
+            if (player.world.isRemote || !isCompleteNebulaSet(player)) return;
+            if (isFatalDamage(player, event.getAmount())) {
+                rescue(player);
+                event.setCanceled(true);
+            }
+        }
+
+        /**
+         * The death hook is the fallback for sources that set health directly
+         * (or otherwise bypass the normal attack/hurt path).
+         */
+        @SubscribeEvent(priority = EventPriority.HIGHEST)
+        public void onNebulaLivingDeath(LivingDeathEvent event) {
+            if (!(event.getEntityLiving() instanceof EntityPlayer)) return;
+            EntityPlayer player = (EntityPlayer) event.getEntityLiving();
+            if (player.world.isRemote || !isCompleteNebulaSet(player)) return;
+            rescue(player);
+            event.setCanceled(true);
+        }
+
+        /**
+         * Mirrors the fully immune rescue behavior: direct setHealth(0) and
+         * death-state changes are repaired on the next update as well.
+         */
+        @SubscribeEvent(priority = EventPriority.HIGHEST)
+        public void onNebulaLivingUpdate(LivingEvent.LivingUpdateEvent event) {
+            if (!(event.getEntityLiving() instanceof EntityPlayer)) return;
+            EntityPlayer player = (EntityPlayer) event.getEntityLiving();
+            if (player.world.isRemote || !isCompleteNebulaSet(player)) return;
+            if (player.getHealth() <= 0.0F || player.isDead || player.deathTime > 0) {
+                rescue(player);
+            }
+        }
+
+        private static boolean isFatalDamage(EntityPlayer player, float amount) {
+            return player.getHealth() > 0.0F && amount >= player.getHealth();
+        }
+
+        private static boolean isCompleteNebulaSet(EntityPlayer player) {
+            return isNebulaPiece(player.getItemStackFromSlot(EntityEquipmentSlot.HEAD), ItemNebulaHelm.class)
+                    && isNebulaPiece(player.getItemStackFromSlot(EntityEquipmentSlot.CHEST), ItemNebulaChest.class)
+                    && isNebulaPiece(player.getItemStackFromSlot(EntityEquipmentSlot.LEGS), ItemNebulaLegs.class)
+                    && isNebulaPiece(player.getItemStackFromSlot(EntityEquipmentSlot.FEET), ItemNebulaBoots.class);
+        }
+
+        private static boolean isNebulaPiece(ItemStack stack, Class<? extends ItemNebulaArmor> type) {
+            return !stack.isEmpty() && type.isInstance(stack.getItem());
+        }
+
+        private static void rescue(EntityPlayer player) {
+            player.setHealth(player.getMaxHealth());
+            player.isDead = false;
+            player.deathTime = 0;
+            player.hurtTime = 0;
+            player.maxHurtTime = 0;
         }
     }
 

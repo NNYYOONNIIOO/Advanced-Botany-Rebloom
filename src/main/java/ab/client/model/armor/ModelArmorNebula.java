@@ -276,8 +276,10 @@ public class ModelArmorNebula extends ModelBiped {
         this.bipedLeftArm = this.lArm;
         this.bipedRightArm = this.rArm;
         if (this.slot == EntityEquipmentSlot.LEGS) {
-            this.bipedLeftLeg = this.lLeg;
-            this.bipedRightLeg = this.rLeg;
+            // The negative-X model part is the player's right leg. Keep the
+            // ModelBiped animation mapping aligned with the rendered side.
+            this.bipedRightLeg = this.lLeg;
+            this.bipedLeftLeg = this.rLeg;
         } else {
             this.bipedRightLeg = this.rBoot;
             this.bipedLeftLeg = this.lBoot;
