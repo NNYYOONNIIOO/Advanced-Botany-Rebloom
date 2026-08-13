@@ -443,9 +443,6 @@ public class ItemNebulaArmor extends ItemManasteelArmor implements IManaItem, IM
                 // Apply remaining damage directly (avoid double armor reduction from attackEntityFrom)
                 player.setHealth(player.getHealth() - finalDamage);
                 setInvulnerability(player, damage);
-                if (player.getHealth() <= 0) {
-                    player.onDeath(source);
-                }
             }
         }
 
