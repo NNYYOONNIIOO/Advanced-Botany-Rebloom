@@ -366,7 +366,7 @@ public class ItemNebulaArmor extends ItemManasteelArmor implements IManaItem, IM
     }
 
     public static class DamageHandler {
-        private static final int KILL_MANA_COST = 1000000;
+        public static final int KILL_MANA_COST = 1000000;
         private static final int HUNGER_MANA_COST = 2500;
         private static final int INVULN_TICKS = 10;
 
@@ -554,7 +554,7 @@ public class ItemNebulaArmor extends ItemManasteelArmor implements IManaItem, IM
             return false;
         }
 
-        private static boolean hasCreativeManaSource(EntityPlayer player) {
+        public static boolean hasCreativeManaSource(EntityPlayer player) {
             Map<Integer, ItemStack> baubles = ManaItemHandler.getManaBaubles(player);
             for (ItemStack stack : baubles.values()) {
                 if (stack.getItem() instanceof vazkii.botania.api.mana.ICreativeManaProvider
