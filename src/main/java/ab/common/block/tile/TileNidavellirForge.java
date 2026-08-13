@@ -209,34 +209,6 @@ public class TileNidavellirForge extends TileInventory implements ISparkAttachab
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound cmp) {
-        super.writeToNBT(cmp);
-        cmp.setString("facing", this.facing.getName());
-        return cmp;
-    }
-
-    @Override
-    public void readFromNBT(NBTTagCompound cmp) {
-        super.readFromNBT(cmp);
-        this.readFacing(cmp);
-    }
-
-    @Override
-    public net.minecraft.network.play.server.SPacketUpdateTileEntity getUpdatePacket() {
-        return new net.minecraft.network.play.server.SPacketUpdateTileEntity(this.pos, 1, this.getUpdateTag());
-    }
-
-    @Override
-    public NBTTagCompound getUpdateTag() {
-        return this.writeToNBT(new NBTTagCompound());
-    }
-
-    @Override
-    public void onDataPacket(net.minecraft.network.NetworkManager net, net.minecraft.network.play.server.SPacketUpdateTileEntity packet) {
-        this.readFromNBT(packet.getNbtCompound());
-    }
-
-    @Override
     public void setInventorySlotContents(int index, ItemStack stack) {
         super.setInventorySlotContents(index, stack);
         this.markDirty();
