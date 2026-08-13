@@ -373,12 +373,14 @@ public class ItemNebulaArmor extends ItemManasteelArmor implements IManaItem, IM
         public static final Set<String> lethalCooldown = new HashSet<>();
         private static final Map<String, Long> invulnerableUntil = new HashMap<>();
         private static final Map<String, Float> lastBlockedDamage = new HashMap<>();
-        private static final Map<String, Long> pendingLethalRescues = new HashMap<>();
 
         @SubscribeEvent(priority = EventPriority.HIGHEST)
         public void onLivingAttack(LivingAttackEvent event) {
             EntityPlayer player = getPlayerIfFullSet(event);
             if (player == null) return;
+
+            // A new attack invalidates any stale one-shot rescue state.
+            lethalCooldown.remove(player.getName());
 
             float damage = event.getAmount();
             DamageSource source = event.getSource();
@@ -424,7 +426,6 @@ public class ItemNebulaArmor extends ItemManasteelArmor implements IManaItem, IM
                 // the remaining damage itself costs less than the reserve.
                 drainAllArmorMana(player);
                 lethalCooldown.add(player.getName());
-                markPendingLethalRescue(player);
                 rescuePlayer(player);
                 setInvulnerability(player, damage);
                 return;
@@ -453,20 +454,18 @@ public class ItemNebulaArmor extends ItemManasteelArmor implements IManaItem, IM
             EntityPlayer player = getPlayerIfFullSet(event);
             if (player == null) return;
 
-            // Safety net for sources that bypass onLivingAttack, or continue
-            // processing after it was canceled. The pending marker is needed
-            // because the attack path has already drained the armor mana.
-            boolean pending = hasPendingLethalRescue(player);
+            // This is only a fallback for damage sources that bypass the
+            // attack hook. The attack hook's one-shot marker is consumed here
+            // and cannot revive a later attack.
+            boolean rescuedByAttack = lethalCooldown.remove(player.getName());
             boolean creative = hasCreativeManaSource(player);
-            if (!pending && !creative && getTotalArmorMana(player) < KILL_MANA_COST) return;
+            if (!rescuedByAttack && !creative && getTotalArmorMana(player) < KILL_MANA_COST) return;
 
             event.setCanceled(true);
-            if (!pending && !creative) {
+            if (!rescuedByAttack && !creative) {
                 drainAllArmorMana(player);
-                lethalCooldown.add(player.getName());
             }
             rescuePlayer(player);
-            clearPendingLethalRescue(player);
             setInvulnerability(player, player.getMaxHealth());
         }
 
@@ -476,23 +475,6 @@ public class ItemNebulaArmor extends ItemManasteelArmor implements IManaItem, IM
          * attack that created it; it must never grant a second rescue after
          * the armor has already been drained.
          */
-        @SubscribeEvent(priority = EventPriority.HIGHEST)
-        public void onLivingUpdate(net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent event) {
-            if (!(event.getEntityLiving() instanceof EntityPlayer)) return;
-            EntityPlayer player = (EntityPlayer) event.getEntityLiving();
-            if (player.world.isRemote || !isWearingFullSet(player)) return;
-            if (player.getHealth() > 0.0F && !player.isDead && player.deathTime <= 0) return;
-
-            boolean pending = hasPendingLethalRescue(player);
-            boolean creative = hasCreativeManaSource(player);
-            if (!pending && !creative && getTotalArmorMana(player) < KILL_MANA_COST) return;
-            if (!pending && !creative) {
-                drainAllArmorMana(player);
-                lethalCooldown.add(player.getName());
-            }
-            rescuePlayer(player);
-            clearPendingLethalRescue(player);
-        }
 
         @SubscribeEvent
         public void onPlayerTick(TickEvent.PlayerTickEvent event) {
@@ -518,22 +500,6 @@ public class ItemNebulaArmor extends ItemManasteelArmor implements IManaItem, IM
 
             // Server-only logic below
             if (player.world.isRemote) return;
-
-            boolean pending = hasPendingLethalRescue(player);
-            boolean deadState = player.getHealth() <= 0.0F || player.isDead || player.deathTime > 0;
-            if (deadState) {
-                boolean creative = hasCreativeManaSource(player);
-                if (pending || creative || getTotalArmorMana(player) >= KILL_MANA_COST) {
-                    if (!pending && !creative) {
-                        drainAllArmorMana(player);
-                        lethalCooldown.add(player.getName());
-                        markPendingLethalRescue(player);
-                    }
-                    rescuePlayer(player);
-                }
-            } else if (pending) {
-                clearPendingLethalRescue(player);
-            }
 
             // Clear harmful potion effects (armor mana only)
             for (PotionEffect effect : player.getActivePotionEffects()) {
@@ -595,31 +561,6 @@ public class ItemNebulaArmor extends ItemManasteelArmor implements IManaItem, IM
                 return last != null && damage <= last;
             }
             return false;
-        }
-
-        private static String rescueKey(EntityPlayer player) {
-            return player.getUniqueID().toString();
-        }
-
-        private static void markPendingLethalRescue(EntityPlayer player) {
-            // Valid only during the current damage/death call chain. Keeping
-            // this for many ticks can revive later lethal hits with zero mana.
-            pendingLethalRescues.put(rescueKey(player), player.world.getTotalWorldTime());
-        }
-
-        private static boolean hasPendingLethalRescue(EntityPlayer player) {
-            String key = rescueKey(player);
-            Long expires = pendingLethalRescues.get(key);
-            if (expires == null) return false;
-            if (player.world.getTotalWorldTime() > expires) {
-                pendingLethalRescues.remove(key);
-                return false;
-            }
-            return true;
-        }
-
-        private static void clearPendingLethalRescue(EntityPlayer player) {
-            pendingLethalRescues.remove(rescueKey(player));
         }
 
         private static void rescuePlayer(EntityPlayer player) {
