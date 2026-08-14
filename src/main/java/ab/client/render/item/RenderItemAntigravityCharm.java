@@ -36,8 +36,8 @@ public class RenderItemAntigravityCharm extends TileEntityItemStackRenderer {
         if (ItemNBTHelper.getBoolean(item, "isActive", true)) {
             GL11.glTranslated(0.0, Math.cos(time / 650.0) * 0.0075 - 0.05, 0.0);
         } else {
-            // Move the inactive overlay four pixels upward from the base layer.
-            GL11.glTranslated(0.0, 0.25, 0.0);
+            // Keep the inactive overlay only slightly above the base layer.
+            GL11.glTranslated(0.0, 0.125, 0.0);
         }
         this.renderLayerOnTop(item, 3);
         GL11.glPopMatrix();
