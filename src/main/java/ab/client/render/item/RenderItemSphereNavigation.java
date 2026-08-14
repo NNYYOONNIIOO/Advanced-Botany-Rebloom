@@ -16,20 +16,14 @@ public class RenderItemSphereNavigation extends TileEntityItemStackRenderer {
     }
 
     private void renderLayerOnTop(ItemStack source, int modelMetadata) {
-        GlStateManager.enableDepth();
-        GlStateManager.depthFunc(GL11.GL_LEQUAL);
-        GlStateManager.depthMask(true);
-        try {
-            this.renderLayer(source, modelMetadata);
-        } finally {
-            GlStateManager.depthFunc(GL11.GL_LEQUAL);
-            GlStateManager.depthMask(true);
-        }
+        this.renderLayer(source, modelMetadata);
     }
 
     @Override
     public void renderByItem(ItemStack stack, float partialTicks) {
-        GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
+        boolean lightingEnabled = GL11.glIsEnabled(GL11.GL_LIGHTING);
+        boolean blendEnabled = GL11.glIsEnabled(GL11.GL_BLEND);
+        boolean depthEnabled = GL11.glIsEnabled(GL11.GL_DEPTH_TEST);
         GL11.glPushMatrix();
         GlStateManager.disableLighting();
         try {
@@ -46,9 +40,22 @@ public class RenderItemSphereNavigation extends TileEntityItemStackRenderer {
             this.renderLayerOnTop(stack, 3);
             GL11.glPopMatrix();
         } finally {
-            GlStateManager.disableBlend();
+            if (blendEnabled) {
+                GlStateManager.enableBlend();
+            } else {
+                GlStateManager.disableBlend();
+            }
+            if (lightingEnabled) {
+                GlStateManager.enableLighting();
+            } else {
+                GlStateManager.disableLighting();
+            }
+            if (depthEnabled) {
+                GlStateManager.enableDepth();
+            } else {
+                GlStateManager.disableDepth();
+            }
             GL11.glPopMatrix();
-            GL11.glPopAttrib();
         }
     }
 }
