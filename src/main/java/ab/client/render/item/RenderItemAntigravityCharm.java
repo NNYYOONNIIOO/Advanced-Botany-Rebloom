@@ -21,11 +21,9 @@ public class RenderItemAntigravityCharm extends TileEntityItemStackRenderer {
 
     @Override
     public void renderByItem(ItemStack item, float partialTicks) {
-        boolean lightingEnabled = GL11.glIsEnabled(GL11.GL_LIGHTING);
         boolean blendEnabled = GL11.glIsEnabled(GL11.GL_BLEND);
         boolean depthEnabled = GL11.glIsEnabled(GL11.GL_DEPTH_TEST);
         GL11.glPushMatrix();
-        GlStateManager.disableLighting();
         try {
             GlStateManager.enableBlend();
             GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -48,16 +46,12 @@ public class RenderItemAntigravityCharm extends TileEntityItemStackRenderer {
             } else {
                 GlStateManager.disableBlend();
             }
-            if (lightingEnabled) {
-                GlStateManager.enableLighting();
-            } else {
-                GlStateManager.disableLighting();
-            }
             if (depthEnabled) {
                 GlStateManager.enableDepth();
             } else {
                 GlStateManager.disableDepth();
             }
+            GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
             GL11.glPopMatrix();
         }
     }
