@@ -21,13 +21,8 @@ public class RenderItemSphereNavigation extends TileEntityItemStackRenderer {
 
     @Override
     public void renderByItem(ItemStack stack, float partialTicks) {
-        GlStateManager.pushAttrib();
         GlStateManager.pushMatrix();
         try {
-            GlStateManager.disableLighting();
-            GlStateManager.enableBlend();
-            GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-            GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
             this.renderLayer(stack, 2);
             // Metadata 0 is enabled (_4); metadata 1 is disabled (_3).
             this.renderLayerOnTop(stack, stack.getMetadata() == 0 ? 6 : 5);
@@ -42,7 +37,6 @@ public class RenderItemSphereNavigation extends TileEntityItemStackRenderer {
             }
         } finally {
             GlStateManager.popMatrix();
-            GlStateManager.popAttrib();
         }
     }
 }
