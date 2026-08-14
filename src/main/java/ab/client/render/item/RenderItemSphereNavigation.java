@@ -22,6 +22,7 @@ public class RenderItemSphereNavigation extends TileEntityItemStackRenderer {
         GlStateManager.enableBlend();
         GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
+        this.renderLayer(stack, 2);
         this.renderLayer(stack, stack.getMetadata() == 0 ? 6 : 5);
         GL11.glPushMatrix();
         double time = Minecraft.getSystemTime();
