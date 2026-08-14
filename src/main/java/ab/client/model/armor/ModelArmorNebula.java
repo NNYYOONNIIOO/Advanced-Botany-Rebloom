@@ -270,11 +270,11 @@ public class ModelArmorNebula extends ModelBiped {
         this.lLeg.showModel = this.slot == EntityEquipmentSlot.LEGS;
         this.lBoot.showModel = this.slot == EntityEquipmentSlot.FEET;
         this.rBoot.showModel = this.slot == EntityEquipmentSlot.FEET;
-        this.bipedBody.showModel = false;
+        this.bipedHeadwear.showModel = false;
         this.bipedHead = this.head;
         this.bipedBody = this.chestplate;
-        this.bipedLeftArm = this.lArm;
-        this.bipedRightArm = this.rArm;
+        this.bipedRightArm = this.lArm;
+        this.bipedLeftArm = this.rArm;
         if (this.slot == EntityEquipmentSlot.LEGS) {
             // The negative-X model part is the player's right leg. Keep the
             // ModelBiped animation mapping aligned with the rendered side.
@@ -295,20 +295,20 @@ public class ModelArmorNebula extends ModelBiped {
             GL11.glScalef(1.0f / f6, 1.0f / f6, 1.0f / f6);
             GL11.glTranslatef(0.0f, 24.0f * f5, 0.0f);
             this.bipedBody.render(f5);
-            this.bipedLeftArm.render(f5);
             this.bipedRightArm.render(f5);
-            this.bipedLeftLeg.render(f5);
+            this.bipedLeftArm.render(f5);
             this.bipedRightLeg.render(f5);
-            this.bipedBody.render(f5);
+            this.bipedLeftLeg.render(f5);
+            this.bipedHeadwear.render(f5);
             GL11.glPopMatrix();
         } else {
             this.bipedHead.render(f5);
             this.bipedBody.render(f5);
-            this.bipedLeftArm.render(f5);
             this.bipedRightArm.render(f5);
-            this.bipedLeftLeg.render(f5);
+            this.bipedLeftArm.render(f5);
             this.bipedRightLeg.render(f5);
-            this.bipedBody.render(f5);
+            this.bipedLeftLeg.render(f5);
+            this.bipedHeadwear.render(f5);
         }
     }
 
