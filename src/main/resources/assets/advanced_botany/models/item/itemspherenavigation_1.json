@@ -3,7 +3,6 @@
   "textures": {
     "layer0": "advanced_botany:items/spherenavigation_0",
     "layer1": "advanced_botany:items/spherenavigation_1",
-    "layer2": "advanced_botany:items/spherenavigation_2",
     "layer3": "advanced_botany:items/spherenavigation_3"
   }
 }

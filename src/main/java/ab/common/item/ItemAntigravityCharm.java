@@ -1,6 +1,8 @@
 package ab.common.item;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.item.EntityFallingBlock;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -21,6 +23,15 @@ public class ItemAntigravityCharm extends ItemMod {
         super("antigravityCharm");
         this.setMaxStackSize(1);
         this.setNoRepair();
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
+        super.addInformation(stack, world, tooltip, flag);
+        String statusKey = ItemNBTHelper.getBoolean(stack, "isActive", true)
+                ? "botaniamisc.active"
+                : "botaniamisc.inactive";
+        tooltip.add(I18n.format(statusKey).replace("&", "\u00a7"));
     }
 
     @Override

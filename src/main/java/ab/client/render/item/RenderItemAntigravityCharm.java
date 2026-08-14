@@ -12,6 +12,12 @@ import org.lwjgl.opengl.GL11;
 import vazkii.botania.common.core.helper.ItemNBTHelper;
 
 public class RenderItemAntigravityCharm extends TileEntityItemStackRenderer {
+    private void renderLayer(ItemStack source, int modelMetadata) {
+        ItemStack layer = source.copy();
+        layer.setItemDamage(modelMetadata);
+        Minecraft.getMinecraft().getRenderItem().renderItem(layer, ItemCameraTransforms.TransformType.NONE);
+    }
+
     @Override
     public void renderByItem(ItemStack item, float partialTicks) {
         Minecraft mc = Minecraft.getMinecraft();
@@ -19,13 +25,16 @@ public class RenderItemAntigravityCharm extends TileEntityItemStackRenderer {
         GlStateManager.enableBlend();
         GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
+        this.renderLayer(item, 2);
+        GL11.glPushMatrix();
         double time = Minecraft.getSystemTime();
         if (ItemNBTHelper.getBoolean(item, "isActive", true)) {
             GL11.glTranslated(0.0, Math.cos(time / 650.0) * 0.0075 - 0.05, 0.0);
         } else {
-            GL11.glTranslated(0.0, -0.125, 0.0);
+            GL11.glTranslated(0.0, -0.25, 0.0);
         }
-        mc.getRenderItem().renderItem(item, ItemCameraTransforms.TransformType.NONE);
+        this.renderLayer(item, 3);
+        GL11.glPopMatrix();
         GlStateManager.disableBlend();
         GL11.glPopMatrix();
     }

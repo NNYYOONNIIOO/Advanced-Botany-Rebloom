@@ -78,12 +78,17 @@ public class ModelRegisterHandler {
         for (int i = 0; i < 2; i++) {
             registerItemModel(ItemListAB.itemAdvancedSpark, i, "itemadvancedspark_" + i);
         }
-        for (int i = 0; i < 2; i++) {
-            registerItemModel(ItemListAB.itemAntigravityCharm, i, "itemantigravitycharm_" + i);
-        }
-        for (int i = 0; i < 5; i++) {
-            registerItemModel(ItemListAB.itemSphereNavigation, i, "itemspherenavigation_" + i);
-        }
+        registerItemModel(ItemListAB.itemAntigravityCharm, 0, "itemantigravitycharm_active");
+        registerItemModel(ItemListAB.itemAntigravityCharm, 1, "itemantigravitycharm_inactive");
+        registerItemModel(ItemListAB.itemAntigravityCharm, 2, "itemantigravitycharm_base");
+        registerItemModel(ItemListAB.itemAntigravityCharm, 3, "itemantigravitycharm_overlay");
+
+        registerItemModel(ItemListAB.itemSphereNavigation, 0, "itemspherenavigation_active");
+        registerItemModel(ItemListAB.itemSphereNavigation, 1, "itemspherenavigation_inactive");
+        registerItemModel(ItemListAB.itemSphereNavigation, 2, "itemspherenavigation_base");
+        registerItemModel(ItemListAB.itemSphereNavigation, 3, "itemspherenavigation_target");
+        registerItemModel(ItemListAB.itemSphereNavigation, 5, "itemspherenavigation_disabled");
+        registerItemModel(ItemListAB.itemSphereNavigation, 6, "itemspherenavigation_enabled");
     }
 
     private static void registerBlockModel(Block block, int meta, String modelPath) {

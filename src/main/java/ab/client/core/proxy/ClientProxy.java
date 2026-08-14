@@ -13,6 +13,8 @@ import ab.client.render.entity.EntityNullRender;
 import ab.client.render.entity.RenderEntityAdvancedSpark;
 import ab.client.render.entity.RenderEntityAlphirinePortal;
 import ab.client.render.item.RenderItemTESRBlock;
+import ab.client.render.item.RenderItemAntigravityCharm;
+import ab.client.render.item.RenderItemSphereNavigation;
 import ab.client.render.tile.RenderTileABSpreader;
 import ab.client.render.tile.RenderTileBoardFate;
 import ab.client.render.tile.RenderTileEngineerHopper;
@@ -41,6 +43,7 @@ import ab.common.block.subtile.SubTileAncientAlphirine;
 import ab.common.block.subtile.SubTileArdentAzarcissus;
 import ab.common.block.subtile.SubTileDictarius;
 import ab.common.lib.register.BlockListAB;
+import ab.common.lib.register.ItemListAB;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.Item;
@@ -103,6 +106,8 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TileGameBoard.class, new RenderTileGameBoard());
 
         // Set TEISR for TESR blocks so builtin/entity item models render correctly
+        ItemListAB.itemAntigravityCharm.setTileEntityItemStackRenderer(new RenderItemAntigravityCharm());
+        ItemListAB.itemSphereNavigation.setTileEntityItemStackRenderer(new RenderItemSphereNavigation());
         RenderItemTESRBlock tesrRenderer = new RenderItemTESRBlock();
         Item.getItemFromBlock(BlockListAB.blockABSpreader).setTileEntityItemStackRenderer(tesrRenderer);
         Item.getItemFromBlock(BlockListAB.blockABPlate).setTileEntityItemStackRenderer(tesrRenderer);

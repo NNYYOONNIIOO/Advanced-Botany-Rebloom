@@ -13,6 +13,8 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumHandSide;
 import org.lwjgl.opengl.GL11;
 
 public class ModelArmorNebula extends ModelBiped {
@@ -317,16 +319,32 @@ public class ModelArmorNebula extends ModelBiped {
         this.isSneak = living != null ? living.isSneaking() : false;
         if (living != null && living instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) living;
-            ItemStack itemstack = player.getHeldItemMainhand();
-            this.leftArmPose = !itemstack.isEmpty() ? ModelBiped.ArmPose.ITEM : ModelBiped.ArmPose.EMPTY;
-            this.rightArmPose = !itemstack.isEmpty() && player.getHeldItemOffhand().isEmpty() ? ModelBiped.ArmPose.ITEM : ModelBiped.ArmPose.EMPTY;
-            if (itemstack != null && player.getItemInUseCount() > 0) {
-                EnumAction enumaction = itemstack.getItemUseAction();
+            ItemStack mainHand = player.getHeldItemMainhand();
+            ItemStack offHand = player.getHeldItemOffhand();
+            boolean rightPrimary = player.getPrimaryHand() == EnumHandSide.RIGHT;
+            ItemStack rightStack = rightPrimary ? mainHand : offHand;
+            ItemStack leftStack = rightPrimary ? offHand : mainHand;
+            this.rightArmPose = !rightStack.isEmpty() ? ModelBiped.ArmPose.ITEM : ModelBiped.ArmPose.EMPTY;
+            this.leftArmPose = !leftStack.isEmpty() ? ModelBiped.ArmPose.ITEM : ModelBiped.ArmPose.EMPTY;
+            if (player.getItemInUseCount() > 0) {
+                EnumHand activeHand = player.getActiveHand();
+                ItemStack activeStack = activeHand == EnumHand.MAIN_HAND ? mainHand : offHand;
+                if (!activeStack.isEmpty()) {
+                    EnumAction enumaction = activeStack.getItemUseAction();
+                    boolean rightArm = (activeHand == EnumHand.MAIN_HAND) == rightPrimary;
                 if (enumaction == EnumAction.BLOCK) {
-                    this.leftArmPose = ModelBiped.ArmPose.BLOCK;
-                    this.rightArmPose = ModelBiped.ArmPose.BLOCK;
+                        if (rightArm) {
+                            this.rightArmPose = ModelBiped.ArmPose.BLOCK;
+                        } else {
+                            this.leftArmPose = ModelBiped.ArmPose.BLOCK;
+                        }
                 } else if (enumaction == EnumAction.BOW) {
-                    this.rightArmPose = ModelBiped.ArmPose.ITEM;
+                        if (rightArm) {
+                            this.rightArmPose = ModelBiped.ArmPose.ITEM;
+                        } else {
+                            this.leftArmPose = ModelBiped.ArmPose.ITEM;
+                        }
+                    }
                 }
             }
         }
