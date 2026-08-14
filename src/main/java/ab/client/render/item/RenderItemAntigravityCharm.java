@@ -21,8 +21,10 @@ public class RenderItemAntigravityCharm extends TileEntityItemStackRenderer {
 
     @Override
     public void renderByItem(ItemStack item, float partialTicks) {
+        GlStateManager.pushAttrib();
         GlStateManager.pushMatrix();
         try {
+            GlStateManager.disableLighting();
             GlStateManager.enableBlend();
             GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
@@ -42,9 +44,8 @@ public class RenderItemAntigravityCharm extends TileEntityItemStackRenderer {
                 GlStateManager.popMatrix();
             }
         } finally {
-            GlStateManager.disableBlend();
-            GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
             GlStateManager.popMatrix();
+            GlStateManager.popAttrib();
         }
     }
 }
