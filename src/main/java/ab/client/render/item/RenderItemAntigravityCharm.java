@@ -36,10 +36,9 @@ public class RenderItemAntigravityCharm extends TileEntityItemStackRenderer {
         if (ItemNBTHelper.getBoolean(item, "isActive", true)) {
             GL11.glTranslated(0.0, Math.cos(time / 650.0) * 0.0075 - 0.05, 0.0);
         } else {
-            // Keep the inactive overlay only slightly above the base layer.
-            // In the item-render coordinate system, this places the inactive overlay
-            // four pixels lower so it aligns with the closed charm texture.
-            GL11.glTranslated(0.0, 0.0, 0.0);
+            // Four pixels in the overlay texture equal two base-texture pixels.
+            // Move only itemantigravitycharm_1 down by those two base pixels.
+            GL11.glTranslated(0.0, -0.125, 0.0);
         }
         this.renderLayerOnTop(item, 3);
         GL11.glPopMatrix();
