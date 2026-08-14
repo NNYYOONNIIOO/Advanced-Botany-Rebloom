@@ -33,7 +33,8 @@ import java.util.List;
 public class AdvancedPlateTweaker {
 
     private static final List<IAction> deferredActions = new ArrayList<>();
-    private static boolean executingDeferred = false;
+    private static final Object DEFERRED_ACTION_LOCK = new Object();
+    private static volatile boolean executingDeferred = false;
     private static boolean handlerRegistered = false;
 
     private static void ensureHandlerRegistered() {
@@ -48,36 +49,50 @@ public class AdvancedPlateTweaker {
         public void onServerTick(TickEvent.ServerTickEvent event) {
             if (event.phase == TickEvent.Phase.START && !deferredActions.isEmpty()) {
                 AdvancedPlateTweaker.executeDeferred();
-                MinecraftForge.EVENT_BUS.unregister(this);
+            }
+        }
+
+        @SubscribeEvent
+        public void onClientTick(TickEvent.ClientTickEvent event) {
+            if (event.phase == TickEvent.Phase.START && !deferredActions.isEmpty()) {
+                AdvancedPlateTweaker.executeDeferred();
             }
         }
     }
 
     private static void defer(IAction action) {
         ensureHandlerRegistered();
-        if (!executingDeferred) {
-            deferredActions.add(action);
+        synchronized (DEFERRED_ACTION_LOCK) {
+            if (!executingDeferred) {
+                deferredActions.add(action);
+            }
         }
     }
 
     private static void executeDeferred() {
-        if (executingDeferred) return;
-        executingDeferred = true;
-        for (IAction action : deferredActions) {
+        List<IAction> actions;
+        synchronized (DEFERRED_ACTION_LOCK) {
+            if (executingDeferred || deferredActions.isEmpty()) return;
+            executingDeferred = true;
+            actions = new ArrayList<>(deferredActions);
+            deferredActions.clear();
+        }
+        for (IAction action : actions) {
             try {
                 action.apply();
             } catch (Exception e) {
                 CraftTweakerAPI.logError("[AdvancedBotany] Error executing deferred action: " + action.describe() + " - " + e.getMessage());
             }
         }
-        deferredActions.clear();
+        synchronized (DEFERRED_ACTION_LOCK) {
+            executingDeferred = false;
+        }
         // 同步 JEI 显示
         refreshJEI();
     }
 
     private static void refreshJEI() {
         try {
-            if (!net.minecraftforge.fml.common.FMLCommonHandler.instance().getSide().isClient()) return;
             Class<?> mcClass = Class.forName("net.minecraft.client.Minecraft");
             Object mcInstance = mcClass.getMethod("getMinecraft").invoke(null);
             Runnable task = new Runnable() {

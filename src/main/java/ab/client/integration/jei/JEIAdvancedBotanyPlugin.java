@@ -12,10 +12,8 @@ import mezz.jei.api.IJeiRuntime;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.JEIPlugin;
-import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import mezz.jei.api.IRecipeRegistry;
-import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.item.ItemStack;
 import vazkii.botania.common.item.block.ItemBlockSpecialFlower;
 
@@ -27,6 +25,7 @@ public class JEIAdvancedBotanyPlugin implements IModPlugin {
 
     private static IJeiRuntime jeiRuntime;
     private static boolean plateRefreshPending;
+    private static List<AdvancedPlateRecipeWrapper> registeredPlateRecipes = new ArrayList<>();
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registry) {
@@ -36,7 +35,8 @@ public class JEIAdvancedBotanyPlugin implements IModPlugin {
 
     @Override
     public void register(IModRegistry registry) {
-        registry.addRecipes(wrapPlateRecipes(), AdvancedPlateRecipeCategory.UID);
+        registeredPlateRecipes = wrapPlateRecipes();
+        registry.addRecipes(registeredPlateRecipes, AdvancedPlateRecipeCategory.UID);
         registry.addRecipeCatalyst(new ItemStack(BlockListAB.blockABPlate), AdvancedPlateRecipeCategory.UID);
 
         registry.addRecipes(wrapAlphirineRecipes(), AlphirineRecipeCategory.UID);
@@ -63,17 +63,12 @@ public class JEIAdvancedBotanyPlugin implements IModPlugin {
         }
         IRecipeRegistry registry = jeiRuntime.getRecipeRegistry();
         // 隐藏所有旧的 Advanced Plate 配方
-        IRecipeCategory<?> category = registry.getRecipeCategory(AdvancedPlateRecipeCategory.UID);
-        if (category != null) {
-            List<?> oldWrappers = registry.getRecipeWrappers(category);
-            for (Object wrapper : oldWrappers) {
-                if (wrapper instanceof AdvancedPlateRecipeWrapper) {
-                    registry.hideRecipe((IRecipeWrapper) wrapper, AdvancedPlateRecipeCategory.UID);
-                }
-            }
+        for (AdvancedPlateRecipeWrapper wrapper : registeredPlateRecipes) {
+            registry.hideRecipe(wrapper, AdvancedPlateRecipeCategory.UID);
         }
         // 添加当前配方列表中的配方。JEI 1.12 的运行时注册表只提供逐条添加接口。
-        for (AdvancedPlateRecipeWrapper wrapper : wrapPlateRecipes()) {
+        registeredPlateRecipes = wrapPlateRecipes();
+        for (AdvancedPlateRecipeWrapper wrapper : registeredPlateRecipes) {
             registry.addRecipe(wrapper, AdvancedPlateRecipeCategory.UID);
         }
     }
