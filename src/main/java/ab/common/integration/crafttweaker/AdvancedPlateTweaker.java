@@ -115,7 +115,7 @@ public class AdvancedPlateTweaker {
     private static boolean refreshJEIOnClient() {
         try {
             Class<?> pluginClass = Class.forName("ab.client.integration.jei.JEIAdvancedBotanyPlugin");
-            Object result = pluginClass.getMethod("refreshPlateRecipesReliable").invoke(null);
+            Object result = pluginClass.getMethod("refreshPlateRecipesReliableV2").invoke(null);
             return !(result instanceof Boolean) || ((Boolean) result).booleanValue();
         } catch (ClassNotFoundException e) {
             return true;
@@ -135,7 +135,7 @@ public class AdvancedPlateTweaker {
                 public void run() {
                     try {
                         Class<?> pluginClass = Class.forName("ab.client.integration.jei.JEIAdvancedBotanyPlugin");
-                        pluginClass.getMethod("refreshPlateRecipesReliable").invoke(null);
+                        pluginClass.getMethod("refreshPlateRecipesReliableV2").invoke(null);
                     } catch (Exception e) {
                         // JEI 不存在时忽略
                     }

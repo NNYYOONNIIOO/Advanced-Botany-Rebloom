@@ -49,7 +49,7 @@ public class JEIAdvancedBotanyPlugin implements IModPlugin {
     public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
         JEIAdvancedBotanyPlugin.jeiRuntime = jeiRuntime;
         if (plateRefreshPending) {
-            refreshPlateRecipesReliable();
+            refreshPlateRecipesReliableV2();
         }
     }
 
@@ -108,6 +108,55 @@ public class JEIAdvancedBotanyPlugin implements IModPlugin {
                 registry.addRecipe(wrapper, AdvancedPlateRecipeCategory.UID);
             }
             registeredPlateRecipes = currentRecipes;
+            plateRefreshPending = false;
+            return true;
+        } catch (RuntimeException e) {
+            plateRefreshPending = true;
+            return false;
+        }
+    }
+
+    public static boolean refreshPlateRecipesReliableV2() {
+        if (jeiRuntime == null) {
+            plateRefreshPending = true;
+            return false;
+        }
+        try {
+            IRecipeRegistry registry = jeiRuntime.getRecipeRegistry();
+            IRecipeCategory<?> category = registry.getRecipeCategory(AdvancedPlateRecipeCategory.UID);
+            if (category == null) {
+                plateRefreshPending = true;
+                return false;
+            }
+
+            List<AdvancedPlateRecipeWrapper> oldWrappers = new ArrayList<>(registeredPlateRecipes);
+            List<AdvancedPlateRecipeWrapper> currentWrappers = new ArrayList<>();
+            List<AdvancedPlateRecipeWrapper> newWrappers = new ArrayList<>();
+            for (RecipeAdvancedPlate recipe : AdvancedBotanyAPI.advancedPlateRecipes) {
+                AdvancedPlateRecipeWrapper wrapper = null;
+                for (AdvancedPlateRecipeWrapper oldWrapper : oldWrappers) {
+                    if (oldWrapper.getRecipe() == recipe) {
+                        wrapper = oldWrapper;
+                        break;
+                    }
+                }
+                if (wrapper == null) {
+                    wrapper = new AdvancedPlateRecipeWrapper(recipe);
+                    newWrappers.add(wrapper);
+                }
+                currentWrappers.add(wrapper);
+            }
+
+            for (AdvancedPlateRecipeWrapper oldWrapper : oldWrappers) {
+                if (!currentWrappers.contains(oldWrapper)) {
+                    registry.hideRecipe(oldWrapper, AdvancedPlateRecipeCategory.UID);
+                }
+            }
+            for (AdvancedPlateRecipeWrapper newWrapper : newWrappers) {
+                registry.addRecipe(newWrapper, AdvancedPlateRecipeCategory.UID);
+            }
+
+            registeredPlateRecipes = currentWrappers;
             plateRefreshPending = false;
             return true;
         } catch (RuntimeException e) {
