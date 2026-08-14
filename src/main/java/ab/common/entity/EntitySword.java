@@ -49,20 +49,40 @@ public class EntitySword extends EntityThrowable {
             this.setDead();
         }
         if (this.world.isRemote) {
-            for (int i = 0; i < 10; ++i) {
-                double trail = this.world.rand.nextDouble() * 0.9;
+            float[][] colors = new float[][]{
+                    {0.12f, 0.55f, 1.00f},
+                    {0.34f, 0.12f, 1.00f},
+                    {1.00f, 0.08f, 0.68f},
+                    {0.10f, 1.00f, 0.42f},
+                    {1.00f, 0.48f, 0.04f}
+            };
+            for (int i = 0; i < 18; ++i) {
+                double trail = this.world.rand.nextDouble() * 1.20D;
+                float[] color = colors[this.world.rand.nextInt(colors.length)];
+                double px = this.posX - this.motionX * trail + (this.world.rand.nextDouble() - 0.5D) * 0.18D;
+                double py = this.posY - this.motionY * trail + (this.world.rand.nextDouble() - 0.5D) * 0.18D;
+                double pz = this.posZ - this.motionZ * trail + (this.world.rand.nextDouble() - 0.5D) * 0.18D;
                 Botania.proxy.wispFX(
-                        this.posX - this.motionX * trail + (this.world.rand.nextDouble() - 0.5) * 0.18,
-                        this.posY - this.motionY * trail + (this.world.rand.nextDouble() - 0.5) * 0.18,
-                        this.posZ - this.motionZ * trail + (this.world.rand.nextDouble() - 0.5) * 0.18,
-                        0.72f + this.world.rand.nextFloat() * 0.28f,
-                        0.84f + this.world.rand.nextFloat() * 0.16f,
-                        1.0f,
-                        0.12f + this.world.rand.nextFloat() * 0.10f,
-                        (float) this.motionX * 0.04f,
-                        (float) this.motionY * 0.04f,
-                        (float) this.motionZ * 0.04f,
-                        0.7f);
+                        px, py, pz, color[0], color[1], color[2],
+                        0.14f + this.world.rand.nextFloat() * 0.12f,
+                        (float) this.motionX * 0.02f,
+                        (float) this.motionY * 0.02f,
+                        (float) this.motionZ * 0.02f,
+                        0.9f);
+                if (i % 3 == 0) {
+                    Botania.proxy.sparkleFX(px, py, pz, color[0], color[1], color[2], 0.75f, 2);
+                }
+            }
+            for (int i = 0; i < 4; ++i) {
+                Botania.proxy.wispFX(
+                        this.posX + (this.world.rand.nextDouble() - 0.5D) * 0.12D,
+                        this.posY + (this.world.rand.nextDouble() - 0.5D) * 0.12D,
+                        this.posZ + (this.world.rand.nextDouble() - 0.5D) * 0.12D,
+                        0.72f, 0.90f, 1.0f, 0.22f,
+                        (float) this.motionX * 0.02f,
+                        (float) this.motionY * 0.02f,
+                        (float) this.motionZ * 0.02f,
+                        0.65f);
             }
         }
     }

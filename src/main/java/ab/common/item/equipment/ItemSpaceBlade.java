@@ -107,12 +107,17 @@ public class ItemSpaceBlade extends ItemSword implements IRankItem, IManaUsingIt
         if (blade.getLevel(stack) < 1 || !ManaItemHandler.requestManaExactForTool(stack, player, 120, true)) {
             return false;
         }
+        Vec3d look = player.getLookVec().normalize();
         EntitySword sword = new EntitySword(player.world, player);
         sword.setDamage(blade.getSwordDamage(stack));
         sword.setAttacker(player.getName());
-        sword.motionX *= 0.2;
-        sword.motionY *= 0.2;
-        sword.motionZ *= 0.2;
+        sword.setPosition(
+                player.posX + look.x * 0.75D,
+                player.posY + player.getEyeHeight() + look.y * 0.75D,
+                player.posZ + look.z * 0.75D);
+        sword.motionX = look.x * 0.60D;
+        sword.motionY = look.y * 0.60D;
+        sword.motionZ = look.z * 0.60D;
         player.world.spawnEntity(sword);
         ItemNBTHelper.setInt(stack, "postAttackTick", 3);
         player.world.playSound(null, player.posX, player.posY, player.posZ,
