@@ -29,20 +29,30 @@ public class RenderItemSphereNavigation extends TileEntityItemStackRenderer {
 
     @Override
     public void renderByItem(ItemStack stack, float partialTicks) {
+        boolean lightingEnabled = GL11.glIsEnabled(GL11.GL_LIGHTING);
         GL11.glPushMatrix();
-        GlStateManager.enableBlend();
-        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
-        this.renderLayer(stack, 2);
-        // Metadata 0 is enabled (_4); metadata 1 is disabled (_3).
-        this.renderLayerOnTop(stack, stack.getMetadata() == 0 ? 6 : 5);
-        GL11.glPushMatrix();
-        double time = Minecraft.getSystemTime();
-        // The _1 layer is part of the item in both states and floats by +/- 0.5 pixels.
-        GL11.glTranslated(0.0, Math.cos(time / 650.0) * 0.03125, 0.0);
-        this.renderLayerOnTop(stack, 3);
-        GL11.glPopMatrix();
-        GlStateManager.disableBlend();
-        GL11.glPopMatrix();
+        GlStateManager.disableLighting();
+        try {
+            GlStateManager.enableBlend();
+            GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
+            this.renderLayer(stack, 2);
+            // Metadata 0 is enabled (_4); metadata 1 is disabled (_3).
+            this.renderLayerOnTop(stack, stack.getMetadata() == 0 ? 6 : 5);
+            GL11.glPushMatrix();
+            double time = Minecraft.getSystemTime();
+            // The _1 layer is part of the item in both states and floats by +/- 0.5 pixels.
+            GL11.glTranslated(0.0, Math.cos(time / 650.0) * 0.03125, 0.0);
+            this.renderLayerOnTop(stack, 3);
+            GL11.glPopMatrix();
+        } finally {
+            GlStateManager.disableBlend();
+            if (lightingEnabled) {
+                GlStateManager.enableLighting();
+            } else {
+                GlStateManager.disableLighting();
+            }
+            GL11.glPopMatrix();
+        }
     }
 }

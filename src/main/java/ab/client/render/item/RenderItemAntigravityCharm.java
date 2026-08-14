@@ -29,23 +29,33 @@ public class RenderItemAntigravityCharm extends TileEntityItemStackRenderer {
 
     @Override
     public void renderByItem(ItemStack item, float partialTicks) {
+        boolean lightingEnabled = GL11.glIsEnabled(GL11.GL_LIGHTING);
         GL11.glPushMatrix();
-        GlStateManager.enableBlend();
-        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
-        this.renderLayer(item, 2);
-        GL11.glPushMatrix();
-        double time = Minecraft.getSystemTime();
-        if (ItemNBTHelper.getBoolean(item, "isActive", true)) {
-            GL11.glTranslated(0.0, Math.cos(time / 650.0) * 0.0075 - 0.05, 0.0);
-        } else {
-            // Four pixels in the overlay texture equal two base-texture pixels.
-            // Move only itemantigravitycharm_1 down by those two base pixels.
-            GL11.glTranslated(0.0, -0.125, 0.0);
+        GlStateManager.disableLighting();
+        try {
+            GlStateManager.enableBlend();
+            GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
+            this.renderLayer(item, 2);
+            GL11.glPushMatrix();
+            double time = Minecraft.getSystemTime();
+            if (ItemNBTHelper.getBoolean(item, "isActive", true)) {
+                GL11.glTranslated(0.0, Math.cos(time / 650.0) * 0.0075 - 0.05, 0.0);
+            } else {
+                // Four pixels in the overlay texture equal two base-texture pixels.
+                // Move only itemantigravitycharm_1 down by those two base pixels.
+                GL11.glTranslated(0.0, -0.125, 0.0);
+            }
+            this.renderLayerOnTop(item, 3);
+            GL11.glPopMatrix();
+        } finally {
+            GlStateManager.disableBlend();
+            if (lightingEnabled) {
+                GlStateManager.enableLighting();
+            } else {
+                GlStateManager.disableLighting();
+            }
+            GL11.glPopMatrix();
         }
-        this.renderLayerOnTop(item, 3);
-        GL11.glPopMatrix();
-        GlStateManager.disableBlend();
-        GL11.glPopMatrix();
     }
 }
