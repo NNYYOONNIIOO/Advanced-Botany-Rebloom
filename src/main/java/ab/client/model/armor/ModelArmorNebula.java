@@ -154,7 +154,7 @@ public class ModelArmorNebula extends ModelBiped {
         this.cube_r7_r2.cubeList.add(new ModelBox(this.cube_r7_r2, 34, 17, 1.5f, -21.1842f, -0.8615f, 2, 7, 2, 0.0f));
         this.cube_r7_r2.cubeList.add(new ModelBox(this.cube_r7_r2, 54, 69, -3.5f, -21.1842f, -0.8615f, 2, 7, 2, 0.0f));
         this.lArm = new ModelRenderer(this);
-        this.lArm.setRotationPoint(-5.0f, 2.0f, 0.0f);
+        this.lArm.setRotationPoint(-5.0f, 2.5f, 0.0f);
         this.lArm.cubeList.add(new ModelBox(this.lArm, 0, 27, -4.0f, -2.4f, -2.5f, 5, 5, 5, 0.05f));
         this.lArm.cubeList.add(new ModelBox(this.lArm, 21, 27, -3.0f, 6.0f, -2.0f, 4, 4, 4, 0.2f));
         this.cube_r17 = new ModelRenderer(this);
@@ -173,7 +173,7 @@ public class ModelArmorNebula extends ModelBiped {
         this.setRotationAngle(this.cube_r9, 0.0f, 0.0f, 0.0873f);
         this.cube_r9.cubeList.add(new ModelBox(this.cube_r9, 16, 19, -11.8564f, -24.7019f, -2.0f, 4, 3, 4, 0.0f));
         this.rArm = new ModelRenderer(this);
-        this.rArm.setRotationPoint(5.0f, 2.0f, 0.0f);
+        this.rArm.setRotationPoint(5.0f, 2.5f, 0.0f);
         this.rArm.cubeList.add(new ModelBox(this.rArm, 38, 26, -1.0f, -2.4f, -2.5f, 5, 5, 5, 0.05f));
         this.rArm.cubeList.add(new ModelBox(this.rArm, 0, 38, -1.0f, 6.0f, -2.0f, 4, 4, 4, 0.2f));
         this.cube_r18 = new ModelRenderer(this);

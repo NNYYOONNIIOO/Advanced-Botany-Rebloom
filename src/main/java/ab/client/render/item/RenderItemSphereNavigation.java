@@ -16,11 +16,11 @@ public class RenderItemSphereNavigation extends TileEntityItemStackRenderer {
         GlStateManager.enableBlend();
         GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
-        mc.getRenderItem().renderItem(stack, ItemCameraTransforms.TransformType.NONE);
         double time = Minecraft.getSystemTime();
         if (ItemSphereNavigation.getFindBlock(stack) != null) {
             GL11.glTranslated(0.0, Math.cos(time / 650.0) * 0.0075 - 0.015, 0.0);
         }
+        mc.getRenderItem().renderItem(stack, ItemCameraTransforms.TransformType.NONE);
         GlStateManager.disableBlend();
         GL11.glPopMatrix();
     }

@@ -1,6 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "advanced_botany:items/itemantigravitycharm_0"
+    "layer0": "advanced_botany:items/itemantigravitycharm_0",
+    "layer1": "advanced_botany:items/itemantigravitycharm_1"
   }
 }

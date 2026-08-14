@@ -187,7 +187,7 @@ public class ModelArmorWildHunt extends ModelBiped {
         this.setRotationAngle(this.cube_r20, 0.2182f, 0.0f, 0.0f);
         this.cube_r20.cubeList.add(new ModelBox(this.cube_r20, 0, 71, -3.0f, 4.6f, 1.4f, 6, 10, 0, 0.0f));
         this.lArm = new ModelRenderer(this);
-        this.lArm.setRotationPoint(-5.0f, 2.0f, 0.0f);
+        this.lArm.setRotationPoint(-5.0f, 2.5f, 0.0f);
         this.lArm.cubeList.add(new ModelBox(this.lArm, 31, 95, -3.0f, -2.0f, -2.0f, 4, 4, 4, 0.3f));
         this.lArm.cubeList.add(new ModelBox(this.lArm, 19, 59, -3.0f, 2.0f, -2.0f, 4, 8, 4, 0.1f));
         this.lArm.cubeList.add(new ModelBox(this.lArm, 19, 51, -3.9f, -2.7f, -2.0f, 4, 3, 4, 0.0f));
@@ -222,7 +222,7 @@ public class ModelArmorWildHunt extends ModelBiped {
         this.setRotationAngle(this.cube_r26, 0.2182f, 0.7854f, 0.0f);
         this.cube_r26.cubeList.add(new ModelBox(this.cube_r26, 0, 53, -1.0f, -13.7f, -1.7f, 2, 2, 2, -0.3f));
         this.rArm = new ModelRenderer(this);
-        this.rArm.setRotationPoint(5.0f, 2.0f, 0.0f);
+        this.rArm.setRotationPoint(5.0f, 2.5f, 0.0f);
         this.rArm.cubeList.add(new ModelBox(this.rArm, 19, 72, -1.0f, 2.0f, -2.0f, 4, 8, 4, 0.1f));
         this.rArm.cubeList.add(new ModelBox(this.rArm, 31, 105, -1.0f, -2.0f, -2.0f, 4, 4, 4, 0.3f));
         this.rArm.cubeList.add(new ModelBox(this.rArm, 19, 43, -0.1f, -2.7f, -2.0f, 4, 3, 4, 0.0f));
