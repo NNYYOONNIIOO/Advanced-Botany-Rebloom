@@ -29,7 +29,7 @@ public class RenderItemAntigravityCharm extends TileEntityItemStackRenderer {
 
     @Override
     public void renderByItem(ItemStack item, float partialTicks) {
-        boolean lightingEnabled = GL11.glIsEnabled(GL11.GL_LIGHTING);
+        GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
         GL11.glPushMatrix();
         GlStateManager.disableLighting();
         try {
@@ -50,12 +50,8 @@ public class RenderItemAntigravityCharm extends TileEntityItemStackRenderer {
             GL11.glPopMatrix();
         } finally {
             GlStateManager.disableBlend();
-            if (lightingEnabled) {
-                GlStateManager.enableLighting();
-            } else {
-                GlStateManager.disableLighting();
-            }
             GL11.glPopMatrix();
+            GL11.glPopAttrib();
         }
     }
 }
