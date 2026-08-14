@@ -21,7 +21,7 @@ public class RenderItemAntigravityCharm extends TileEntityItemStackRenderer {
         GlStateManager.enableBlend();
         GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
-        GlStateManager.translate(0.0F, 0.5F, 0.0F);
+        GlStateManager.translate(0.0F, 1.0F, 0.0F);
         this.renderLayer(item, 2);
         GL11.glPushMatrix();
         double time = Minecraft.getSystemTime();

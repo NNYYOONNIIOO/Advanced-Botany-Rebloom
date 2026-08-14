@@ -21,7 +21,7 @@ public class RenderItemSphereNavigation extends TileEntityItemStackRenderer {
         GlStateManager.enableBlend();
         GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
-        GlStateManager.translate(0.0F, 0.5F, 0.0F);
+        GlStateManager.translate(0.0F, 1.0F, 0.0F);
         this.renderLayer(stack, 2);
         this.renderLayer(stack, stack.getMetadata() == 0 ? 6 : 5);
         GL11.glPushMatrix();
