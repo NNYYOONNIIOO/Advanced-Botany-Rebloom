@@ -19,13 +19,9 @@ public class RenderItemSphereNavigation extends TileEntityItemStackRenderer {
         GlStateManager.enableDepth();
         GlStateManager.depthFunc(GL11.GL_LEQUAL);
         GlStateManager.depthMask(true);
-        GlStateManager.enablePolygonOffset();
-        GlStateManager.doPolygonOffset(-1.0f, -1.0f);
         try {
             this.renderLayer(source, modelMetadata);
         } finally {
-            GlStateManager.doPolygonOffset(0.0f, 0.0f);
-            GlStateManager.disablePolygonOffset();
             GlStateManager.depthFunc(GL11.GL_LEQUAL);
             GlStateManager.depthMask(true);
         }
