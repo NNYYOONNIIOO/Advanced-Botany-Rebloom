@@ -16,11 +16,15 @@ public class RenderItemSphereNavigation extends TileEntityItemStackRenderer {
     }
 
     private void renderLayerOnTop(ItemStack source, int modelMetadata) {
-        GlStateManager.disableDepth();
+        GlStateManager.enableDepth();
+        GlStateManager.depthFunc(GL11.GL_LEQUAL);
+        GlStateManager.enablePolygonOffset();
+        GlStateManager.doPolygonOffset(-1.0f, -1.0f);
         try {
             this.renderLayer(source, modelMetadata);
         } finally {
-            GlStateManager.enableDepth();
+            GlStateManager.doPolygonOffset(0.0f, 0.0f);
+            GlStateManager.disablePolygonOffset();
         }
     }
 
