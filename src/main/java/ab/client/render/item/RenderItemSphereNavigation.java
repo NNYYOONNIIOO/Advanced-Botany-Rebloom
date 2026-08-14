@@ -17,7 +17,6 @@ public class RenderItemSphereNavigation extends TileEntityItemStackRenderer {
 
     @Override
     public void renderByItem(ItemStack stack, float partialTicks) {
-        Minecraft mc = Minecraft.getMinecraft();
         GL11.glPushMatrix();
         GlStateManager.enableBlend();
         GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
