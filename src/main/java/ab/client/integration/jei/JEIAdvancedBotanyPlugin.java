@@ -49,8 +49,7 @@ public class JEIAdvancedBotanyPlugin implements IModPlugin {
     public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
         JEIAdvancedBotanyPlugin.jeiRuntime = jeiRuntime;
         if (plateRefreshPending) {
-            plateRefreshPending = false;
-            refreshPlateRecipes();
+            refreshPlateRecipesReliable();
         }
     }
 
@@ -72,6 +71,48 @@ public class JEIAdvancedBotanyPlugin implements IModPlugin {
         registeredPlateRecipes = wrapPlateRecipes();
         for (AdvancedPlateRecipeWrapper wrapper : registeredPlateRecipes) {
             registry.addRecipe(wrapper, AdvancedPlateRecipeCategory.UID);
+        }
+    }
+
+    public static boolean refreshPlateRecipesReliable() {
+        if (jeiRuntime == null) {
+            plateRefreshPending = true;
+            return false;
+        }
+        try {
+            IRecipeRegistry registry = jeiRuntime.getRecipeRegistry();
+            IRecipeCategory<?> category = registry.getRecipeCategory(AdvancedPlateRecipeCategory.UID);
+            if (category == null) {
+                plateRefreshPending = true;
+                return false;
+            }
+
+            List<IRecipeWrapper> oldWrappers = new ArrayList<>();
+            List<?> registeredWrappers = new ArrayList<>(registry.getRecipeWrappers(category));
+            for (Object wrapper : registeredWrappers) {
+                if (wrapper instanceof AdvancedPlateRecipeWrapper) {
+                    oldWrappers.add((IRecipeWrapper) wrapper);
+                }
+            }
+            for (AdvancedPlateRecipeWrapper wrapper : registeredPlateRecipes) {
+                if (!oldWrappers.contains(wrapper)) {
+                    oldWrappers.add(wrapper);
+                }
+            }
+            for (IRecipeWrapper wrapper : oldWrappers) {
+                registry.hideRecipe(wrapper, AdvancedPlateRecipeCategory.UID);
+            }
+
+            List<AdvancedPlateRecipeWrapper> currentRecipes = wrapPlateRecipes();
+            for (AdvancedPlateRecipeWrapper wrapper : currentRecipes) {
+                registry.addRecipe(wrapper, AdvancedPlateRecipeCategory.UID);
+            }
+            registeredPlateRecipes = currentRecipes;
+            plateRefreshPending = false;
+            return true;
+        } catch (RuntimeException e) {
+            plateRefreshPending = true;
+            return false;
         }
     }
 

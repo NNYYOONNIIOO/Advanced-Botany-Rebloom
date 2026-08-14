@@ -35,6 +35,10 @@ public class AdvancedPlateTweaker {
     private static final List<IAction> deferredActions = new ArrayList<>();
     private static final Object DEFERRED_ACTION_LOCK = new Object();
     private static volatile boolean executingDeferred = false;
+    private static volatile boolean clientRefreshPending = false;
+    private static volatile long nextClientRefreshTick = 0L;
+    private static long clientTickCounter = 0L;
+    private static final long CLIENT_REFRESH_INTERVAL = 5L;
     private static boolean handlerRegistered = false;
 
     private static void ensureHandlerRegistered() {
@@ -47,16 +51,28 @@ public class AdvancedPlateTweaker {
     private static class DeferredHandler {
         @SubscribeEvent
         public void onServerTick(TickEvent.ServerTickEvent event) {
-            if (event.phase == TickEvent.Phase.START && !deferredActions.isEmpty()) {
+            if (event.phase == TickEvent.Phase.START) {
                 AdvancedPlateTweaker.executeDeferred();
             }
         }
 
         @SubscribeEvent
         public void onClientTick(TickEvent.ClientTickEvent event) {
-            if (event.phase == TickEvent.Phase.START && !deferredActions.isEmpty()) {
+            if (event.phase == TickEvent.Phase.START) {
                 AdvancedPlateTweaker.executeDeferred();
+                AdvancedPlateTweaker.processClientRefresh();
             }
+        }
+    }
+
+    private static void processClientRefresh() {
+        if (!clientRefreshPending) return;
+        clientTickCounter++;
+        if (clientTickCounter < nextClientRefreshTick) return;
+        if (refreshJEIOnClient()) {
+            clientRefreshPending = false;
+        } else {
+            nextClientRefreshTick = clientTickCounter + CLIENT_REFRESH_INTERVAL;
         }
     }
 
@@ -88,7 +104,26 @@ public class AdvancedPlateTweaker {
             executingDeferred = false;
         }
         // 同步 JEI 显示
-        refreshJEI();
+        requestJEIRefresh();
+    }
+
+    private static void requestJEIRefresh() {
+        clientRefreshPending = true;
+        nextClientRefreshTick = 0L;
+    }
+
+    private static boolean refreshJEIOnClient() {
+        try {
+            Class<?> pluginClass = Class.forName("ab.client.integration.jei.JEIAdvancedBotanyPlugin");
+            Object result = pluginClass.getMethod("refreshPlateRecipesReliable").invoke(null);
+            return !(result instanceof Boolean) || ((Boolean) result).booleanValue();
+        } catch (ClassNotFoundException e) {
+            return true;
+        } catch (LinkageError e) {
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     private static void refreshJEI() {
@@ -100,7 +135,7 @@ public class AdvancedPlateTweaker {
                 public void run() {
                     try {
                         Class<?> pluginClass = Class.forName("ab.client.integration.jei.JEIAdvancedBotanyPlugin");
-                        pluginClass.getMethod("refreshPlateRecipes").invoke(null);
+                        pluginClass.getMethod("refreshPlateRecipesReliable").invoke(null);
                     } catch (Exception e) {
                         // JEI 不存在时忽略
                     }
