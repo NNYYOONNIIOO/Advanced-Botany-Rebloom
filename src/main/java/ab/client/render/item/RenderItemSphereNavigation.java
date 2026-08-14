@@ -15,6 +15,15 @@ public class RenderItemSphereNavigation extends TileEntityItemStackRenderer {
         Minecraft.getMinecraft().getRenderItem().renderItem(layer, ItemCameraTransforms.TransformType.NONE);
     }
 
+    private void renderLayerOnTop(ItemStack source, int modelMetadata) {
+        GlStateManager.disableDepth();
+        try {
+            this.renderLayer(source, modelMetadata);
+        } finally {
+            GlStateManager.enableDepth();
+        }
+    }
+
     @Override
     public void renderByItem(ItemStack stack, float partialTicks) {
         GL11.glPushMatrix();
@@ -22,13 +31,13 @@ public class RenderItemSphereNavigation extends TileEntityItemStackRenderer {
         GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
         this.renderLayer(stack, 2);
-        this.renderLayer(stack, stack.getMetadata() == 0 ? 6 : 5);
+        // Metadata 0 is enabled (_4); metadata 1 is disabled (_3).
+        this.renderLayerOnTop(stack, stack.getMetadata() == 0 ? 6 : 5);
         GL11.glPushMatrix();
         double time = Minecraft.getSystemTime();
-        if (ItemSphereNavigation.getFindBlock(stack) != null) {
-            GL11.glTranslated(0.0, Math.cos(time / 650.0) * 0.03125, 0.0);
-            this.renderLayer(stack, 3);
-        }
+        // The _1 layer is part of the item in both states and floats by +/- 0.5 pixels.
+        GL11.glTranslated(0.0, Math.cos(time / 650.0) * 0.03125, 0.0);
+        this.renderLayerOnTop(stack, 3);
         GL11.glPopMatrix();
         GlStateManager.disableBlend();
         GL11.glPopMatrix();

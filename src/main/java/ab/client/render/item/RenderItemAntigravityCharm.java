@@ -15,6 +15,15 @@ public class RenderItemAntigravityCharm extends TileEntityItemStackRenderer {
         Minecraft.getMinecraft().getRenderItem().renderItem(layer, ItemCameraTransforms.TransformType.NONE);
     }
 
+    private void renderLayerOnTop(ItemStack source, int modelMetadata) {
+        GlStateManager.disableDepth();
+        try {
+            this.renderLayer(source, modelMetadata);
+        } finally {
+            GlStateManager.enableDepth();
+        }
+    }
+
     @Override
     public void renderByItem(ItemStack item, float partialTicks) {
         GL11.glPushMatrix();
@@ -27,9 +36,10 @@ public class RenderItemAntigravityCharm extends TileEntityItemStackRenderer {
         if (ItemNBTHelper.getBoolean(item, "isActive", true)) {
             GL11.glTranslated(0.0, Math.cos(time / 650.0) * 0.0075 - 0.05, 0.0);
         } else {
-            GL11.glTranslated(0.0, -0.25, 0.0);
+            // Move the inactive overlay four pixels upward from the base layer.
+            GL11.glTranslated(0.0, 0.25, 0.0);
         }
-        this.renderLayer(item, 3);
+        this.renderLayerOnTop(item, 3);
         GL11.glPopMatrix();
         GlStateManager.disableBlend();
         GL11.glPopMatrix();
