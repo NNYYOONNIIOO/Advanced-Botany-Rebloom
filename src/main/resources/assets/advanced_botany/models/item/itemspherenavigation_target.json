@@ -27,10 +27,6 @@
         "west": {
           "uv": [0, 0, 1, 16],
           "texture": "#layer0"
-        },
-        "east": {
-          "uv": [15, 0, 16, 16],
-          "texture": "#layer0"
         }
       }
     }

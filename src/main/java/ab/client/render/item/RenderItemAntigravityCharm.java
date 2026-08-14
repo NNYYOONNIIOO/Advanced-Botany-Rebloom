@@ -18,6 +18,7 @@ public class RenderItemAntigravityCharm extends TileEntityItemStackRenderer {
     private void renderLayerOnTop(ItemStack source, int modelMetadata) {
         GlStateManager.enableDepth();
         GlStateManager.depthFunc(GL11.GL_LEQUAL);
+        GlStateManager.depthMask(true);
         GlStateManager.enablePolygonOffset();
         GlStateManager.doPolygonOffset(-1.0f, -1.0f);
         try {
@@ -25,6 +26,8 @@ public class RenderItemAntigravityCharm extends TileEntityItemStackRenderer {
         } finally {
             GlStateManager.doPolygonOffset(0.0f, 0.0f);
             GlStateManager.disablePolygonOffset();
+            GlStateManager.depthFunc(GL11.GL_LEQUAL);
+            GlStateManager.depthMask(true);
         }
     }
 
