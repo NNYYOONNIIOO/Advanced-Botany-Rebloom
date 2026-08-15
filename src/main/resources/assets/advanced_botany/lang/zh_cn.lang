@@ -185,6 +185,9 @@ botania.page.lebethronWood0=莱斯贝隆木——精灵们利用 我们土地上
 botania.page.lebethronWood.alphirineCraft=翠绿奇迹
 botania.page.lebethronWood1=自然核心能够创造出一棵树， 拥有无尽的树叶，无论是火 焰还是咀嚼露水都无法阻止 它的生长！<br>核心本身不会立即造树，它 需要被赋予任意树叶，因为 它自身没有树叶，同时还需 要树干——详见下一页。
 botania.page.lebethronWood.craft0=合成配方
+botania.page.lebethronWood.craft1=莱斯贝隆木板
+botania.page.lebethronWood.craft2=苔藓莱斯贝隆木板
+botania.page.lebethronWood.craft3=微光莱斯贝隆木
 botania.page.lebethronWood.structure=自然核心
 
 botania.entry.lebethronSpreader=自然魔力发射器
