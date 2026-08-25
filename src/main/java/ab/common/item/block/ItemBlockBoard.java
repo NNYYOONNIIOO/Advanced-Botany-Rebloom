@@ -16,6 +16,7 @@ public class ItemBlockBoard extends ItemBlockBase {
         super(block);
     }
 
+    @net.minecraftforge.fml.relauncher.SideOnly(net.minecraftforge.fml.relauncher.Side.CLIENT)
     @Override
     public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flag) {
         if (stack.getMetadata() == 1) {

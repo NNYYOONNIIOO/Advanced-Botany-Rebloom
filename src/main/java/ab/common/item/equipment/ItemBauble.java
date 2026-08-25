@@ -43,6 +43,7 @@ public abstract class ItemBauble extends Item implements IBauble, ICosmeticAttac
         return new ActionResult<>(EnumActionResult.PASS, stack);
     }
 
+    @net.minecraftforge.fml.relauncher.SideOnly(net.minecraftforge.fml.relauncher.Side.CLIENT)
     @Override
     public void addInformation(ItemStack stack, World world, List<String> tooltip, net.minecraft.client.util.ITooltipFlag flags) {
         if (GuiScreen.isShiftKeyDown()) {
@@ -52,6 +53,7 @@ public abstract class ItemBauble extends Item implements IBauble, ICosmeticAttac
         }
     }
 
+    @net.minecraftforge.fml.relauncher.SideOnly(net.minecraftforge.fml.relauncher.Side.CLIENT)
     public void addHiddenTooltip(ItemStack stack, World world, List<String> tooltip, net.minecraft.client.util.ITooltipFlag flags) {
         ItemStack cosmetic = this.getCosmeticItem(stack);
         if (!cosmetic.isEmpty()) {

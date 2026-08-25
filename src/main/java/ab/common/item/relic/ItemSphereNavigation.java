@@ -49,6 +49,7 @@ public class ItemSphereNavigation extends ItemModRelic {
         return super.getItemStackDisplayName(stack) + (rStack.isEmpty() || rStack.getItem() == null ? "" : TextFormatting.RESET + " (" + TextFormatting.GREEN + rStack.getDisplayName() + TextFormatting.RESET + ")");
     }
 
+    @net.minecraftforge.fml.relauncher.SideOnly(net.minecraftforge.fml.relauncher.Side.CLIENT)
     @Override
     public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flag) {
         super.addInformation(stack, world, list, flag);
