@@ -13,7 +13,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 
 public class NetworkHandler {
-    public static final SimpleNetworkWrapper NETWORK = NetworkRegistry.INSTANCE.newSimpleChannel("advanced_botany_chanel");
+    public static final SimpleNetworkWrapper NETWORK = NetworkRegistry.INSTANCE.newSimpleChannel("a_botany_re");
 
     public static void registerPackets() {
         int id = 0;
