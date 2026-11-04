@@ -190,8 +190,14 @@ public class TileManaCharger extends TileInventory implements ISidedInventory, I
                 ItemStack stack = this.getStackInSlot(i);
                 if (stack.isEmpty()) continue;
                 float anglePer = 360.0f / (float) amt;
-                double xPos = xc - Math.cos(angle * Math.PI / 180.0) * radius - 8.0;
-                double yPos = yc + Math.sin(angle * Math.PI / 180.0) * radius - 8.0;
+                float displayAngle = angle;
+                if (amt == 4 && angle == 0.0f) {
+                    displayAngle = 90.0f;
+                } else if (amt == 4 && angle == 90.0f) {
+                    displayAngle = 0.0f;
+                }
+                double xPos = xc - Math.cos(displayAngle * Math.PI / 180.0) * radius - 8.0;
+                double yPos = yc + Math.sin(displayAngle * Math.PI / 180.0) * radius - 8.0;
                 net.minecraft.client.renderer.RenderHelper.enableGUIStandardItemLighting();
                 GL11.glPushMatrix();
                 GL11.glEnable(3042);
