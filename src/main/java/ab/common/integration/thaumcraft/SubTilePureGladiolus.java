@@ -25,7 +25,9 @@ import vazkii.botania.api.subtile.RadiusDescriptor;
 import vazkii.botania.api.subtile.SubTileFunctional;
 
 public class SubTilePureGladiolus extends SubTileFunctional {
-    private static final String COOLDOWN_TAG = "advancedBotanyPureGladiolusUntil";
+    private static final String COOLDOWN_TAG = "advancedBotanyPureGladiolusCooldownUntil";
+    private static final String LEGACY_COOLDOWN_TAG = "advancedBotanyPureGladiolusUntil";
+    private static final String MERGE_LOCK_TAG = "advancedBotanyPureGladiolusMergeLock";
     private static final int COOLDOWN_TICKS = 100;
 
     @Override
@@ -35,12 +37,13 @@ public class SubTilePureGladiolus extends SubTileFunctional {
         World world = supertile.getWorld();
         if (world.isRemote) return;
 
-        long now = getServerTime(world);
+        long now = world.getTotalWorldTime();
         for (EntityItem item : world.getEntitiesWithinAABB(EntityItem.class,
                 new AxisAlignedBB(supertile.getPos()).grow(3))) {
             ItemStack stack = item.getItem();
-            if (item.isDead || stack.isEmpty() || stack.getItem() != ItemsTC.crystalEssence
-                    || isCoolingDown(stack, now)) continue;
+            if (item.isDead || stack.isEmpty() || stack.getItem() != ItemsTC.crystalEssence) continue;
+            migrateLegacyCooldown(item, now);
+            if (isCoolingDown(item, now)) continue;
 
             AspectList aspects = ((ItemGenericEssentiaContainer) ItemsTC.crystalEssence).getAspects(stack);
             if (aspects == null || aspects.size() != 1 || aspects.getAspects()[0] == null) continue;
@@ -62,32 +65,65 @@ public class SubTilePureGladiolus extends SubTileFunctional {
         }
     }
 
-    private static void spawnCrystal(World world, Aspect aspect, double x, double y, double z, long until) {
+    private static void spawnCrystal(World world, Aspect aspect, double x, double y, double z, long cooldownUntil) {
         ItemStack result = ThaumcraftApiHelper.makeCrystal(aspect);
-        result.getTagCompound().setLong(COOLDOWN_TAG, until);
+        NBTTagCompound stackTag = result.getTagCompound();
+        if (stackTag == null) stackTag = new NBTTagCompound();
+        stackTag.setLong(MERGE_LOCK_TAG, cooldownUntil);
+        result.setTagCompound(stackTag);
         EntityItem output = new EntityItem(world, x, y, z, result);
-        output.setDefaultPickupDelay();
+        output.getEntityData().setLong(COOLDOWN_TAG, cooldownUntil);
         world.spawnEntity(output);
     }
 
-    static boolean isCoolingDown(ItemStack stack, long now) {
-        NBTTagCompound tag = stack.getTagCompound();
-        if (tag == null || !tag.hasKey(COOLDOWN_TAG)) return false;
-        if (now < tag.getLong(COOLDOWN_TAG)) return true;
-        clearExpiredCooldown(stack, now);
+    static boolean isCoolingDown(EntityItem item, long now) {
+        NBTTagCompound entityData = item.getEntityData();
+        if (!entityData.hasKey(COOLDOWN_TAG)) {
+            clearMergeLock(item);
+            return false;
+        }
+        if (now < entityData.getLong(COOLDOWN_TAG)) return true;
+        entityData.removeTag(COOLDOWN_TAG);
+        clearMergeLock(item);
         return false;
     }
 
-    static boolean clearExpiredCooldown(ItemStack stack, long now) {
+    static void migrateLegacyCooldown(EntityItem item, long now) {
+        ItemStack stack = item.getItem();
+        NBTTagCompound stackTag = stack.getTagCompound();
+        if (stackTag == null || !stackTag.hasKey(LEGACY_COOLDOWN_TAG)) return;
+
+        long cooldownUntil = stackTag.getLong(LEGACY_COOLDOWN_TAG);
+        stackTag.removeTag(LEGACY_COOLDOWN_TAG);
+        if (cooldownUntil > now) {
+            NBTTagCompound entityData = item.getEntityData();
+            if (!entityData.hasKey(COOLDOWN_TAG) || entityData.getLong(COOLDOWN_TAG) < cooldownUntil) {
+                entityData.setLong(COOLDOWN_TAG, cooldownUntil);
+            }
+            stackTag.setLong(MERGE_LOCK_TAG, cooldownUntil);
+        }
+        if (stackTag.getKeySet().isEmpty()) stack.setTagCompound(null);
+        item.setItem(stack);
+    }
+
+    private static void clearMergeLock(EntityItem item) {
+        if (clearMergeLock(item.getItem())) item.setItem(item.getItem());
+    }
+
+    static boolean clearMergeLock(ItemStack stack) {
         NBTTagCompound tag = stack.getTagCompound();
-        if (tag == null || !tag.hasKey(COOLDOWN_TAG) || now < tag.getLong(COOLDOWN_TAG)) return false;
-        tag.removeTag(COOLDOWN_TAG);
+        if (tag == null || !tag.hasKey(MERGE_LOCK_TAG)) return false;
+        tag.removeTag(MERGE_LOCK_TAG);
         if (tag.getKeySet().isEmpty()) stack.setTagCompound(null);
         return true;
     }
 
-    static long getServerTime(World world) {
-        return world.getMinecraftServer().getWorld(0).getTotalWorldTime();
+    static boolean clearLegacyCooldown(ItemStack stack) {
+        NBTTagCompound tag = stack.getTagCompound();
+        if (tag == null || !tag.hasKey(LEGACY_COOLDOWN_TAG)) return false;
+        tag.removeTag(LEGACY_COOLDOWN_TAG);
+        if (tag.getKeySet().isEmpty()) stack.setTagCompound(null);
+        return true;
     }
 
     @Override

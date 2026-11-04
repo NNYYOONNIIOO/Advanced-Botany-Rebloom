@@ -16,6 +16,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import thaumcraft.api.research.theorycraft.ResearchTableData;
@@ -37,14 +38,11 @@ public class AspecolusResearchHandler {
     public void onWorldTick(TickEvent.WorldTickEvent event) {
         World world = event.world;
         if (world.isRemote || event.phase != TickEvent.Phase.END) return;
-        long now = SubTilePureGladiolus.getServerTime(world);
-        if (now % 20 == 0) {
+        if (world.getTotalWorldTime() % 20 == 0) {
             for (Entity entity : world.loadedEntityList) {
                 if (entity instanceof EntityItem) {
                     EntityItem item = (EntityItem) entity;
-                    if (SubTilePureGladiolus.clearExpiredCooldown(item.getItem(), now)) {
-                        item.setItem(item.getItem());
-                    }
+                    SubTilePureGladiolus.migrateLegacyCooldown(item, world.getTotalWorldTime());
                 }
             }
         }
@@ -68,6 +66,32 @@ public class AspecolusResearchHandler {
         }
     }
 
+    @SubscribeEvent
+    public void onPlayerTick(TickEvent.PlayerTickEvent event) {
+        EntityPlayer player = event.player;
+        if (player.world.isRemote || event.phase != TickEvent.Phase.END || player.ticksExisted % 20 != 0) return;
+        boolean inventoryChanged = false;
+        for (ItemStack stack : player.inventory.mainInventory) {
+            inventoryChanged |= SubTilePureGladiolus.clearLegacyCooldown(stack);
+        }
+        for (ItemStack stack : player.inventory.offHandInventory) {
+            inventoryChanged |= SubTilePureGladiolus.clearLegacyCooldown(stack);
+        }
+        if (inventoryChanged) player.inventory.markDirty();
+        for (Slot slot : player.openContainer.inventorySlots) {
+            if (SubTilePureGladiolus.clearLegacyCooldown(slot.getStack())) slot.onSlotChanged();
+        }
+    }
+
+    @SubscribeEvent
+    public void onEntityItemPickup(EntityItemPickupEvent event) {
+        EntityItem item = event.getItem();
+        ItemStack stack = item.getItem();
+        boolean changed = SubTilePureGladiolus.clearMergeLock(stack);
+        changed |= SubTilePureGladiolus.clearLegacyCooldown(stack);
+        if (changed) item.setItem(stack);
+    }
+
     private void updateTheory(TileResearchTable table, EntityPlayerMP player, boolean hasBonus) {
         ResearchTableData data = table.data;
         NBTTagCompound tag = table.getTileData();
@@ -88,24 +112,6 @@ public class AspecolusResearchHandler {
             tag.setBoolean(APPLIED_TAG, true);
             table.markDirty();
             table.syncTile(false);
-        }
-    }
-
-    @SubscribeEvent
-    public void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        EntityPlayer player = event.player;
-        if (player.world.isRemote || event.phase != TickEvent.Phase.END || player.ticksExisted % 20 != 0) return;
-        long now = SubTilePureGladiolus.getServerTime(player.world);
-        boolean inventoryChanged = false;
-        for (ItemStack stack : player.inventory.mainInventory) {
-            inventoryChanged |= SubTilePureGladiolus.clearExpiredCooldown(stack, now);
-        }
-        for (ItemStack stack : player.inventory.offHandInventory) {
-            inventoryChanged |= SubTilePureGladiolus.clearExpiredCooldown(stack, now);
-        }
-        if (inventoryChanged) player.inventory.markDirty();
-        for (Slot slot : player.openContainer.inventorySlots) {
-            if (SubTilePureGladiolus.clearExpiredCooldown(slot.getStack(), now)) slot.onSlotChanged();
         }
     }
 
