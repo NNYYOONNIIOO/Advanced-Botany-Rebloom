@@ -8,7 +8,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraft.creativetab.CreativeTabs;
 
-@Mod(modid = AdvancedBotany.modid, name = "Advanced Botany", version = "1.2.3", dependencies = "required-after:botania;after:crafttweaker", guiFactory = "ab.client.core.handler.GuiABFactory")
+@Mod(modid = AdvancedBotany.modid, name = "Advanced Botany", version = "1.2.3", dependencies = "required-after:botania;after:crafttweaker;after:thaumcraft", guiFactory = "ab.client.core.handler.GuiABFactory")
 public class AdvancedBotany {
     public static final String modid = "advanced_botany";
     public static final String version = "1.2.3";

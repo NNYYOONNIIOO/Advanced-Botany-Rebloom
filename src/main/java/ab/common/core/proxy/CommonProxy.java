@@ -12,7 +12,9 @@ import ab.common.item.equipment.ItemSpaceBlade;
 import ab.common.item.equipment.armor.ItemNebulaArmor;
 import ab.common.lib.register.ItemListAB;
 import ab.common.lib.register.RecipeListAB;
+import ab.common.integration.thaumcraft.AspecolusResearchHandler;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -30,6 +32,9 @@ public class CommonProxy {
         MinecraftForge.EVENT_BUS.register(ItemListAB.itemAntigravityCharm);
         MinecraftForge.EVENT_BUS.register(new ItemNebulaArmor.DamageHandler());
         MinecraftForge.EVENT_BUS.register(new ItemSpaceBlade.LeftClickHandler());
+        if (Loader.isModLoaded("thaumcraft")) {
+            MinecraftForge.EVENT_BUS.register(new AspecolusResearchHandler());
+        }
     }
 
     public void init(FMLInitializationEvent event) {

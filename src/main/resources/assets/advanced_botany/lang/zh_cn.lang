@@ -339,3 +339,21 @@ botania.entry.aquaSword=海之刃
 botania.tagline.aquaSword=离我远点！我湿透了……
 botania.page.aquaSword0=海之刃——一把被海洋力量 灌注的神秘近战武器！<br>海之刃的攻击会被水花抵挡， 并将周围所有生物向玩家视 线方向推开。<br>而格挡则会形成水盾，阻止 敌人靠近玩家。
 botania.page.aquaSword.craft=在绝对寂静中冥想
+
+ab.flower.aspecolus.name=阿斯佩科卢斯
+tile.botania:flower.aspecolus.name=阿斯佩科卢斯
+ab.flower.aspecolus.reference=思绪如花，徐徐绽放
+botania.entry.aspecolus=阿斯佩科卢斯
+botania.tagline.aspecolus=为灵感留出一席之地
+botania.page.aspecolus0=阿斯佩科卢斯轻摇花瓣，为 附近的术士梳理纷乱的思绪 。它以魔力维系宁静，让研 究台前的灵感更为充盈。
+botania.page.aspecolus1=花朵每刻消耗一千点魔力， 使以自身为中心的七乘七乘 七格内的术士，获得额外六 点灵感上限。多朵同类花的 增益不会叠加。
+botania.page.aspecolus.petalCraft=静心凝神
+
+ab.flower.pureGladiolus.name=纯白剑兰
+tile.botania:flower.pureGladiolus.name=纯白剑兰
+ab.flower.pureGladiolus.reference=万物终将回归本源
+botania.entry.pureGladiolus=纯白剑兰
+botania.tagline.pureGladiolus=剥开水晶的层层奥秘
+botania.page.pureGladiolus0=纯白剑兰能拆解源质水晶的 繁复纹理，令复合要素重归 两种组成部分。将水晶抛在 花朵七乘七乘七格范围内， 它便会消耗原本的碎片，凝 成两枚对应的水晶。
+botania.page.pureGladiolus1=新生的水晶需要五秒稳定， 期间不会被再次拆解。无法 继续拆分的要素水晶则会消 散，并在原处释放一点咒波 。花朵无需消耗魔力。
+botania.page.pureGladiolus.petalCraft=化繁为简

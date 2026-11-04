@@ -338,3 +338,21 @@ botania.entry.aquaSword=Blade of Sea
 botania.tagline.aquaSword=Get away from me! I'm wet...
 botania.page.aquaSword0=Blade of Sea - a mystical melee weapon imbued with the powers of the seas!<br>An attack with Blade of the Sea is resisted by a water splash, and pushes everyone around in the direction the player is looking<br>The block, on the other hand, is resisted by a water shield, which prevents enemies from approaching the player.
 botania.page.aquaSword.craft=Meditation in total silence
+
+ab.flower.aspecolus.name=Aspecolus
+tile.botania:flower.aspecolus.name=Aspecolus
+ab.flower.aspecolus.reference=Let your thoughts blossom
+botania.entry.aspecolus=Aspecolus
+botania.tagline.aspecolus=Making room for inspiration
+botania.page.aspecolus0=The Aspecolus gently untangles the thoughts of nearby thaumaturges. Sustained by mana, its soothing presence brings fresh inspiration to the research table.
+botania.page.aspecolus1=The flower consumes 1,000 mana each tick, granting thaumaturges within a 7 by 7 by 7 area six additional maximum inspiration. Multiple Aspecoli do not stack.
+botania.page.aspecolus.petalCraft=A moment of clarity
+
+ab.flower.pureGladiolus.name=Pure Gladiolus
+tile.botania:flower.pureGladiolus.name=Pure Gladiolus
+ab.flower.pureGladiolus.reference=All things return to their origins
+botania.entry.pureGladiolus=Pure Gladiolus
+botania.tagline.pureGladiolus=Unraveling the secrets of crystals
+botania.page.pureGladiolus0=The Pure Gladiolus unravels essentia crystals, returning compound aspects to their two components. A crystal dropped within its 7 by 7 by 7 area is consumed and replaced by a crystal of each component.
+botania.page.pureGladiolus1=New crystals need five seconds to settle before they can be split again. A crystal with an indivisible aspect vanishes instead, releasing one flux at its location. The flower requires no mana.
+botania.page.pureGladiolus.petalCraft=Back to basics

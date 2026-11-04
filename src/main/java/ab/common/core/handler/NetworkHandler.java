@@ -5,6 +5,7 @@ import ab.common.core.proxy.packet.C03PacketSpaceBladeBurst;
 import ab.common.core.proxy.packet.S00PacketHornChargeHud;
 import ab.common.core.proxy.packet.S01PacketFindNearBlocks;
 import ab.common.core.proxy.packet.S02PacketSpaceBladeDash;
+import ab.common.core.proxy.packet.S03PacketAspecolus;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
@@ -22,6 +23,7 @@ public class NetworkHandler {
         NETWORK.registerMessage(S02PacketSpaceBladeDash.class, S02PacketSpaceBladeDash.class, id++, Side.CLIENT);
         NETWORK.registerMessage(C00PacketToggleNebulaArmor.class, C00PacketToggleNebulaArmor.class, id++, Side.SERVER);
         NETWORK.registerMessage(C03PacketSpaceBladeBurst.class, C03PacketSpaceBladeBurst.class, id++, Side.SERVER);
+        NETWORK.registerMessage(S03PacketAspecolus.class, S03PacketAspecolus.class, id++, Side.CLIENT);
     }
 
     public static void sendPacketToSpaceDash(EntityPlayerMP playerMP) {

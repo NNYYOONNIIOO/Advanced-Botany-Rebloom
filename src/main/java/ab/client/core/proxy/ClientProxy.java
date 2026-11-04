@@ -44,6 +44,9 @@ import ab.common.block.subtile.SubTileArdentAzarcissus;
 import ab.common.block.subtile.SubTileDictarius;
 import ab.common.lib.register.BlockListAB;
 import ab.common.lib.register.ItemListAB;
+import ab.common.integration.thaumcraft.SubTileAspecolus;
+import ab.common.integration.thaumcraft.SubTilePureGladiolus;
+import ab.client.integration.thaumcraft.AspecolusClientHandler;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.Item;
@@ -51,6 +54,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -69,6 +73,15 @@ public class ClientProxy extends CommonProxy {
         BotaniaAPIClient.registerSubtileModel(SubTileArdentAzarcissus.class,
                 new ModelResourceLocation("advanced_botany:ardentazarcissus", "normal"),
                 new ModelResourceLocation("advanced_botany:ardentazarcissus", "inventory"));
+        if (Loader.isModLoaded("thaumcraft")) {
+            BotaniaAPIClient.registerSubtileModel(SubTileAspecolus.class,
+                    new ModelResourceLocation("advanced_botany:aspecolus", "normal"),
+                    new ModelResourceLocation("advanced_botany:aspecolus", "inventory"));
+            BotaniaAPIClient.registerSubtileModel(SubTilePureGladiolus.class,
+                    new ModelResourceLocation("advanced_botany:puregladiolus", "normal"),
+                    new ModelResourceLocation("advanced_botany:puregladiolus", "inventory"));
+            MinecraftForge.EVENT_BUS.register(new AspecolusClientHandler());
+        }
 
         // Register ClientHandler in preInit so TextureStitchEvent.Pre is caught
         ClientHandler clientHandler = new ClientHandler();

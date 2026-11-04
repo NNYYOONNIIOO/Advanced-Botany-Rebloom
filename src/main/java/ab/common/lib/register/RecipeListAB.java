@@ -18,6 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.fml.common.Loader;
 import vazkii.botania.api.BotaniaAPI;
 import vazkii.botania.api.lexicon.KnowledgeType;
 import vazkii.botania.api.lexicon.LexiconCategory;
@@ -79,6 +80,8 @@ public class RecipeListAB {
     public static LexiconEntry sprawlRod;
     public static LexiconEntry azartFlower;
     public static LexiconEntry aquaSword;
+    public static LexiconEntry aspecolus;
+    public static LexiconEntry pureGladiolus;
     public static KnowledgeType forgotten;
 
     public static void init() {
@@ -164,6 +167,27 @@ public class RecipeListAB {
         azartFlower.setKnowledgeType(forgotten).setLexiconPages(new LexiconPage[]{new PageText("0"), BotaniaAPI.internalHandler.petalRecipePage(".petalCraft", azartFlowerRecipe)});
         aquaSword = new BasicLexiconEntry("aquaSword", categoryForgotten);
         aquaSword.setKnowledgeType(forgotten).setLexiconPages(new LexiconPage[]{new PageText("0"), BotaniaAPI.internalHandler.craftingRecipePage(".craft", new ResourceLocation("advanced_botany", "aqua_sword"))});
+        if (Loader.isModLoaded("thaumcraft")) {
+            RecipePetals aspecolusRecipe = BotaniaAPI.registerPetalRecipe(ItemBlockSpecialFlower.ofType("aspecolus"),
+                    new ItemStack(ModItems.manaResource, 1, 6), new ItemStack(ModItems.manaResource, 1, 5),
+                    new ItemStack(ModItems.rune, 1, 1), new ItemStack(ModItems.rune, 1, 0),
+                    new ItemStack(ItemListAB.itemABResource, 1, 2), new ItemStack(ModItems.petal, 1, 10),
+                    new ItemStack(ModItems.petal, 1, 13));
+            aspecolus = new BasicLexiconEntry("aspecolus", BotaniaAPI.categoryFunctionalFlowers);
+            aspecolus.setKnowledgeType(forgotten).setLexiconPages(new LexiconPage[]{new PageText("0"), new PageText("1"),
+                    BotaniaAPI.internalHandler.petalRecipePage(".petalCraft", aspecolusRecipe)})
+                    .setIcon(ItemBlockSpecialFlower.ofType("aspecolus"));
+
+            RecipePetals pureGladiolusRecipe = BotaniaAPI.registerPetalRecipe(ItemBlockSpecialFlower.ofType("pureGladiolus"),
+                    new ItemStack(ItemListAB.itemABResource, 1, 4), new ItemStack(ModItems.rune, 1, 8),
+                    new ItemStack(ModItems.petal, 1, 8), new ItemStack(ModItems.petal, 1, 4),
+                    new ItemStack(ModItems.petal, 1, 14), new ItemStack(ModItems.petal, 1, 5),
+                    new ItemStack(ModItems.petal, 1, 13), new ItemStack(ModItems.petal, 1, 11));
+            pureGladiolus = new BasicLexiconEntry("pureGladiolus", BotaniaAPI.categoryFunctionalFlowers);
+            pureGladiolus.setKnowledgeType(forgotten).setLexiconPages(new LexiconPage[]{new PageText("0"), new PageText("1"),
+                    BotaniaAPI.internalHandler.petalRecipePage(".petalCraft", pureGladiolusRecipe)})
+                    .setIcon(ItemBlockSpecialFlower.ofType("pureGladiolus"));
+        }
     }
 
     public static void relicInit() {
