@@ -2,25 +2,24 @@ package ab.common.block.tile;
 
 import ab.api.AdvancedBotanyAPI;
 import ab.common.core.handler.ConfigABHandler;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.Style;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import vazkii.botania.api.internal.VanillaPacketDispatcher;
 import vazkii.botania.api.item.IRelic;
-import vazkii.botania.common.item.relic.ItemRelic;
+import vazkii.botania.common.advancements.RelicBindTrigger;
+import vazkii.botania.common.item.ModItems;
 
 import java.util.List;
 
@@ -60,40 +59,76 @@ public class TileBoardFate extends TileInventory implements net.minecraft.util.I
     }
 
     public boolean spawnRelic(EntityPlayer player) {
+        World world = this.getWorld();
+        if (world.isRemote) return true;
+
         int relicCount = 0;
         for (int i = 0; i < this.getSizeInventory(); i++) {
-            if (this.getStackInSlot(i).isEmpty()) {
+            ItemStack stack = this.getStackInSlot(i);
+            if (stack.isEmpty()) {
                 this.slotChance[i] = 0;
             } else {
-                if (this.getStackInSlot(i).getItem() instanceof IRelic && !((ItemRelic) this.getStackInSlot(i).getItem()).isRightPlayer(player, this.getStackInSlot(i))) {
-                    if (!this.getWorld().isRemote) {
-                        this.dropRelic(player, i);
-                    }
+                if (stack.getItem() instanceof IRelic
+                        && !player.getUniqueID().equals(((IRelic) stack.getItem()).getSoulbindUUID(stack))) {
+                    this.dropRelic(player, i);
                     return true;
                 }
-                this.setInventorySlotContents(i, ItemStack.EMPTY);
+                relicCount += this.slotChance[i];
             }
-            relicCount += this.slotChance[i];
         }
         if (relicCount < 1) {
             return false;
         }
-        if (!this.getWorld().isRemote) {
-            ItemStack relic = AdvancedBotanyAPI.relicList.get(Math.min(relicCount - 1, AdvancedBotanyAPI.relicList.size() - 1)).copy();
-            this.getWorld().playSound(null, player.posX, player.posY, player.posZ,
-                    net.minecraft.util.SoundEvent.REGISTRY.getObject(new net.minecraft.util.ResourceLocation("random.bow")),
-                    net.minecraft.util.SoundCategory.PLAYERS, 0.5f, 0.4f / (this.getWorld().rand.nextFloat() * 0.4f + 0.8f));
-            if (hasRelicAdvancement(player, relic) || !ConfigABHandler.fateBoardRelicEnables[relicCount - 1]) {
-                player.sendMessage(new TextComponentTranslation("botaniamisc.dudDiceRoll", relicCount).setStyle(new Style().setColor(TextFormatting.DARK_GREEN)));
-            } else {
-                ((ItemRelic) relic.getItem()).updateRelic(relic, player);
-                EntityItem entityItem = new EntityItem(this.getWorld(), this.getPos().getX() + 0.5f, this.getPos().getY() + 0.5f, this.getPos().getZ() + 0.5f, relic);
-                player.sendMessage(new TextComponentTranslation("botaniamisc.diceRoll", relicCount).setStyle(new Style().setColor(TextFormatting.DARK_GREEN)));
-                this.getWorld().spawnEntity(entityItem);
+
+        ItemStack reward = ItemStack.EMPTY;
+        boolean dudRoll = false;
+        if (relicCount != 12) {
+            if (AdvancedBotanyAPI.relicList.isEmpty()) return false;
+            int relicIndex = Math.min(relicCount - 1, AdvancedBotanyAPI.relicList.size() - 1);
+            reward = AdvancedBotanyAPI.relicList.get(relicIndex).copy();
+            dudRoll = reward.isEmpty() || hasRelicAdvancement(player, reward)
+                    || relicIndex >= ConfigABHandler.fateBoardRelicEnables.length
+                    || !ConfigABHandler.fateBoardRelicEnables[relicIndex];
+            if (!dudRoll && reward.getItem() instanceof IRelic) {
+                // Addon relics implement IRelic without extending Botania's ItemRelic.
+                IRelic relic = (IRelic) reward.getItem();
+                if (!relic.hasUUID(reward)) {
+                    relic.bindToUUID(player.getUniqueID(), reward);
+                    if (player instanceof EntityPlayerMP) {
+                        RelicBindTrigger.INSTANCE.trigger((EntityPlayerMP) player, reward);
+                    }
+                }
             }
-            this.requestUpdate = true;
+        }
+
+        for (int i = 0; i < this.getSizeInventory(); i++) {
+            this.setInventorySlotContents(i, ItemStack.EMPTY);
+            this.slotChance[i] = 0;
+        }
+        this.requestUpdate = true;
+        world.playSound(null, player.posX, player.posY, player.posZ,
+                SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS,
+                0.5f, 0.4f / (world.rand.nextFloat() * 0.4f + 0.8f));
+        if (relicCount == 12) {
+            for (int i = 0; i < 3; i++) {
+                this.spawnReward(new ItemStack(ModItems.dice));
+            }
+            player.sendMessage(new TextComponentTranslation("abmisc.fateBoard.bonusDice")
+                    .setStyle(new Style().setColor(TextFormatting.DARK_GREEN)));
+        } else if (dudRoll) {
+            player.sendMessage(new TextComponentTranslation("botaniamisc.dudDiceRoll", relicCount)
+                    .setStyle(new Style().setColor(TextFormatting.DARK_GREEN)));
+        } else {
+            this.spawnReward(reward);
+            player.sendMessage(new TextComponentTranslation("botaniamisc.diceRoll", relicCount)
+                    .setStyle(new Style().setColor(TextFormatting.DARK_GREEN)));
         }
         return true;
+    }
+
+    private void spawnReward(ItemStack reward) {
+        this.getWorld().spawnEntity(new EntityItem(this.getWorld(),
+                this.getPos().getX() + 0.5, this.getPos().getY() + 0.5, this.getPos().getZ() + 0.5, reward));
     }
 
     private void dropRelic(EntityPlayer player, int slot) {
@@ -104,6 +139,8 @@ public class TileBoardFate extends TileInventory implements net.minecraft.util.I
         entityItem.motionY = 0.25;
         entityItem.motionZ = vec.z * f3;
         this.setInventorySlotContents(slot, ItemStack.EMPTY);
+        this.slotChance[slot] = 0;
+        this.requestUpdate = true;
         this.getWorld().spawnEntity(entityItem);
     }
 

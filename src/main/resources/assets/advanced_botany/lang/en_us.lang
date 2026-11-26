@@ -124,6 +124,7 @@ ab.nebulaRod.notTeleportingEvent=Something prevents the portal from transporting
 ab.sphereNavigation.founded=Found
 abmisc.fateBoard.info0=The opportunity to play on this board, he dreamed of 
 abmisc.fateBoard.info1=every Elf, hoping to get a valuable prize...
+abmisc.fateBoard.bonusDice=You rolled a 12! Fate grants you three unbound Dice of Fate.
 
 //ACHIEVEMENT
 
@@ -305,7 +306,7 @@ botania.page.gameBoard.craft=Shall we play for mana? How's that?
 
 botania.entry.fateBoard=Fate Playing Board
 botania.tagline.fateBoard=1 cube - 6 relics, makes sense. 2 cubes...
-botania.page.fateBoard0=Fate Playing Board - a kind of fun, just like a normal Playing Board, but - the game requires a few Destiny Cubes.<br>As you know - by rolling the Fate Cube you can get a relic associated with that number.<br>Consequently, 2 cubes will yield up to 12 relics. [Currently up to 11, with 1 more in development]
+botania.page.fateBoard0=Fate Playing Board - a kind of fun, just like a normal Playing Board, but - the game requires a few Destiny Cubes.<br>As you know - by rolling the Fate Cube you can get a relic associated with that number.<br>With two dice, totals from 7 through 11 can award Advanced Botany relics. A total of 12 awards three unbound Dice of Fate.
 botania.page.fateBoard.alphirineCraft=Shall we play relics?
 
 botania.entry.richesKey=Key to Hidden Wealth

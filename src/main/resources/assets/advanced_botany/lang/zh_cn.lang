@@ -124,6 +124,7 @@ ab.nebulaRod.notTeleportingEvent=有某种力量阻止传送门将你传送至�
 ab.sphereNavigation.founded=已找到
 abmisc.fateBoard.info0=每个精灵都梦想着能在这块棋盘上对弈，
 abmisc.fateBoard.info1=希望能赢得宝贵的奖品……
+abmisc.fateBoard.bonusDice=掷出了12点！命运赠予你三个未绑定的命运骰子。
 
 //成就
 
@@ -306,7 +307,7 @@ botania.page.gameBoard.craft=我们来赌点魔力？怎么样？
 
 botania.entry.fateBoard=命运棋盘
 botania.tagline.fateBoard=1个骰子——6件遗物，有道理。2个骰子……
-botania.page.fateBoard0=命运棋盘——一种有趣的玩 法，和普通棋盘类似，但—— 游戏需要几个命运骰子。<br>众所周知——掷出命运骰子 可以获得与该数字相关的遗 物。<br>因此，2个骰子最多可获得12件 遗物。[目前最多11件，还有1件 正在开发中]
+botania.page.fateBoard0=命运棋盘——一种有趣的玩 法，和普通棋盘类似，但—— 游戏需要几个命运骰子。<br>众所周知——掷出命运骰子 可以获得与该数字相关的遗 物。<br>两枚骰子的点数相加，便能 赢得更多遗物。若总点数为 十二，命运将赠予三枚尚未 绑定的命运骰子。
 botania.page.fateBoard.alphirineCraft=我们来赌遗物？
 
 botania.entry.richesKey=隐藏财富的钥匙
